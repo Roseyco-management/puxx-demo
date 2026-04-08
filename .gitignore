@@ -1,0 +1,13 @@
+# Video files — store locally, do not push to remote
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

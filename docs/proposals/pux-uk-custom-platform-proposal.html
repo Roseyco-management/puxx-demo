@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elevateo Co – PUX UK Custom Platform Proposal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #C9A227;
+            --gold-light: #E8D5A3;
+            --gold-dark: #9A7B1C;
+            --dark: #1A1A1A;
+            --darker: #0D0D0D;
+            --text: #FFFFFF;
+            --text-secondary: #B3B3B3;
+        }
+        @page { size: A4; margin: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 15mm;
+            padding-bottom: 22mm;
+            background: var(--dark);
+            position: relative;
+            page-break-after: always;
+            page-break-inside: avoid;
+            display: block;
+        }
+        .page:last-child { page-break-after: auto; }
+
+        /* Cover Page */
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 50%, #1f1f1f 100%);
+        }
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .cover-page > * { position: relative; z-index: 1; }
+        .cover-logo { height: 160px; width: auto; margin-bottom: 35px; }
+        .cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        .cover-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 300;
+            max-width: 450px;
+        }
+        .cover-divider {
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 25px auto;
+        }
+        .cover-client { font-size: 16px; color: var(--text); font-weight: 500; margin-bottom: 6px; }
+        .cover-date { font-size: 11px; color: var(--text-secondary); font-weight: 300; margin-bottom: 4px; }
+
+        /* Content Pages */
+        .page-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+        }
+        .header-logo { width: 28px; height: 28px; margin-right: 10px; }
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .page-num-header { margin-left: auto; font-size: 10px; color: var(--text-secondary); }
+
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 15mm;
+            right: 15mm;
+            padding-top: 8px;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            text-align: center;
+        }
+        .footer-text { font-size: 8px; color: var(--text-secondary); margin-bottom: 3px; }
+        .footer-page { font-size: 9px; color: var(--gold); }
+
+        /* Section Styles */
+        .section { margin-bottom: 14px; }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .section-text {
+            font-size: 10px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+        .section-subtitle {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 10px 0 6px 0;
+        }
+
+        /* Bullet List */
+        .bullet-list { list-style: none; padding-left: 0; margin: 6px 0; }
+        .bullet-list li {
+            font-size: 10px;
+            color: var(--text-secondary);
+            padding-left: 14px;
+            position: relative;
+            margin-bottom: 4px;
+            line-height: 1.5;
+        }
+        .bullet-list li::before {
+            content: "\2022";
+            color: var(--gold);
+            position: absolute;
+            left: 3px;
+        }
+        .bullet-list li:has(.check-mark)::before,
+        .bullet-list li:has(.x-mark)::before { content: ""; }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: rgba(201, 162, 39, 0.08);
+            border-left: 3px solid var(--gold);
+            padding: 10px 14px;
+            margin: 10px 0;
+        }
+        .highlight-title { font-size: 11px; font-weight: 600; color: var(--gold); margin-bottom: 5px; }
+        .highlight-text { font-size: 10px; color: var(--text-secondary); line-height: 1.6; }
+
+        /* Module Card */
+        .module-card {
+            background: rgba(201, 162, 39, 0.05);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+        .module-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .module-price {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .module-tagline {
+            font-size: 9px;
+            color: var(--gold-light);
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+
+        /* Table */
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .pricing-table td, .pricing-table th {
+            padding: 7px 10px;
+            font-size: 10px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .pricing-table th {
+            font-weight: 600;
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+            text-align: left;
+        }
+        .pricing-table td { color: var(--text-secondary); }
+        .pricing-table td:last-child, .pricing-table th:last-child { text-align: right; }
+        .pricing-table tr.total td {
+            font-weight: 600;
+            color: var(--text);
+            border-top: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        /* Pain Point Table */
+        .pain-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+        }
+        .pain-table th {
+            padding: 6px 8px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+            text-align: left;
+        }
+        .pain-table td {
+            padding: 5px 8px;
+            font-size: 9px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .pain-table td:first-child { color: var(--text); font-weight: 500; width: 28px; }
+
+        /* Timeline */
+        .timeline-item { margin-bottom: 8px; padding-left: 18px; position: relative; }
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 0; top: 6px;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+        .timeline-title { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+        .timeline-text { font-size: 9px; color: var(--text-secondary); line-height: 1.5; }
+
+        /* Signature Box */
+        .signature-box {
+            margin-top: 16px;
+            padding: 14px;
+            background: rgba(201, 162, 39, 0.05);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .signature-row { margin-bottom: 10px; }
+        .signature-label { font-size: 9px; color: var(--text-secondary); margin-bottom: 3px; }
+        .signature-line { border-bottom: 1px solid rgba(201, 162, 39, 0.3); height: 20px; }
+
+        .check-mark { color: #2ECC71; font-weight: 600; }
+        .x-mark { color: #E74C3C; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <!-- Page 1: Cover -->
+    <div class="page cover-page">
+        <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-full.png" alt="Elevateo Logo" class="cover-logo">
+        <h1 class="cover-title">PROPOSAL</h1>
+        <p class="cover-subtitle">Custom Business Platform &mdash; Order Management, CRM, Retailer Portal & Automation</p>
+        <div class="cover-divider"></div>
+        <p class="cover-client">Prepared for: PUX UK</p>
+        <p class="cover-date">Date: 16 March 2026</p>
+        <p class="cover-date">Version: 1.0</p>
+        <p class="cover-date" style="margin-top: 20px; font-size: 9px;">Proposal #EVT-PROP-2026-PUX</p>
+    </div>
+
+    <!-- Page 2: Executive Summary & Pain Points -->
+    <div class="page">
+        <div class="page-header">
+            <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-icon.png" alt="Logo" class="header-logo">
+            <h2 class="page-title">Executive Summary</h2>
+            <span class="page-num-header">Page 2</span>
+        </div>
+
+        <div class="section">
+            <p class="section-text">PUX UK is a nicotine pouch brand that manufactures and distributes to a growing network of convenience stores across the UK and beyond. As the business scales, the current workflow &mdash; manual order processing, copy-pasting between platforms, and individual emails &mdash; cannot keep up with demand.</p>
+            <p class="section-text">We propose building a <strong style="color: var(--text);">custom business platform</strong> that consolidates PUX's operations into one system: from the moment a retailer places an order, through fulfilment and shipping, to proactive re-engagement when it's time to reorder.</p>
+        </div>
+
+        <div class="highlight-box">
+            <p class="highlight-title">Modular Approach</p>
+            <p class="highlight-text">Every feature is priced independently so you can choose exactly what you need now, and add more later. No lock-in, no bloat &mdash; just the tools you actually use.</p>
+        </div>
+
+        <div class="section" style="margin-top: 14px;">
+            <h3 class="section-title">Current Workflow & Pain Points</h3>
+            <table class="pain-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Current Process</th>
+                        <th>Problem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Order comes in via WooCommerce</td>
+                        <td>No centralised order management</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Manually copy order details</td>
+                        <td>Time-consuming, error-prone</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Paste into Freightcom for shipping</td>
+                        <td>Repetitive manual data entry</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Go to Gmail, send confirmation email</td>
+                        <td>No automation, easy to forget</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Retailer reorders via WhatsApp/email</td>
+                        <td>No tracking, orders slip through</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Stock levels tracked manually</td>
+                        <td>No visibility on when to manufacture</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 10px;">
+            <p class="highlight-title">The Solution</p>
+            <p class="highlight-text">A custom-built, multi-tenant business platform with 9 independent modules. Choose what you need now, add the rest later.</p>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">ELEVATEO CO. | PUX UK &mdash; Custom Platform Proposal</div>
+            <div class="footer-page">Page 2</div>
+        </div>
+    </div>
+
+    <!-- Page 3: Modules 1, 2, 3 -->
+    <div class="page">
+        <div class="page-header">
+            <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-icon.png" alt="Logo" class="header-logo">
+            <h2 class="page-title">Feature Modules</h2>
+            <span class="page-num-header">Page 3</span>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 1 &mdash; Order Automation</span>
+                <span class="module-price">&pound;500</span>
+            </div>
+            <p class="module-tagline">The quick win. Automates your most painful daily workflow.</p>
+            <ul class="bullet-list">
+                <li>Automatic sync of new WooCommerce orders into the platform</li>
+                <li>Auto-submission of order & shipping details to Freightcom via API</li>
+                <li>Automated confirmation emails upon order placement and dispatch</li>
+                <li>Order status tracking in one dashboard</li>
+            </ul>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 2 &mdash; CRM & Contact Management</span>
+                <span class="module-price">&pound;4,000</span>
+            </div>
+            <p class="module-tagline">Your entire network &mdash; retailers, team, sales reps &mdash; in one place.</p>
+            <ul class="bullet-list">
+                <li>Retailer account management (store details, contacts, locations, notes)</li>
+                <li>Multi-tenancy: separate access for PUX employees, external sales team, and retailers</li>
+                <li>Sales pipeline for onboarding new retail partners</li>
+                <li>Activity logging (calls, emails, meetings, notes per account)</li>
+                <li>Role-based permissions (admin, sales rep, retailer, viewer)</li>
+            </ul>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 3 &mdash; Retailer Portal (B2B Ordering)</span>
+                <span class="module-price">&pound;6,500</span>
+            </div>
+            <p class="module-tagline">A branded portal where your stores place orders in seconds.</p>
+            <ul class="bullet-list">
+                <li>Branded PUX login portal for retail partners</li>
+                <li>Product catalogue with images, descriptions, wholesale tier pricing</li>
+                <li>Simple ordering flow &mdash; browse, add to cart, confirm</li>
+                <li>One-click reorder from previous orders</li>
+                <li>Order history with status tracking</li>
+                <li>Multi-location support (one owner manages all stores under one login)</li>
+                <li>Mobile-responsive design</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">ELEVATEO CO. | PUX UK &mdash; Custom Platform Proposal</div>
+            <div class="footer-page">Page 3</div>
+        </div>
+    </div>
+
+    <!-- Page 4: Modules 4 & 5 -->
+    <div class="page">
+        <div class="page-header">
+            <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-icon.png" alt="Logo" class="header-logo">
+            <h2 class="page-title">Feature Modules</h2>
+            <span class="page-num-header">Page 4</span>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 4 &mdash; Smart Reorder Automation</span>
+                <span class="module-price">&pound;4,500</span>
+            </div>
+            <p class="module-tagline">The killer feature. Proactively drives repeat orders without lifting a finger.</p>
+            <ul class="bullet-list">
+                <li>Tracks each retailer's ordering frequency and patterns</li>
+                <li>Predicts when a retailer is due to reorder based on history</li>
+                <li>Automated outreach when a reorder is likely due (WhatsApp and/or email)</li>
+                <li>Personalised messaging: <em style="color: var(--gold-light);">"Hi [Name], it's been 4 weeks since your last PUX order &mdash; ready for a restock? Tap here to reorder."</em></li>
+                <li>Follow-up automation if no response (configurable: 2 days, 5 days, etc.)</li>
+                <li>Dashboard showing which retailers are overdue, on track, or recently ordered</li>
+                <li>Improves over time as more order data is collected</li>
+            </ul>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 5 &mdash; Inventory Management</span>
+                <span class="module-price">&pound;4,000</span>
+            </div>
+            <p class="module-tagline">Always know what you have, what's moving, and what's running low.</p>
+            <ul class="bullet-list">
+                <li>Real-time stock levels for all PUX products</li>
+                <li>Automatic stock deduction when orders are placed</li>
+                <li>Low stock alerts (configurable thresholds per product)</li>
+                <li>Demand forecasting based on retailer order trends</li>
+                <li>Restock suggestions: <em style="color: var(--gold-light);">"Based on current demand, you'll run out of [product] in ~2 weeks"</em></li>
+                <li>Stock history and movement logs</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">ELEVATEO CO. | PUX UK &mdash; Custom Platform Proposal</div>
+            <div class="footer-page">Page 4</div>
+        </div>
+    </div>
+
+    <!-- Page 5: Modules 6 & 7 -->
+    <div class="page">
+        <div class="page-header">
+            <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-icon.png" alt="Logo" class="header-logo">
+            <h2 class="page-title">Feature Modules</h2>
+            <span class="page-num-header">Page 5</span>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 6 &mdash; Invoicing & Payments</span>
+                <span class="module-price">&pound;3,500</span>
+            </div>
+            <p class="module-tagline">Professional invoices and payment tracking, built in.</p>
+            <ul class="bullet-list">
+                <li>Automatic invoice generation on order confirmation</li>
+                <li>PDF invoices (branded with PUX logo and details)</li>
+                <li>Invoice history per retailer</li>
+                <li>Payment status tracking (paid, pending, overdue)</li>
+                <li>Payment details / bank info displayed on retailer portal</li>
+                <li>Overdue payment reminders (automated email/WhatsApp)</li>
+                <li>Exportable for accounting (CSV/PDF)</li>
+                <li><em>Future upgrade: in-portal card payments via Stripe or similar</em></li>
+            </ul>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 7 &mdash; Shipping & Fulfilment Dashboard</span>
+                <span class="module-price">&pound;3,000</span>
+            </div>
+            <p class="module-tagline">Beyond basic automation &mdash; full visibility on every shipment.</p>
+            <ul class="bullet-list">
+                <li>Freightcom integration for rate comparison and label generation</li>
+                <li>Shipment tracking dashboard (all active deliveries in one view)</li>
+                <li>Automated tracking updates to retailers (dispatch, in transit, delivered)</li>
+                <li>Delivery confirmation logging</li>
+                <li>Shipping cost reporting per order / per retailer</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">ELEVATEO CO. | PUX UK &mdash; Custom Platform Proposal</div>
+            <div class="footer-page">Page 5</div>
+        </div>
+    </div>
+
+    <!-- Page 6: Modules 8 & 9 -->
+    <div class="page">
+        <div class="page-header">
+            <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-icon.png" alt="Logo" class="header-logo">
+            <h2 class="page-title">Feature Modules</h2>
+            <span class="page-num-header">Page 6</span>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 8 &mdash; Communication Hub</span>
+                <span class="module-price">&pound;3,500</span>
+            </div>
+            <p class="module-tagline">All retailer conversations in one place.</p>
+            <ul class="bullet-list">
+                <li>WhatsApp Business API integration (send and receive)</li>
+                <li>Email integration (send and receive)</li>
+                <li>Conversation history tied to retailer accounts in CRM</li>
+                <li>Template messages for common scenarios (order confirmation, reorder prompt, payment reminder)</li>
+                <li>Bulk messaging for announcements (new products, promotions, price changes)</li>
+            </ul>
+        </div>
+
+        <div class="module-card">
+            <div class="module-header">
+                <span class="module-name">Module 9 &mdash; Reporting & Analytics</span>
+                <span class="module-price">&pound;3,000</span>
+            </div>
+            <p class="module-tagline">Data-driven decisions on sales, stock, and retailer performance.</p>
+            <ul class="bullet-list">
+                <li>Sales reports (by product, by retailer, by region, by time period)</li>
+                <li>Top retailers and underperformers</li>
+                <li>Inventory turnover and demand trends</li>
+                <li>Revenue tracking and growth metrics</li>
+                <li>Order volume and frequency analysis</li>
+                <li>Exportable reports (CSV/PDF)</li>
+                <li>Visual dashboards with charts and KPIs</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">ELEVATEO CO. | PUX UK &mdash; Custom Platform Proposal</div>
+            <div class="footer-page">Page 6</div>
+        </div>
+    </div>
+
+    <!-- Page 7: Pricing Summary -->
+    <div class="page">
+        <div class="page-header">
+            <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-icon.png" alt="Logo" class="header-logo">
+            <h2 class="page-title">Pricing Summary</h2>
+            <span class="page-num-header">Page 7</span>
+        </div>
+
+        <div class="section">
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30px;">#</th>
+                        <th>Module</th>
+                        <th>One-Time Build</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Order Automation (WooCommerce + Freightcom + Email)</td>
+                        <td>&pound;500</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>CRM & Contact Management</td>
+                        <td>&pound;4,000</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Retailer Portal (B2B Ordering)</td>
+                        <td>&pound;6,500</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Smart Reorder Automation</td>
+                        <td>&pound;4,500</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Inventory Management</td>
+                        <td>&pound;4,000</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Invoicing & Payments</td>
+                        <td>&pound;3,500</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Shipping & Fulfilment Dashboard</td>
+                        <td>&pound;3,000</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Communication Hub</td>
+                        <td>&pound;3,500</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Reporting & Analytics</td>
+                        <td>&pound;3,000</td>
+                    </tr>
+                    <tr class="total">
+                        <td></td>
+                        <td><strong>All 9 Modules</strong></td>
+                        <td><strong>&pound;32,500</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 4px;">
+            <p class="highlight-title">Full Platform Discount</p>
+            <p class="highlight-text" style="font-size: 13px; color: var(--text); font-weight: 600;">All 9 modules for <span style="color: var(--gold);">&pound;28,000</span> <span style="font-size: 10px; font-weight: 400; color: var(--text-secondary);">(save &pound;4,500)</span></p>
+        </div>
+
+        <div class="section" style="margin-top: 14px;">
+            <h3 class="section-title">Monthly Retainer</h3>
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Monthly</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="total">
+                        <td>Hosting, maintenance, support & updates</td>
+                        <td><strong>&pound;1,000/month</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section" style="margin-top: 16px;">
+            <h3 class="section-title">Recommended Build Order</h3>
+            <p class="section-text" style="margin-bottom: 10px;">We recommend building in waves so PUX sees value immediately:</p>
+
+            <div class="timeline-item">
+                <div class="timeline-title">Wave 1 &mdash; Immediate Impact (Weeks 1&ndash;3)</div>
+                <div class="timeline-text">Module 1: Order Automation (quick win) + Module 2: CRM & Contact Management</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-title">Wave 2 &mdash; Retailer Growth Engine (Weeks 4&ndash;8)</div>
+                <div class="timeline-text">Module 3: Retailer Portal + Module 4: Smart Reorder + Module 6: Invoicing & Payments</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-title">Wave 3 &mdash; Full Operations (Weeks 9&ndash;12)</div>
+                <div class="timeline-text">Module 5: Inventory + Module 7: Shipping Dashboard + Module 8: Communication Hub + Module 9: Reporting</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">ELEVATEO CO. | PUX UK &mdash; Custom Platform Proposal</div>
+            <div class="footer-page">Page 7</div>
+        </div>
+    </div>
+
+    <!-- Page 8: What's Included / Not Included + Next Steps -->
+    <div class="page">
+        <div class="page-header">
+            <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-icon.png" alt="Logo" class="header-logo">
+            <h2 class="page-title">Scope & Next Steps</h2>
+            <span class="page-num-header">Page 8</span>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">What's Included</h3>
+            <ul class="bullet-list">
+                <li><span class="check-mark">&#10003;</span> Custom-built software, designed and branded for PUX</li>
+                <li><span class="check-mark">&#10003;</span> Multi-tenant architecture (PUX team, sales reps, and retailers)</li>
+                <li><span class="check-mark">&#10003;</span> Built for scale &mdash; handles 10 stores or 10,000</li>
+                <li><span class="check-mark">&#10003;</span> Mobile-responsive across all modules</li>
+                <li><span class="check-mark">&#10003;</span> WooCommerce and Freightcom API integrations</li>
+                <li><span class="check-mark">&#10003;</span> WhatsApp Business API and email integration</li>
+                <li><span class="check-mark">&#10003;</span> Secure hosting and SSL</li>
+                <li><span class="check-mark">&#10003;</span> Training and onboarding support</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">Future Add-Ons (Not Included)</h3>
+            <ul class="bullet-list">
+                <li><span class="x-mark">&#10007;</span> POS system integrations (can be scoped separately)</li>
+                <li><span class="x-mark">&#10007;</span> Self-serve kiosks</li>
+                <li><span class="x-mark">&#10007;</span> Physical payment terminals</li>
+                <li><span class="x-mark">&#10007;</span> In-portal card payment processing (Stripe &mdash; can be added to Module 6)</li>
+                <li><span class="x-mark">&#10007;</span> Native mobile app (iOS/Android &mdash; current build is mobile-responsive web)</li>
+                <li><span class="x-mark">&#10007;</span> Banking & licensing management for retailers</li>
+            </ul>
+        </div>
+
+        <div class="section" style="margin-top: 10px;">
+            <h3 class="section-title">Payment Terms</h3>
+            <ul class="bullet-list">
+                <li>50% deposit to begin development</li>
+                <li>50% on completion and delivery</li>
+                <li>Monthly retainer billed in advance</li>
+                <li>Payment within 14 days of invoice</li>
+            </ul>
+        </div>
+
+        <div class="section" style="margin-top: 10px;">
+            <h3 class="section-title">Next Steps</h3>
+            <div class="timeline-item">
+                <div class="timeline-title">1. Review & Select</div>
+                <div class="timeline-text">Review this proposal and select the modules you'd like to proceed with</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-title">2. Confirm Scope</div>
+                <div class="timeline-text">We confirm scope, timeline, and payment schedule</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-title">3. Kick Off</div>
+                <div class="timeline-text">Sign agreement, pay deposit, and we begin development</div>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 10px;">
+            <p class="highlight-title">Questions?</p>
+            <p class="highlight-text">Email: management@elevateoco.com &nbsp;|&nbsp; Web: www.elevateoco.com</p>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">ELEVATEO CO. | PUX UK &mdash; Custom Platform Proposal</div>
+            <div class="footer-page">Page 8</div>
+        </div>
+    </div>
+
+    <!-- Page 9: Acceptance -->
+    <div class="page">
+        <div class="page-header">
+            <img src="file:///Users/arnispiekus/Work/Github/Elevateo Brochure/elevateo/assets/logos/transparent/logo-icon.png" alt="Logo" class="header-logo">
+            <h2 class="page-title">Acceptance</h2>
+            <span class="page-num-header">Page 9</span>
+        </div>
+
+        <div class="section">
+            <p class="section-text" style="font-size: 11px; margin-bottom: 14px;">By signing below, I accept the terms and pricing outlined in this proposal and confirm the selected modules for development.</p>
+        </div>
+
+        <div class="section">
+            <p class="section-subtitle" style="margin-bottom: 8px;">Selected Modules</p>
+            <table class="pricing-table" style="margin-bottom: 16px;">
+                <thead>
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th>Module</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 1 &mdash; Order Automation</td>
+                        <td>&pound;500</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 2 &mdash; CRM & Contact Management</td>
+                        <td>&pound;4,000</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 3 &mdash; Retailer Portal</td>
+                        <td>&pound;6,500</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 4 &mdash; Smart Reorder Automation</td>
+                        <td>&pound;4,500</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 5 &mdash; Inventory Management</td>
+                        <td>&pound;4,000</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 6 &mdash; Invoicing & Payments</td>
+                        <td>&pound;3,500</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 7 &mdash; Shipping & Fulfilment</td>
+                        <td>&pound;3,000</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 8 &mdash; Communication Hub</td>
+                        <td>&pound;3,500</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">&#9744;</td>
+                        <td>Module 9 &mdash; Reporting & Analytics</td>
+                        <td>&pound;3,000</td>
+                    </tr>
+                    <tr class="total">
+                        <td style="text-align: center;">&#9744;</td>
+                        <td><strong>All 9 Modules (Discounted)</strong></td>
+                        <td><strong>&pound;28,000</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="signature-box">
+            <p class="section-subtitle" style="margin-bottom: 12px;">Client Acceptance</p>
+            <div class="signature-row">
+                <div class="signature-label">Name:</div>
+                <div class="signature-line"></div>
+            </div>
+            <div class="signature-row">
+                <div class="signature-label">Signature:</div>
+                <div class="signature-line"></div>
+            </div>
+            <div class="signature-row">
+                <div class="signature-label">Date:</div>
+                <div class="signature-line"></div>
+            </div>
+            <div class="signature-row" style="margin-bottom: 0;">
+                <div class="signature-label">Company:</div>
+                <div class="signature-line"></div>
+            </div>
+        </div>
+
+        <div class="signature-box" style="margin-top: 16px;">
+            <p class="section-subtitle" style="margin-bottom: 12px;">For Elevateo Co. Ltd</p>
+            <div class="signature-row">
+                <div class="signature-label">Signature:</div>
+                <div class="signature-line"></div>
+            </div>
+            <div class="signature-row" style="margin-bottom: 0;">
+                <div class="signature-label">Date:</div>
+                <div class="signature-line"></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <p class="section-text" style="font-size: 9px; color: var(--gold); margin-bottom: 4px;">Proposal #EVT-PROP-2026-PUX</p>
+            <p class="section-text" style="font-size: 11px; font-weight: 600; color: var(--text);">Thank you for your consideration.</p>
+        </div>
+
+        <div style="margin-top: 16px; padding: 10px; background: rgba(201, 162, 39, 0.05); border-radius: 4px; text-align: center;">
+            <p class="section-text" style="font-size: 8px; margin: 0;">Elevateo Co. Ltd | Office 1551, 92 Castle Street, Belfast, Northern Ireland, BT1 1HE</p>
+            <p class="section-text" style="font-size: 8px; margin: 0;">Company Number: NI728469 | Email: management@elevateoco.com | Web: www.elevateoco.com</p>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">ELEVATEO CO. | PUX UK &mdash; Custom Platform Proposal</div>
+            <div class="footer-page">Page 9</div>
+        </div>
+    </div>
+
+</body>
+</html>
