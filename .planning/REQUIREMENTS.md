@@ -39,17 +39,17 @@
 
 ### Affiliate Preview
 
-- [ ] **AFF-01**: Affiliate dashboard preview shows referral codes, referred customers, and commission summary (read-only — Blue Pillar components)
+- [x] **AFF-01**: Affiliate dashboard preview shows referral codes, referred customers, and commission summary (read-only — Blue Pillar components)
 
 ### Retailer Portal
 
-- [ ] **RETAIL-01**: Retailer portal has branded PUX login, separate from main storefront
+- [x] **RETAIL-01**: Retailer portal has branded PUX login, separate from main storefront
 - [ ] **RETAIL-02**: Retailer can browse catalogue with wholesale pricing tiers
-- [ ] **RETAIL-03**: Retailer can view order history and invoice list
+- [x] **RETAIL-03**: Retailer can view order history and invoice list
 
 ### Fulfilment View
 
-- [ ] **FULFL-01**: Fulfilment team has separate login and sees pending orders queue
+- [x] **FULFL-01**: Fulfilment team has separate login and sees pending orders queue
 - [ ] **FULFL-02**: Fulfilment team can mark an order as shipped from their dashboard
 
 ### CRM Preview
@@ -107,7 +107,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Affiliate & Referral
 
-- [ ] **AFF-01**: Every account auto-issued two separate referral codes on registration: one wholesale, one retail
+- [x] **AFF-01**: Every account auto-issued two separate referral codes on registration: one wholesale, one retail
 - [ ] **AFF-02**: Referral codes are randomly generated and permanently link referred customer to referrer (residual for life)
 - [ ] **AFF-03**: Two-tier commission: if A refers B and B refers C, A gets commission on C's purchases (but only 2 tiers deep)
 - [ ] **AFF-04**: Commission rates adjustable per individual account (for influencer deals, special arrangements)
@@ -214,11 +214,11 @@ Deferred to future release. Tracked but not in current roadmap.
 | ADMIN-01 | Phase 4 | Complete |
 | ADMIN-02 | Phase 4 | Complete |
 | ADMIN-03 | Phase 4 | Complete |
-| AFF-01 | Phase 5 | Pending |
-| RETAIL-01 | Phase 5 | Pending |
+| AFF-01 | Phase 5 | Complete |
+| RETAIL-01 | Phase 5 | Complete |
 | RETAIL-02 | Phase 5 | Pending |
-| RETAIL-03 | Phase 5 | Pending |
-| FULFL-01 | Phase 5 | Pending |
+| RETAIL-03 | Phase 5 | Complete |
+| FULFL-01 | Phase 5 | Complete |
 | FULFL-02 | Phase 5 | Pending |
 | CRM-01 | Phase 5 | Pending |
 | MOB-01 | Phase 6 | Pending |

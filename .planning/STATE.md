@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-04-09T07:14:11.202Z"
+stopped_at: Completed 05-portals-01-PLAN.md
+last_updated: "2026-04-09T07:30:13.529Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
   completed_phases: 4
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 17
+  completed_plans: 13
   percent: 0
 ---
 
@@ -62,6 +62,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-customer-account P02 | 3 | 2 tasks | 6 files |
 | Phase 04-admin-dashboard P01 | 59s | 2 tasks | 2 files |
 | Phase 04-admin-dashboard P02 | 108 | 2 tasks | 5 files |
+| Phase 05-portals P01 | 112s | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -99,6 +100,8 @@ Recent decisions affecting current work:
 - [Phase 04-admin-dashboard]: Removed all Supabase client calls and realtime subscription from dashboard — replaced with static stub data
 - [Phase 04-admin-dashboard]: Products POST handler kept on Supabase — only GET rewritten to Drizzle per plan scope
 - [Phase 04-admin-dashboard]: Product mutation handlers (delete/activate/deactivate) stubbed as v1 placeholders
+- [Phase 05-portals]: affiliate@puxx.com uses role='member' — falls through to /uk/account where affiliate tab lives
+- [Phase 05-portals]: daysAgo helper duplicated locally in seedPortalUsers to avoid unnecessary refactor of seedDemoAccount
 
 ### Pending Todos
 
@@ -112,6 +115,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T07:12:10.528Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-04-09T07:30:13.527Z
+Stopped at: Completed 05-portals-01-PLAN.md
 Resume file: None
