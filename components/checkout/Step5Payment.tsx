@@ -148,7 +148,7 @@ export function Step5Payment({ onNext, onPrevious }: Step5PaymentProps) {
             <div className="pb-3 border-b">
               <p className="text-xs text-muted-foreground mb-1">Shipping Method</p>
               <p className="text-sm font-medium">
-                {checkoutData.shippingMethod.name} - €
+                {checkoutData.shippingMethod.name} - {config.currencySymbol}
                 {checkoutData.shippingMethod.price.toFixed(2)}
               </p>
             </div>
@@ -158,13 +158,13 @@ export function Step5Payment({ onNext, onPrevious }: Step5PaymentProps) {
           <div className="space-y-2 pt-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Subtotal</span>
-              <span className="font-medium">€{subtotal.toFixed(2)}</span>
+              <span className="font-medium">{config.currencySymbol}{subtotal.toFixed(2)}</span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Discount</span>
                 <span className="font-medium text-primary">
-                  -€{discount.toFixed(2)}
+                  -{config.currencySymbol}{discount.toFixed(2)}
                 </span>
               </div>
             )}
@@ -174,7 +174,7 @@ export function Step5Payment({ onNext, onPrevious }: Step5PaymentProps) {
                 {shipping === 0 ? (
                   <span className="text-primary">FREE</span>
                 ) : (
-                  `€${shipping.toFixed(2)}`
+                  `${config.currencySymbol}${shipping.toFixed(2)}`
                 )}
               </span>
             </div>
@@ -182,7 +182,7 @@ export function Step5Payment({ onNext, onPrevious }: Step5PaymentProps) {
               <div className="flex justify-between">
                 <span className="font-semibold text-foreground">Total</span>
                 <span className="text-2xl font-bold text-primary">
-                  €{total.toFixed(2)}
+                  {config.currencySymbol}{total.toFixed(2)}
                 </span>
               </div>
             </div>
