@@ -7,6 +7,7 @@ export interface RegionConfig {
   paymentMethod: string;
   countryCode: string;
   flagEmoji: string;
+  basePrice: number;
 }
 
 export type RegionContextValue = {
@@ -24,6 +25,7 @@ export const REGIONS: Record<RegionCode, RegionConfig> = {
     paymentMethod: 'Gift Card',
     countryCode: 'CA',
     flagEmoji: '🇨🇦',
+    basePrice: 6.50,
   },
   uk: {
     currency: 'GBP',
@@ -32,6 +34,7 @@ export const REGIONS: Record<RegionCode, RegionConfig> = {
     paymentMethod: 'WorldPay',
     countryCode: 'GB',
     flagEmoji: '🇬🇧',
+    basePrice: 6.00,
   },
   us: {
     currency: 'USD',
@@ -40,6 +43,7 @@ export const REGIONS: Record<RegionCode, RegionConfig> = {
     paymentMethod: 'Gift Card',
     countryCode: 'US',
     flagEmoji: '🇺🇸',
+    basePrice: 4.99,
   },
 };
 
