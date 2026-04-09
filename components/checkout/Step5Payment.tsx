@@ -4,6 +4,7 @@ import { useCheckoutStore } from '@/lib/stores/checkout-store';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, CreditCard, Shield, Lock, AlertCircle } from 'lucide-react';
+import { useRegion } from '@/lib/config/region-context';
 
 interface Step5PaymentProps {
   onNext: () => void;
@@ -11,6 +12,7 @@ interface Step5PaymentProps {
 }
 
 export function Step5Payment({ onNext, onPrevious }: Step5PaymentProps) {
+  const { config } = useRegion();
   const { checkoutData } = useCheckoutStore();
   const { getTotalPrice } = useCartStore();
 
@@ -31,8 +33,14 @@ export function Step5Payment({ onNext, onPrevious }: Step5PaymentProps) {
           </h2>
         </div>
         <p className="text-muted-foreground ml-13">
-          Secure payment powered by Worldpay
+          Secure payment powered by {config.paymentMethod}
         </p>
+      </div>
+
+      {/* Payment provider banner */}
+      <div className="flex items-center gap-2 mb-4 p-3 bg-primary/5 rounded-lg border">
+        <Lock className="h-4 w-4 text-primary" />
+        <span className="text-sm font-medium">Powered by {config.paymentMethod}</span>
       </div>
 
       {/* Payment Integration Placeholder */}
