@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCartStore, useCartReady } from '@/lib/store/cart-store';
 import { useRegion } from '@/lib/config/region-context';
+import { Step6Confirmation } from '@/components/checkout/Step6Confirmation';
 
 export default function CheckoutPage() {
   const { region, config } = useRegion();
@@ -18,6 +19,7 @@ export default function CheckoutPage() {
   const shippingCost = useCartStore((state) => state.getShippingCost());
   const total = useCartStore((state) => state.getTotal());
   const [currentStep, setCurrentStep] = useState(1);
+  const [confirmed, setConfirmed] = useState(false);
 
   // Loading state (waiting for hydration)
   if (!isHydrated) {
@@ -43,6 +45,21 @@ export default function CheckoutPage() {
           <Button asChild size="lg" className="gradient-emerald">
             <Link href={`/${region}/products`}>Browse Products</Link>
           </Button>
+        </div>
+      </main>
+    );
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setConfirmed(true);
+  };
+
+  if (confirmed) {
+    return (
+      <main className="min-h-screen bg-background">
+        <div className="max-w-2xl mx-auto px-4 py-16">
+          <Step6Confirmation />
         </div>
       </main>
     );
@@ -110,7 +127,7 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-xl border-2 shadow-lg p-6 lg:p-8">
               <h2 className="text-2xl font-heading mb-6">Contact & Shipping Information</h2>
 
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 {/* Contact Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
