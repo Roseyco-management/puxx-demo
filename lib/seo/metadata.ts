@@ -31,7 +31,7 @@ export const baseMetadata: Metadata = {
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
-  manifest: '/manifest.json',
+  manifest: '/site.webmanifest',
   openGraph: {
     type: 'website',
     locale: 'en_IE',
