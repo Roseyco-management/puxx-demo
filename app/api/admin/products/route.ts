@@ -1,18 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db/drizzle';
 import { getSupabaseClient } from '@/lib/db/supabase';
-import { products } from '@/lib/db/schema';
 import { productSchema } from '@/lib/validations/product';
-import { desc } from 'drizzle-orm';
 
 export async function GET() {
   try {
-    const db = getDb();
+    const supabase = getSupabaseClient();
 
-    const allProducts = await db
-      .select()
-      .from(products)
-      .orderBy(desc(products.createdAt));
+    const { data: allProducts, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching products:', error);
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch products' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,

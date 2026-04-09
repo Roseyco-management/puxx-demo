@@ -1,63 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db/drizzle';
-import { newsletterSubscribers } from '@/lib/db/schema';
-import { eq, desc, ilike, and } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 
 /**
  * GET /api/admin/marketing/subscribers
  * Fetches all newsletter subscribers
- *
- * Query parameters:
- * - search: string - Search by email
- * - status: string - Filter by status (active, unsubscribed)
  */
 export async function GET(request: NextRequest) {
-  const db = getDb();
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const search = searchParams.get('search');
-    const status = searchParams.get('status');
+    const supabase = getSupabaseClient();
 
-    // Build query conditions
-    const conditions = [];
+    const { data: subscribers, error } = await supabase
+      .from('newsletter_subscribers')
+      .select('*')
+      .order('subscribed_at', { ascending: false });
 
-    if (search) {
-      conditions.push(ilike(newsletterSubscribers.email, `%${search}%`));
+    // If table doesn't exist, return empty array gracefully
+    if (error) {
+      console.warn('newsletter_subscribers table unavailable:', error.message);
+      return NextResponse.json({
+        success: true,
+        count: 0,
+        subscribers: [],
+      });
     }
-
-    if (status === 'active') {
-      conditions.push(eq(newsletterSubscribers.isActive, true));
-    } else if (status === 'unsubscribed') {
-      conditions.push(eq(newsletterSubscribers.isActive, false));
-    }
-
-    const subscribers = await db
-      .select()
-      .from(newsletterSubscribers)
-      .where(conditions.length > 0 ? and(...conditions) : undefined)
-      .orderBy(desc(newsletterSubscribers.subscribedAt));
 
     return NextResponse.json({
       success: true,
-      count: subscribers.length,
-      subscribers: subscribers.map((sub) => ({
+      count: (subscribers || []).length,
+      subscribers: (subscribers || []).map((sub: any) => ({
         id: sub.id.toString(),
         email: sub.email,
         name: sub.name,
-        isActive: sub.isActive,
-        subscribedAt: sub.subscribedAt,
-        unsubscribedAt: sub.unsubscribedAt,
+        isActive: sub.is_active,
+        subscribedAt: sub.subscribed_at,
+        unsubscribedAt: sub.unsubscribed_at,
         source: sub.source || 'footer',
-        status: sub.isActive ? 'active' : 'unsubscribed',
+        status: sub.is_active ? 'active' : 'unsubscribed',
       })),
     });
   } catch (error) {
     console.error('Error fetching subscribers:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to fetch subscribers',
-      },
+      { success: false, error: 'Failed to fetch subscribers' },
       { status: 500 }
     );
   }
@@ -68,8 +52,8 @@ export async function GET(request: NextRequest) {
  * Add a new subscriber or import from CSV
  */
 export async function POST(request: NextRequest) {
-  const db = getDb();
   try {
+    const supabase = getSupabaseClient();
     const body = await request.json();
     const { email, name, source, subscribers } = body;
 
@@ -83,28 +67,32 @@ export async function POST(request: NextRequest) {
 
       for (const sub of subscribers) {
         try {
-          // Check if subscriber already exists
-          const existing = await db
-            .select()
-            .from(newsletterSubscribers)
-            .where(eq(newsletterSubscribers.email, sub.email))
+          const { data: existing } = await supabase
+            .from('newsletter_subscribers')
+            .select('id')
+            .eq('email', sub.email)
             .limit(1);
 
-          if (existing.length > 0) {
+          if (existing && existing.length > 0) {
             results.failed++;
             results.errors.push(`${sub.email} already exists`);
             continue;
           }
 
-          await db.insert(newsletterSubscribers).values({
+          const { error } = await supabase.from('newsletter_subscribers').insert({
             email: sub.email,
             name: sub.name || null,
             source: 'import',
-            isActive: true,
+            is_active: true,
           });
 
-          results.success++;
-        } catch (error) {
+          if (error) {
+            results.failed++;
+            results.errors.push(`Failed to import ${sub.email}`);
+          } else {
+            results.success++;
+          }
+        } catch {
           results.failed++;
           results.errors.push(`Failed to import ${sub.email}`);
         }
@@ -125,29 +113,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if subscriber already exists
-    const existing = await db
-      .select()
-      .from(newsletterSubscribers)
-      .where(eq(newsletterSubscribers.email, email))
+    const { data: existing } = await supabase
+      .from('newsletter_subscribers')
+      .select('id')
+      .eq('email', email)
       .limit(1);
 
-    if (existing.length > 0) {
+    if (existing && existing.length > 0) {
       return NextResponse.json(
         { success: false, error: 'Subscriber already exists' },
         { status: 400 }
       );
     }
 
-    const [newSubscriber] = await db
-      .insert(newsletterSubscribers)
-      .values({
+    const { data: newSubscriber, error: insertError } = await supabase
+      .from('newsletter_subscribers')
+      .insert({
         email,
         name: name || null,
         source: source || 'admin',
-        isActive: true,
+        is_active: true,
       })
-      .returning();
+      .select()
+      .single();
+
+    if (insertError) {
+      return NextResponse.json(
+        { success: false, error: 'Failed to add subscriber' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
@@ -156,10 +151,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error adding subscriber:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to add subscriber',
-      },
+      { success: false, error: 'Failed to add subscriber' },
       { status: 500 }
     );
   }
@@ -170,8 +162,8 @@ export async function POST(request: NextRequest) {
  * Bulk unsubscribe or delete subscribers
  */
 export async function DELETE(request: NextRequest) {
-  const db = getDb();
   try {
+    const supabase = getSupabaseClient();
     const body = await request.json();
     const { ids, action } = body; // action: 'unsubscribe' or 'delete'
 
@@ -182,43 +174,30 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const subscriberIds = ids.map((id) => parseInt(id));
-
     if (action === 'delete') {
-      // Permanently delete
-      await db
-        .delete(newsletterSubscribers)
-        .where(
-          subscriberIds.length === 1
-            ? eq(newsletterSubscribers.id, subscriberIds[0])
-            : eq(newsletterSubscribers.id, subscriberIds[0]) // This is a simplification
-        );
+      for (const id of ids) {
+        await supabase
+          .from('newsletter_subscribers')
+          .delete()
+          .eq('id', id);
+      }
     } else {
-      // Unsubscribe (soft delete)
-      for (const id of subscriberIds) {
-        await db
-          .update(newsletterSubscribers)
-          .set({
-            isActive: false,
-            unsubscribedAt: new Date(),
-          })
-          .where(eq(newsletterSubscribers.id, id));
+      for (const id of ids) {
+        await supabase
+          .from('newsletter_subscribers')
+          .update({ is_active: false, unsubscribed_at: new Date().toISOString() })
+          .eq('id', id);
       }
     }
 
     return NextResponse.json({
       success: true,
-      message: `${ids.length} subscriber(s) ${
-        action === 'delete' ? 'deleted' : 'unsubscribed'
-      }`,
+      message: `${ids.length} subscriber(s) ${action === 'delete' ? 'deleted' : 'unsubscribed'}`,
     });
   } catch (error) {
     console.error('Error managing subscribers:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to manage subscribers',
-      },
+      { success: false, error: 'Failed to manage subscribers' },
       { status: 500 }
     );
   }

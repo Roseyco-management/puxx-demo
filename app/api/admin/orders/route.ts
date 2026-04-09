@@ -1,39 +1,26 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/db/drizzle';
-import { orders, orderItems } from '@/lib/db/schema';
-import { desc, eq } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 
 export async function GET() {
   try {
-    const db = getDb();
+    const supabase = getSupabaseClient();
 
-    const rows = await db
-      .select()
-      .from(orders)
-      .leftJoin(orderItems, eq(orderItems.orderId, orders.id))
-      .orderBy(desc(orders.createdAt));
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('*, order_items(*)')
+      .order('created_at', { ascending: false });
 
-    // Group order items by order
-    const ordersMap = new Map<number, any>();
-    for (const row of rows) {
-      const order = row.orders;
-      if (!ordersMap.has(order.id)) {
-        ordersMap.set(order.id, {
-          ...order,
-          order_items: [],
-        });
-      }
-      if (row.order_items) {
-        ordersMap.get(order.id).order_items.push(row.order_items);
-      }
+    if (error) {
+      console.error('Error fetching orders:', error);
+      return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
     }
 
-    const result = Array.from(ordersMap.values()).map((order) => ({
+    const result = (orders || []).map((order: any) => ({
       ...order,
-      items: order.order_items,
-      itemCount: order.order_items.reduce((sum: number, item: any) => sum + item.quantity, 0),
-      customerName: order.shippingName,
-      customerEmail: order.shippingEmail,
+      items: order.order_items || [],
+      itemCount: (order.order_items || []).reduce((sum: number, item: any) => sum + item.quantity, 0),
+      customerName: order.shipping_name,
+      customerEmail: order.shipping_email,
     }));
 
     return NextResponse.json({ orders: result, total: result.length });

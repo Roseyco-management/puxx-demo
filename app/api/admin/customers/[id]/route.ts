@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db/drizzle';
-import { users, profiles, orders } from '@/lib/db/schema';
-import { eq, desc } from 'drizzle-orm';
 import { getSupabaseClient } from '@/lib/db/supabase';
 
 /**
  * GET /api/admin/customers/[id]
- * Fetches a single customer with detailed information (Drizzle)
+ * Fetches a single customer with detailed information (Supabase REST)
  */
 export async function GET(
   request: NextRequest,
@@ -15,23 +12,31 @@ export async function GET(
   try {
     const { id } = await params;
     const customerId = parseInt(id);
-    const db = getDb();
+    const supabase = getSupabaseClient();
 
-    const [user] = await db.select().from(users).where(eq(users.id, customerId));
-    if (!user) {
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('*, profiles(*)')
+      .eq('id', customerId)
+      .single();
+
+    if (userError || !user) {
       return NextResponse.json({ success: false, error: 'Customer not found' }, { status: 404 });
     }
 
-    const [profile] = await db.select().from(profiles).where(eq(profiles.userId, customerId));
+    const { data: userOrders } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('user_id', customerId)
+      .order('created_at', { ascending: false });
 
-    const userOrders = await db.select().from(orders)
-      .where(eq(orders.userId, customerId))
-      .orderBy(desc(orders.createdAt));
-
-    const ordersCount = userOrders.length;
-    const totalSpent = userOrders.reduce((sum, o) => sum + parseFloat(o.total ?? '0'), 0);
+    const orders = userOrders || [];
+    const ordersCount = orders.length;
+    const totalSpent = orders.reduce((sum: number, o: any) => sum + parseFloat(o.total ?? '0'), 0);
     const averageOrderValue = ordersCount > 0 ? totalSpent / ordersCount : 0;
-    const lastOrderDate = userOrders[0]?.createdAt?.toISOString() ?? null;
+    const lastOrderDate = orders[0]?.created_at ?? null;
+
+    const profile = Array.isArray(user.profiles) ? user.profiles[0] : user.profiles;
 
     return NextResponse.json({
       success: true,
@@ -40,10 +45,10 @@ export async function GET(
         name: user.name ?? 'Guest',
         email: user.email,
         phone: profile?.phone ?? null,
-        dateOfBirth: profile?.dateOfBirth?.toISOString() ?? null,
-        ageVerified: profile?.ageVerified ?? false,
-        marketingConsent: profile?.marketingConsent ?? false,
-        joinedDate: user.createdAt.toISOString(),
+        dateOfBirth: profile?.date_of_birth ?? null,
+        ageVerified: profile?.age_verified ?? false,
+        marketingConsent: profile?.marketing_consent ?? false,
+        joinedDate: user.created_at,
         isGuest: !user.name || user.role === 'guest',
         ordersCount,
         totalSpent,
@@ -51,13 +56,13 @@ export async function GET(
         lastOrderDate,
         addresses: [],
         notes: [],
-        orders: userOrders.map(o => ({
+        orders: orders.map((o: any) => ({
           id: o.id,
-          orderNumber: o.orderNumber,
+          orderNumber: o.order_number,
           status: o.status,
           total: o.total,
           currency: o.currency,
-          createdAt: o.createdAt?.toISOString() ?? null,
+          createdAt: o.created_at ?? null,
         })),
       },
     });
