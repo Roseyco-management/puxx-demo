@@ -121,7 +121,7 @@ Plans:
 ### Phase 7: Demo Bug Fix
 **Goal**: Every client-facing page in the demo renders without errors — no 500s, no 401s, no broken UI
 **Depends on**: Phase 6
-**Requirements**: Cross-cutting (fixes issues across Phases 2–5)
+**Requirements**: Cross-cutting (fixes issues across Phases 2-5): ADMIN-01, ADMIN-02, ADMIN-03, PROD-01, RETAIL-03, FULFL-02, CUST-01, MOB-01
 **Success Criteria** (what must be TRUE):
   1. Shop page shows 12 flavor cards (not 72 variants), each with a visible image, logo in header
   2. Admin panel: orders, customers, and products list pages load with seeded data
@@ -133,14 +133,16 @@ Plans:
 
 **Root cause:** All Drizzle/Postgres direct connections fail from Vercel (DNS/pooler issues). All auth checks using `supabase.auth.getUser()` return null (app uses custom cookie auth). Fix: migrate to Supabase REST API + `getSession()` pattern throughout.
 
+**Plans:** 3 plans
+
 Plans:
-- [ ] 07-01-PLAN.md — Wave 1: Fix admin API 500s (Drizzle→REST) + admin settings 401s (auth pattern) + manifest
-- [ ] 07-02-PLAN.md — Wave 2: Storefront product display (12 flavors) + product images + portal orders
-- [ ] 07-03-PLAN.md — Wave 3: Customer account page + admin chart dimensions + preload cleanup
+- [ ] 07-01-PLAN.md — Fix admin API 500s (Drizzle to REST) + admin settings 401s (auth pattern) + manifest (ADMIN-01, ADMIN-02, ADMIN-03)
+- [ ] 07-02-PLAN.md — Storefront product display (12 flavors) + product images + portal orders (PROD-01, RETAIL-03, FULFL-02)
+- [ ] 07-03-PLAN.md — Customer account page + logo verification + preload cleanup (CUST-01, MOB-01)
 
 ## Progress
 
-**Execution Order:** 1 → 2 → 3 → 4 → 5 → 6
+**Execution Order:** 1 → 2 → 3 → 4 → 5 → 6 → 7
 (Phases 3 and 4 can build in parallel once Phase 2 is complete)
 
 | Phase | Plans Complete | Status | Completed |
@@ -151,6 +153,7 @@ Plans:
 | 4. Admin Dashboard | 1/2 | In Progress|  |
 | 5. Portals | 5/5 | Complete   | 2026-04-09 |
 | 6. Polish | 2/2 | Complete   | 2026-04-09 |
+| 7. Demo Bug Fix | 0/3 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-09*
