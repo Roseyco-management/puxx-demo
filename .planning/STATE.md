@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-03-PLAN.md (storefront verification)
-last_updated: "2026-04-09T06:08:17.262Z"
+stopped_at: Completed 02-04-PLAN.md (variant selector + ProductCard addItem)
+last_updated: "2026-04-09T06:19:28.368Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
-  completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  completed_phases: 1
+  total_plans: 7
+  completed_plans: 6
   percent: 0
 ---
 
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-storefront P01 | 1 | 2 tasks | 2 files |
 | Phase 02-storefront P02 | 286s | 2 tasks | 7 files |
 | Phase 02-storefront P03 | 3 | 2 tasks | 1 files |
+| Phase 02-storefront P04 | 8 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,7 @@ Recent decisions affecting current work:
 - [Phase 02-storefront]: ProductCard uses config.basePrice (not product.price) for display — all regions show flat regional price per config
 - [Phase 02-storefront]: Checkout address fields neutralised: Eircode->Postcode, County->County/State, phone placeholder generalised
 - [Phase 02-03]: Checkpoint auto-approved in --auto mode — human browser verification deferred to demo review session
+- [Phase 02-storefront]: VariantSelector receives region as prop not via useRegion to avoid context boundary issues with server component PDP
 
 ### Pending Todos
 
@@ -90,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T06:08:17.260Z
-Stopped at: Completed 02-03-PLAN.md (storefront verification)
+Last session: 2026-04-09T06:19:21.371Z
+Stopped at: Completed 02-04-PLAN.md (variant selector + ProductCard addItem)
 Resume file: None
