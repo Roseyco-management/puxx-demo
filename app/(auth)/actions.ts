@@ -74,10 +74,14 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
   await setSession(foundUser);
 
   // Redirect based on user role
-  if (foundUser.role === 'admin' || foundUser.role === 'manager' || foundUser.role === 'support') {
+  if (['admin', 'manager', 'support'].includes(foundUser.role)) {
     redirect('/admin');
+  } else if (foundUser.role === 'retailer') {
+    redirect('/portal');
+  } else if (foundUser.role === 'fulfilment') {
+    redirect('/fulfilment');
   } else {
-    redirect('/account');
+    redirect('/uk/account');
   }
 });
 
