@@ -176,6 +176,116 @@ async function seedAdminUser() {
   console.log('Admin user seeded: admin@puxx.com');
 }
 
+async function seedPortalUsers() {
+  const db = getDb();
+  const now = new Date();
+  const daysAgo = (n: number) => new Date(now.getTime() - n * 24 * 60 * 60 * 1000);
+
+  // --- Retailer ---
+  await db.delete(users).where(eq(users.email, 'retailer@puxx.com'));
+  const [retailerUser] = await db.insert(users).values({
+    name: 'Retailer Demo',
+    email: 'retailer@puxx.com',
+    passwordHash: await hashPassword('retailer123'),
+    role: 'retailer',
+  }).returning();
+
+  await db.insert(profiles).values({
+    userId: retailerUser.id,
+    ageVerified: true,
+    marketingConsent: false,
+  });
+
+  const retailerOrders = [
+    {
+      orderNumber: 'PX-RETAIL-001',
+      status: 'processing',
+      subtotal: '48.00',
+      total: '48.00',
+      paymentStatus: 'pending',
+      quantity: 8,
+      createdAt: daysAgo(7),
+    },
+    {
+      orderNumber: 'PX-RETAIL-002',
+      status: 'shipped',
+      subtotal: '96.00',
+      total: '96.00',
+      paymentStatus: 'paid',
+      quantity: 16,
+      createdAt: daysAgo(30),
+    },
+  ];
+
+  for (const stub of retailerOrders) {
+    const [order] = await db.insert(orders).values({
+      userId: retailerUser.id,
+      orderNumber: stub.orderNumber,
+      status: stub.status,
+      subtotal: stub.subtotal,
+      total: stub.total,
+      currency: 'GBP',
+      paymentMethod: 'worldpay',
+      paymentStatus: stub.paymentStatus,
+      shippingName: 'Retailer Demo',
+      shippingEmail: 'retailer@puxx.com',
+      shippingAddress: '10 Trade Street',
+      shippingCity: 'Manchester',
+      shippingPostcode: 'M1 1AA',
+      shippingCountry: 'GB',
+      createdAt: stub.createdAt,
+    }).returning();
+
+    await db.insert(orderItems).values({
+      orderId: order.id,
+      productId: 1,
+      productName: 'Mango Ice 4mg',
+      quantity: stub.quantity,
+      price: '6.00',
+      total: stub.total,
+    });
+  }
+
+  console.log('Retailer user seeded: retailer@puxx.com with 2 stub orders.');
+
+  // --- Fulfilment ---
+  await db.delete(users).where(eq(users.email, 'fulfil@puxx.com'));
+  const [fulfilUser] = await db.insert(users).values({
+    name: 'Fulfilment Demo',
+    email: 'fulfil@puxx.com',
+    passwordHash: await hashPassword('fulfil123'),
+    role: 'fulfilment',
+  }).returning();
+
+  await db.insert(profiles).values({
+    userId: fulfilUser.id,
+    ageVerified: true,
+    marketingConsent: false,
+  });
+
+  console.log('Fulfilment user seeded: fulfil@puxx.com');
+
+  // --- Affiliate ---
+  await db.delete(users).where(eq(users.email, 'affiliate@puxx.com'));
+  const [affiliateUser] = await db.insert(users).values({
+    name: 'Affiliate Demo',
+    email: 'affiliate@puxx.com',
+    passwordHash: await hashPassword('affiliate123'),
+    role: 'member',
+  }).returning();
+
+  await db.insert(profiles).values({
+    userId: affiliateUser.id,
+    ageVerified: true,
+    retailReferralCode: 'PUXX-R-AFF1',
+    wholesaleReferralCode: 'PUXX-W-AFF1',
+    commissionEarned: '12.00',
+    marketingConsent: false,
+  });
+
+  console.log('Affiliate user seeded: affiliate@puxx.com with referral codes PUXX-R-AFF1/PUXX-W-AFF1.');
+}
+
 async function seed() {
   const db = getDb();
   const email = 'test@test.com';
@@ -211,6 +321,7 @@ async function seed() {
   await seedProducts();
   await seedDemoAccount();
   await seedAdminUser();
+  await seedPortalUsers();
 }
 
 seed()
