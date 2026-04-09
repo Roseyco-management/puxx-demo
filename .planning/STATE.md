@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-06-PLAN.md (Step6Confirmation gap closure — CHKOUT-02 closed)
-last_updated: "2026-04-09T06:34:48.283Z"
+stopped_at: Completed 03-customer-account-01-PLAN.md
+last_updated: "2026-04-09T06:49:08.332Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 10
+  completed_plans: 9
   percent: 0
 ---
 
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-storefront P04 | 8 | 2 tasks | 3 files |
 | Phase 02-storefront P05 | 88s | 2 tasks | 2 files |
 | Phase 02-storefront P06 | 8 | 2 tasks | 2 files |
+| Phase 03-customer-account P01 | 8 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,9 @@ Recent decisions affecting current work:
 - [Phase 02-storefront]: Step5Payment left orphaned from new checkout flow — currency fix future-proofs the component without adding complexity
 - [Phase 02-storefront]: Step6Confirmation receives order data via props from checkout/page.tsx — no shared checkout store, no schema mismatch risk
 - [Phase 02-storefront]: useCheckoutStore and lib/stores/cart-store removed entirely — lib/store/cart-store is sole pricing source
+- [Phase 03-customer-account]: Demo seed uses delete-before-insert on demo@puxx.com for full idempotency — cascade FK deletes child rows automatically
+- [Phase 03-customer-account]: Orders reference productId=1 so seedProducts() must run before seedDemoAccount() to satisfy FK constraint
+- [Phase 03-customer-account]: Demo orders use currency GBP and paymentMethod worldpay — consistent with UK storefront checkout integration
 
 ### Pending Todos
 
@@ -98,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T06:30:44.616Z
-Stopped at: Completed 02-06-PLAN.md (Step6Confirmation gap closure — CHKOUT-02 closed)
+Last session: 2026-04-09T06:49:08.329Z
+Stopped at: Completed 03-customer-account-01-PLAN.md
 Resume file: None

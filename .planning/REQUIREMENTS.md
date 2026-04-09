@@ -28,8 +28,8 @@
 
 ### Customer Account
 
-- [ ] **CUST-01**: Customer account page shows order history and current order status
-- [ ] **CUST-02**: Customer account page shows their two referral codes (retail + wholesale) and commission earned
+- [x] **CUST-01**: Customer account page shows order history and current order status
+- [x] **CUST-02**: Customer account page shows their two referral codes (retail + wholesale) and commission earned
 
 ### Admin Dashboard
 
@@ -209,8 +209,8 @@ Deferred to future release. Tracked but not in current roadmap.
 | PROD-02 | Phase 2 | Complete |
 | CHKOUT-01 | Phase 2 | Complete |
 | CHKOUT-02 | Phase 2 | Complete |
-| CUST-01 | Phase 3 | Pending |
-| CUST-02 | Phase 3 | Pending |
+| CUST-01 | Phase 3 | Complete |
+| CUST-02 | Phase 3 | Complete |
 | ADMIN-01 | Phase 4 | Pending |
 | ADMIN-02 | Phase 4 | Pending |
 | ADMIN-03 | Phase 4 | Pending |
