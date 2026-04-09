@@ -203,31 +203,31 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| REG-01 | — | Pending |
-| REG-02 | — | Pending |
-| PROD-01 | — | Pending |
-| PROD-02 | — | Pending |
-| CHKOUT-01 | — | Pending |
-| CHKOUT-02 | — | Pending |
-| CUST-01 | — | Pending |
-| CUST-02 | — | Pending |
-| ADMIN-01 | — | Pending |
-| ADMIN-02 | — | Pending |
-| ADMIN-03 | — | Pending |
-| AFF-01 | — | Pending |
-| RETAIL-01 | — | Pending |
-| RETAIL-02 | — | Pending |
-| RETAIL-03 | — | Pending |
-| FULFL-01 | — | Pending |
-| FULFL-02 | — | Pending |
-| CRM-01 | — | Pending |
-| MOB-01 | — | Pending |
+| REG-01 | Phase 1 | Pending |
+| REG-02 | Phase 1 | Pending |
+| PROD-01 | Phase 2 | Pending |
+| PROD-02 | Phase 2 | Pending |
+| CHKOUT-01 | Phase 2 | Pending |
+| CHKOUT-02 | Phase 2 | Pending |
+| CUST-01 | Phase 3 | Pending |
+| CUST-02 | Phase 3 | Pending |
+| ADMIN-01 | Phase 4 | Pending |
+| ADMIN-02 | Phase 4 | Pending |
+| ADMIN-03 | Phase 4 | Pending |
+| AFF-01 | Phase 5 | Pending |
+| RETAIL-01 | Phase 5 | Pending |
+| RETAIL-02 | Phase 5 | Pending |
+| RETAIL-03 | Phase 5 | Pending |
+| FULFL-01 | Phase 5 | Pending |
+| FULFL-02 | Phase 5 | Pending |
+| CRM-01 | Phase 5 | Pending |
+| MOB-01 | Phase 6 | Pending |
 
 **Coverage:**
 - v0.1 requirements: 18 total
-- Mapped to phases: 0 (roadmapper to populate)
-- Unmapped: 18 ⚠️
+- Mapped to phases: 18 (100%)
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-09 — v0.1 Demo requirements added (18 requirements across 9 areas)*
+*Last updated: 2026-04-09 — traceability populated for v0.1 Demo (18/18 mapped)*

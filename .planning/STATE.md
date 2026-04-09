@@ -2,21 +2,19 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-08)
+See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** The three e-commerce sites must process orders end-to-end — from checkout through payment, fulfilment assignment, shipping, and customer notification — without manual intervention on the happy path.
-**Current focus:** Phase 1: Audit, Security & Infrastructure
+**Current focus:** Phase 1: Foundation (v0.1 Demo)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements for v0.1 Demo
-Last activity: 2026-04-09 — Milestone v0.1 Demo started (pre-sales, before Phase 1)
+Phase: 1 of 6 (Foundation)
+Plan: 0 of TBD in current phase
+Status: Ready to plan
+Last activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 
 Progress: [░░░░░░░░░░] 0%
-
-**Note:** v0.1 Demo is a pre-sales milestone. The 6-phase roadmap (v1.0) begins when client pays.
 
 ## Performance Metrics
 
@@ -44,11 +42,10 @@ Progress: [░░░░░░░░░░] 0%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
+- [v0.1 Demo]: Roadmap replaces old 6-phase v1 roadmap. v1 will be recreated when client pays.
+- [v0.1 Demo]: Source codebases — puxxireland (storefront/checkout), Blue Pillar (portals/affiliate), TailAdmin Pro (admin)
 - [Roadmap]: Path B recommended (custom build from puxxireland). Path A (WP fix) is fallback.
-- [Roadmap]: All 9 original modules included at £12k (reduced from £28k). 70 requirements across 6 phases.
-- [Roadmap]: E-commerce sites working in Month 1 (1-2 weeks). Full 9-module delivery over 6 months.
-- [Roadmap]: CRM comes last per client priority — "get everything working, THEN we worry about automation"
-- [Roadmap]: AllayPay is preferred payment processor for CA/US (replacing gift card workaround)
+- [Roadmap]: AllayPay preferred payment processor for CA/US — real integration is Phase 1 (post sign-off)
 
 ### Pending Todos
 
@@ -56,18 +53,12 @@ None yet.
 
 ### Blockers/Concerns
 
-- ACCESS: Only US site credentials available. CA (priority) and UK credentials needed from client before Phase 1 audit can cover all sites.
-- ACCESS: AJ still has active access to all sites — credential rotation is security-critical and time-sensitive.
-- AUDIT: "Pouches Worldwide" custom plugin (v1.0.0 by Amaan Azkar) is the core business logic — quality/completeness unknown until hands-on audit.
-- PAYMENT: Gift card plugin is NOT installed on any site yet — integration depends on coordination with third-party dev team.
+- ACCESS: AJ still has active access to all WooCommerce sites — credential rotation is pre-Phase 1 priority.
+- PAYMENT: AllayPay/gift card integration is out of scope for demo — demo closes on UX/frontend only.
+- DEMO: Checkout demo uses UK/WorldPay (already integrated in puxxireland). CA/US checkout is stubbed.
 
 ## Session Continuity
 
 Last session: 2026-04-09
-Stopped at: All 9 modules mapped, roadmap expanded to 6 phases, client deliverable being regenerated with compressed timeline.
+Stopped at: v0.1 Demo roadmap created — 6 phases, 18 requirements, all mapped. Ready to plan Phase 1.
 Resume file: None
-
-### Next Session Plan
-- Build demo by forking puxxireland for Puxx multi-region (Milestone 1 in GSD)
-- Demo resources: Blue Pillar (portals), puxxireland (storefront), TailAdmin Pro (dashboards)
-- Present demo + updated deliverable to client
