@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Download, RefreshCw } from "lucide-react";
 import { OrderTable } from "@/components/admin/orders/OrderTable";
 import { OrderFilters } from "@/components/admin/orders/OrderFilters";
-import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { OrderWithItems, OrderFilters as OrderFiltersType } from "@/lib/types/orders";
 
@@ -24,68 +23,24 @@ export default function OrdersPage() {
 
   async function fetchOrders() {
     setLoading(true);
-    const supabase = createClient();
+    try {
+      const params = new URLSearchParams();
+      if (filters.status && filters.status !== 'all') params.append('status', filters.status);
+      if (filters.paymentStatus && filters.paymentStatus !== 'all') params.append('paymentStatus', filters.paymentStatus);
+      if (filters.search) params.append('search', filters.search);
+      if (filters.startDate) params.append('startDate', filters.startDate);
+      if (filters.endDate) params.append('endDate', filters.endDate);
 
-    // Build query
-    let query = supabase
-      .from('orders')
-      .select(`
-        *,
-        order_items (
-          id,
-          product_id,
-          product_name,
-          product_sku,
-          quantity,
-          price,
-          total
-        )
-      `)
-      .order('created_at', { ascending: false });
-
-    // Apply filters
-    if (filters.status && filters.status !== 'all') {
-      query = query.eq('status', filters.status);
-    }
-
-    if (filters.paymentStatus && filters.paymentStatus !== 'all') {
-      query = query.eq('payment_status', filters.paymentStatus);
-    }
-
-    if (filters.search) {
-      query = query.or(
-        `order_number.ilike.%${filters.search}%,shipping_name.ilike.%${filters.search}%,shipping_email.ilike.%${filters.search}%`
-      );
-    }
-
-    if (filters.startDate) {
-      query = query.gte('created_at', filters.startDate);
-    }
-
-    if (filters.endDate) {
-      query = query.lte('created_at', filters.endDate);
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
+      const response = await fetch(`/api/admin/orders?${params.toString()}`);
+      if (!response.ok) throw new Error('Failed to load orders');
+      const data = await response.json();
+      setOrders(data.orders || []);
+    } catch (error) {
       toast.error('Failed to load orders');
       console.error(error);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // Transform data
-    const transformedOrders: OrderWithItems[] = (data || []).map((order: any) => ({
-      ...order,
-      items: order.order_items || [],
-      itemCount: order.order_items?.reduce((sum: number, item: any) => sum + item.quantity, 0) || 0,
-      customerName: order.shipping_name,
-      customerEmail: order.shipping_email,
-    }));
-
-    setOrders(transformedOrders);
-    setLoading(false);
   }
 
   const exportToCSV = async () => {

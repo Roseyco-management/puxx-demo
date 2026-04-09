@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Download, Search } from "lucide-react";
 import { ProductTable } from "@/components/admin/products/ProductTable";
-import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
 export default function ProductsPage() {
@@ -20,31 +19,22 @@ export default function ProductsPage() {
   }, [categoryFilter, statusFilter]);
 
   async function fetchProducts() {
-    const supabase = createClient();
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (categoryFilter !== 'all') params.append('category', categoryFilter);
+      if (statusFilter !== 'all') params.append('status', statusFilter);
 
-    let query = supabase
-      .from('products')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (categoryFilter !== 'all') {
-      query = query.eq('category', categoryFilter);
-    }
-
-    if (statusFilter !== 'all') {
-      query = query.eq('active', statusFilter === 'active');
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
+      const response = await fetch(`/api/admin/products?${params.toString()}`);
+      if (!response.ok) throw new Error('Failed to load products');
+      const data = await response.json();
+      setProducts(data.products || []);
+    } catch (error) {
       toast.error('Failed to load products');
       console.error(error);
-    } else {
-      setProducts(data || []);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   const filteredProducts = products.filter((product: any) =>
@@ -53,52 +43,15 @@ export default function ProductsPage() {
   );
 
   const handleDelete = async (ids: string[]) => {
-    const supabase = createClient();
-
-    const { error } = await supabase
-      .from('products')
-      .update({ active: false })
-      .in('id', ids);
-
-    if (error) {
-      toast.error('Failed to delete products');
-      console.error(error);
-    } else {
-      toast.success(`${ids.length} product(s) deleted`);
-      fetchProducts();
-    }
+    toast.info('Product management available in v1');
   };
 
   const handleBulkActivate = async (ids: string[]) => {
-    const supabase = createClient();
-
-    const { error } = await supabase
-      .from('products')
-      .update({ active: true })
-      .in('id', ids);
-
-    if (error) {
-      toast.error('Failed to activate products');
-    } else {
-      toast.success(`${ids.length} product(s) activated`);
-      fetchProducts();
-    }
+    toast.info('Product management available in v1');
   };
 
   const handleBulkDeactivate = async (ids: string[]) => {
-    const supabase = createClient();
-
-    const { error } = await supabase
-      .from('products')
-      .update({ active: false })
-      .in('id', ids);
-
-    if (error) {
-      toast.error('Failed to deactivate products');
-    } else {
-      toast.success(`${ids.length} product(s) deactivated`);
-      fetchProducts();
-    }
+    toast.info('Product management available in v1');
   };
 
   const exportToCSV = () => {
