@@ -8,6 +8,7 @@ import { AddToCart } from '@/components/products/AddToCart';
 import { ProductTabs } from '@/components/products/ProductTabs';
 import { RelatedProducts } from '@/components/products/RelatedProducts';
 import { ProductInfo } from '@/components/products/ProductInfo';
+import { VariantSelector } from '@/components/products/VariantSelector';
 import { ProductSchema } from '@/components/seo/ProductSchema';
 import { TrackProductView } from '@/components/analytics/TrackProductView';
 import { getRegionConfig } from '@/lib/config/regions';
@@ -152,6 +153,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Product Info and Add to Cart */}
             <div className="space-y-6">
               <ProductInfo product={product} />
+              <VariantSelector
+                currentSlug={product.slug}
+                currentFlavor={product.flavor ?? ''}
+                currentStrength={product.nicotineStrength ?? ''}
+                region={region}
+              />
               <AddToCart product={product} />
 
               {/* Trust Badges */}

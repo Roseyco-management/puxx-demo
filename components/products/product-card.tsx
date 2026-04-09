@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useRegion } from '@/lib/config/region-context';
+import { useCartStore } from '@/lib/store/cart-store';
 
 interface ProductCardProps {
   product: Product;
@@ -33,6 +34,7 @@ function getStrengthLabel(strength: string | null): string {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { region, config } = useRegion();
+  const addItem = useCartStore((s) => s.addItem);
   const strengthVariant = getStrengthBadgeVariant(product.nicotineStrength);
   const strengthLabel = getStrengthLabel(product.nicotineStrength);
 
@@ -120,6 +122,20 @@ export function ProductCard({ product }: ProductCardProps) {
             size="sm"
             className="bg-green-600 hover:bg-green-700 text-white"
             disabled={product.stockQuantity <= 0}
+            onClick={(e) => {
+              e.preventDefault();
+              addItem({
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: product.price,
+                nicotineStrength: product.nicotineStrength,
+                flavor: product.flavor,
+                imageUrl: product.imageUrl,
+                stockQuantity: product.stockQuantity,
+                sku: product.sku,
+              });
+            }}
           >
             {product.stockQuantity <= 0 ? 'Out of Stock' : 'Add to Cart'}
           </Button>
