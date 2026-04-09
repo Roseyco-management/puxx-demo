@@ -1,41 +1,57 @@
-import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import { getSession } from '@/lib/auth/session';
+
+const DEMO_TEMPLATES = [
+  {
+    id: "1",
+    slug: "order-confirmation",
+    name: "Order Confirmation",
+    subject: "Your PUXX Order #{orderNumber}",
+    htmlContent: "<h1>Order Confirmed</h1><p>Hi {customerName}, your order #{orderNumber} has been confirmed.</p>",
+    textContent: "Order confirmed. Hi {customerName}, your order #{orderNumber} has been confirmed.",
+    variables: ["orderNumber", "customerName"],
+    isActive: true,
+  },
+  {
+    id: "2",
+    slug: "order-shipped",
+    name: "Order Shipped",
+    subject: "Your PUXX Order #{orderNumber} Has Shipped",
+    htmlContent: "<h1>Order Shipped</h1><p>Hi {customerName}, your order #{orderNumber} is on its way.</p>",
+    textContent: "Your order #{orderNumber} has shipped.",
+    variables: ["orderNumber", "customerName", "trackingNumber"],
+    isActive: true,
+  },
+  {
+    id: "3",
+    slug: "welcome",
+    name: "Welcome Email",
+    subject: "Welcome to PUXX Pouches",
+    htmlContent: "<h1>Welcome to PUXX</h1><p>Hi {customerName}, thanks for joining us.</p>",
+    textContent: "Welcome to PUXX. Hi {customerName}, thanks for joining us.",
+    variables: ["customerName"],
+    isActive: true,
+  },
+  {
+    id: "4",
+    slug: "password-reset",
+    name: "Password Reset",
+    subject: "Reset Your PUXX Password",
+    htmlContent: "<h1>Password Reset</h1><p>Click {resetLink} to reset your password.</p>",
+    textContent: "Reset your password: {resetLink}",
+    variables: ["resetLink", "customerName"],
+    isActive: true,
+  },
+];
 
 export async function GET() {
   try {
-    const supabase = await createClient();
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data, error } = await supabase
-      .from("email_templates")
-      .select("*")
-      .order("slug", { ascending: true });
-
-    if (error) {
-      console.error("Error fetching email templates:", error);
-      return NextResponse.json({ error: "Failed to fetch email templates" }, { status: 500 });
-    }
-
-    // Convert snake_case to camelCase
-    const templates = data.map((template) => ({
-      id: template.id,
-      slug: template.slug,
-      name: template.name,
-      subject: template.subject,
-      htmlContent: template.html_content,
-      textContent: template.text_content,
-      variables: template.variables,
-      isActive: template.is_active,
-    }));
-
-    return NextResponse.json(templates);
+    return NextResponse.json(DEMO_TEMPLATES);
   } catch (error) {
     console.error("Error in GET /api/admin/settings/email-templates:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

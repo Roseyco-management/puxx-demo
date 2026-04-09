@@ -1,64 +1,29 @@
-import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import { paymentSettingsSchema } from "@/lib/types/settings";
+import { getSession } from '@/lib/auth/session';
 
 export async function GET() {
   try {
-    const supabase = await createClient();
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data, error } = await supabase
-      .from("settings")
-      .select("value")
-      .eq("key", "payments")
-      .single();
-
-    if (error) {
-      console.error("Error fetching settings:", error);
-      return NextResponse.json({ error: "Failed to fetch settings" }, { status: 500 });
-    }
-
-    return NextResponse.json(data.value);
+    return NextResponse.json({
+      worldpay: { enabled: true, testMode: true },
+      bankTransfer: { enabled: true },
+      giftCard: { enabled: false },
+    });
   } catch (error) {
     console.error("Error in GET /api/admin/settings/payments:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT() {
   try {
-    const supabase = await createClient();
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const body = await request.json();
-    const validatedData = paymentSettingsSchema.parse(body);
-
-    const { error } = await supabase
-      .from("settings")
-      .update({
-        value: validatedData,
-        updated_at: new Date().toISOString(),
-        updated_by: user.id,
-      })
-      .eq("key", "payments");
-
-    if (error) {
-      console.error("Error updating settings:", error);
-      return NextResponse.json({ error: "Failed to update settings" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });

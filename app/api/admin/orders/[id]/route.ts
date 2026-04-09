@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { getSession } from '@/lib/auth/session';
+import { getSupabaseClient } from '@/lib/db/supabase';
 
 export async function GET(
   request: NextRequest,
@@ -7,17 +8,13 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const supabase = await createClient();
 
-    // Check authentication
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const supabase = getSupabaseClient();
 
     // Fetch order with items and product details
     const { data: order, error } = await supabase
@@ -70,18 +67,13 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const supabase = await createClient();
 
-    // Check authentication
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const supabase = getSupabaseClient();
     const body = await request.json();
     const { status, notes, trackingNumber } = body;
 
@@ -92,8 +84,6 @@ export async function PATCH(
 
     if (status) {
       updateData.status = status;
-
-      // If status is delivered, set completed_at
       if (status === 'delivered') {
         updateData.completed_at = new Date().toISOString();
       }
@@ -104,11 +94,9 @@ export async function PATCH(
     }
 
     if (trackingNumber !== undefined) {
-      // Note: You might want to add a tracking_number field to the orders table
       updateData.tracking_number = trackingNumber;
     }
 
-    // Update the order
     const { data: order, error } = await supabase
       .from('orders')
       .update(updateData)
@@ -120,9 +108,6 @@ export async function PATCH(
       console.error('Error updating order:', error);
       return NextResponse.json({ error: 'Failed to update order' }, { status: 500 });
     }
-
-    // TODO: Send email notification on status change
-    // This would integrate with your email service (e.g., Resend)
 
     return NextResponse.json({ order });
   } catch (error) {
