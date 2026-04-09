@@ -3,7 +3,70 @@
 **Defined:** 2026-04-08
 **Core Value:** The three e-commerce sites must process orders end-to-end — from checkout through payment, fulfilment assignment, shipping, and customer notification — without manual intervention on the happy path.
 
-## v1 Requirements
+---
+
+## Milestone v0.1 — Demo Requirements
+
+**Goal:** Pre-sales frontend demo to close the client deal. Complete frontend coverage of the full platform vision — storefront, checkout, admin, retailer portal, fulfilment, CRM preview, and affiliate system.
+
+**Source codebases:** puxxireland (storefront/checkout/WorldPay), Blue Pillar (portals/affiliate), TailAdmin Pro (dashboards)
+
+### Multi-Region
+
+- [ ] **REG-01**: Visiting puxxpouches.ca, puxxpouches.co.uk, or puxxpouches.com routes to the same app with the correct regional config (currency, payment method)
+- [ ] **REG-02**: Region selector visible on storefront and switches displayed currency between CAD, GBP, and USD
+
+### Products
+
+- [ ] **PROD-01**: Product catalogue displays 12 flavour variants, each with 6 strength options, at correct base pricing
+- [ ] **PROD-02**: Individual product detail page with flavour/strength selector, images, and add-to-cart
+
+### Checkout
+
+- [ ] **CHKOUT-01**: Age verification gate appears and blocks checkout until user confirms 18+
+- [ ] **CHKOUT-02**: Customer can complete an end-to-end checkout for at least one region (WorldPay UK — already integrated in puxxireland)
+
+### Customer Account
+
+- [ ] **CUST-01**: Customer account page shows order history and current order status
+- [ ] **CUST-02**: Customer account page shows their two referral codes (retail + wholesale) and commission earned
+
+### Admin Dashboard
+
+- [ ] **ADMIN-01**: Admin can view and browse orders list with status (TailAdmin Pro layout)
+- [ ] **ADMIN-02**: Admin can view customer list
+- [ ] **ADMIN-03**: Admin can view and manage product catalogue
+
+### Affiliate Preview
+
+- [ ] **AFF-01**: Affiliate dashboard preview shows referral codes, referred customers, and commission summary (read-only — Blue Pillar components)
+
+### Retailer Portal
+
+- [ ] **RETAIL-01**: Retailer portal has branded PUX login, separate from main storefront
+- [ ] **RETAIL-02**: Retailer can browse catalogue with wholesale pricing tiers
+- [ ] **RETAIL-03**: Retailer can view order history and invoice list
+
+### Fulfilment View
+
+- [ ] **FULFL-01**: Fulfilment team has separate login and sees pending orders queue
+- [ ] **FULFL-02**: Fulfilment team can mark an order as shipped from their dashboard
+
+### CRM Preview
+
+- [ ] **CRM-01**: Customer profile page shows contact info, order timeline, and stubbed communication history (read-only preview)
+
+### Mobile
+
+- [ ] **MOB-01**: All key views (storefront, checkout, customer account, admin, retailer portal, fulfilment) are mobile-responsive
+
+**Coverage:** 18 requirements across 9 areas
+
+---
+
+## v1 Requirements (Post Sign-Off)
+
+The full 6-phase platform build begins when the client pays. All 9 original modules from the Elevateo proposal are included at £2,000/month × 6 months.
 
 Requirements for initial release. Each maps to roadmap phases.
 
@@ -133,98 +196,38 @@ Deferred to future release. Tracked but not in current roadmap.
 | Stripe integration | Permanently banned for nicotine products — do not attempt |
 | Physical payment terminals / kiosks | Not relevant to current operations |
 | Direct Freightcom API integration | Shipper must not know product is nicotine — requires intermediary |
+| AllayPay CA/US payment in demo | Demo closes on UX/frontend — real payment integration is Phase 1 |
+| Real inventory data in demo | Stubbed/seeded data sufficient for demo purposes |
 
-## Traceability
+## Traceability — v0.1 Demo
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDIT-01 | Phase 1 | Pending |
-| AUDIT-02 | Phase 1 | Pending |
-| AUDIT-03 | Phase 1 | Pending |
-| AUDIT-04 | Phase 1 | Pending |
-| AUDIT-05 | Phase 1 | Pending |
-| AUDIT-06 | Phase 1 | Pending |
-| PAY-01 | Phase 1 | Pending |
-| PAY-02 | Phase 1 | Pending |
-| PAY-03 | Phase 1 | Pending |
-| PAY-04 | Phase 1 | Pending |
-| PAY-05 | Phase 1 | Pending |
-| PAY-06 | Phase 1 | Pending |
-| ORD-01 | Phase 1 | Pending |
-| ORD-02 | Phase 1 | Pending |
-| ORD-03 | Phase 1 | Pending |
-| ORD-04 | Phase 1 | Pending |
-| ORD-05 | Phase 1 | Pending |
-| ORD-06 | Phase 1 | Pending |
-| HOST-01 | Phase 1 | Pending |
-| HOST-02 | Phase 1 | Pending |
-| HOST-03 | Phase 1 | Pending |
-| HOST-04 | Phase 1 | Pending |
-| SHIP-06 | Phase 1 | Pending |
-| ROLE-01 | Phase 2 | Pending |
-| ROLE-02 | Phase 2 | Pending |
-| ROLE-03 | Phase 2 | Pending |
-| ROLE-04 | Phase 2 | Pending |
-| ROLE-05 | Phase 2 | Pending |
-| AFF-01 | Phase 2 | Pending |
-| AFF-02 | Phase 2 | Pending |
-| AFF-03 | Phase 2 | Pending |
-| AFF-04 | Phase 2 | Pending |
-| AFF-05 | Phase 2 | Pending |
-| AFF-06 | Phase 2 | Pending |
-| PORTAL-01 | Phase 3 | Pending |
-| PORTAL-02 | Phase 3 | Pending |
-| PORTAL-03 | Phase 3 | Pending |
-| PORTAL-04 | Phase 3 | Pending |
-| PORTAL-05 | Phase 3 | Pending |
-| PORTAL-06 | Phase 3 | Pending |
-| INV-01 | Phase 3 | Pending |
-| INV-02 | Phase 3 | Pending |
-| INV-03 | Phase 3 | Pending |
-| INV-04 | Phase 3 | Pending |
-| INV-05 | Phase 3 | Pending |
-| SHIP-01 | Phase 4 | Pending |
-| SHIP-02 | Phase 4 | Pending |
-| SHIP-03 | Phase 4 | Pending |
-| SHIP-04 | Phase 4 | Pending |
-| SHIP-05 | Phase 4 | Pending |
-| REORDER-01 | Phase 4 | Pending |
-| REORDER-02 | Phase 4 | Pending |
-| REORDER-03 | Phase 4 | Pending |
-| REORDER-04 | Phase 4 | Pending |
-| REORDER-05 | Phase 4 | Pending |
-| CRM-01 | Phase 5 | Pending |
-| CRM-02 | Phase 5 | Pending |
-| CRM-03 | Phase 5 | Pending |
-| CRM-04 | Phase 5 | Pending |
-| CRM-05 | Phase 5 | Pending |
-| COMMS-01 | Phase 5 | Pending |
-| COMMS-02 | Phase 5 | Pending |
-| COMMS-03 | Phase 5 | Pending |
-| COMMS-04 | Phase 5 | Pending |
-| COMMS-05 | Phase 5 | Pending |
-| REPORT-01 | Phase 6 | Pending |
-| REPORT-02 | Phase 6 | Pending |
-| REPORT-03 | Phase 6 | Pending |
-| REPORT-04 | Phase 6 | Pending |
-| REPORT-05 | Phase 6 | Pending |
+| REG-01 | — | Pending |
+| REG-02 | — | Pending |
+| PROD-01 | — | Pending |
+| PROD-02 | — | Pending |
+| CHKOUT-01 | — | Pending |
+| CHKOUT-02 | — | Pending |
+| CUST-01 | — | Pending |
+| CUST-02 | — | Pending |
+| ADMIN-01 | — | Pending |
+| ADMIN-02 | — | Pending |
+| ADMIN-03 | — | Pending |
+| AFF-01 | — | Pending |
+| RETAIL-01 | — | Pending |
+| RETAIL-02 | — | Pending |
+| RETAIL-03 | — | Pending |
+| FULFL-01 | — | Pending |
+| FULFL-02 | — | Pending |
+| CRM-01 | — | Pending |
+| MOB-01 | — | Pending |
 
 **Coverage:**
-- v1 requirements: 70 total (expanded to include all 9 original modules)
-- Mapped to phases: 70
-- Unmapped: 0
-
-**Module coverage:**
-- Module 1 (Order Automation): Phase 1
-- Module 2 (CRM & Contact Management): Phase 5
-- Module 3 (Retailer Portal): Phase 3
-- Module 4 (Smart Reorder Automation): Phase 4
-- Module 5 (Inventory Management): Phase 4
-- Module 6 (Invoicing & Payments): Phase 3
-- Module 7 (Shipping & Fulfilment Dashboard): Phase 4
-- Module 8 (Communication Hub): Phase 5
-- Module 9 (Reporting & Analytics): Phase 6
+- v0.1 requirements: 18 total
+- Mapped to phases: 0 (roadmapper to populate)
+- Unmapped: 18 ⚠️
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-09 — expanded to all 9 modules, 70 requirements across 6 phases*
+*Last updated: 2026-04-09 — v0.1 Demo requirements added (18 requirements across 9 areas)*
