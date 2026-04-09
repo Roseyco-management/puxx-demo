@@ -58,7 +58,7 @@
 
 ### Mobile
 
-- [ ] **MOB-01**: All key views (storefront, checkout, customer account, admin, retailer portal, fulfilment) are mobile-responsive
+- [x] **MOB-01**: All key views (storefront, checkout, customer account, admin, retailer portal, fulfilment) are mobile-responsive
 
 **Coverage:** 18 requirements across 9 areas
 
@@ -221,7 +221,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | FULFL-01 | Phase 5 | Complete |
 | FULFL-02 | Phase 5 | Complete |
 | CRM-01 | Phase 5 | Complete |
-| MOB-01 | Phase 6 | Pending |
+| MOB-01 | Phase 6 | Complete |
 
 **Coverage:**
 - v0.1 requirements: 18 total

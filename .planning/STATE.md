@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 05-portals-03-PLAN.md
-last_updated: "2026-04-09T07:40:34.956Z"
+stopped_at: Completed 06-polish-01-PLAN.md
+last_updated: "2026-04-09T07:53:11.867Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
   completed_phases: 5
-  total_plans: 17
-  completed_plans: 17
+  total_plans: 19
+  completed_plans: 18
   percent: 0
 ---
 
@@ -67,6 +67,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-portals P05 | 97s | 2 tasks | 2 files |
 | Phase 05-portals P02 | 198s | 2 tasks | 4 files |
 | Phase 05-portals P03 | 129s | 2 tasks | 6 files |
+| Phase 06-polish P01 | 103s | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -114,6 +115,8 @@ Recent decisions affecting current work:
 - [Phase 05-portals]: Trade price computed inline as price * 0.8 — no dedicated wholesalePrice column needed for demo
 - [Phase 05-portals]: portal/orders is server component querying Drizzle via getSession().user.id — InvoiceButton is standalone client component
 - [Phase 05-portals]: FulfilmentQueue is client component receiving initialOrders from server FulfilmentPage — hybrid server/client pattern
+- [Phase 06-polish]: OrdersDataTable uses block md:hidden card list mirroring TanStack table state — no extra state needed
+- [Phase 06-polish]: Checkout progress labels hidden below sm: breakpoint — icon-only progress bar at 375px avoids text overflow
 
 ### Pending Todos
 
@@ -127,6 +130,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T07:36:44.785Z
-Stopped at: Completed 05-portals-03-PLAN.md
+Last session: 2026-04-09T07:53:11.865Z
+Stopped at: Completed 06-polish-01-PLAN.md
 Resume file: None
