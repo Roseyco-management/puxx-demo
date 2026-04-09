@@ -14,7 +14,7 @@
 ### Multi-Region
 
 - [x] **REG-01**: Visiting puxxpouches.ca, puxxpouches.co.uk, or puxxpouches.com routes to the same app with the correct regional config (currency, payment method)
-- [ ] **REG-02**: Region selector visible on storefront and switches displayed currency between CAD, GBP, and USD
+- [x] **REG-02**: Region selector visible on storefront and switches displayed currency between CAD, GBP, and USD
 
 ### Products
 
@@ -204,7 +204,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | REG-01 | Phase 1 | Complete |
-| REG-02 | Phase 1 | Pending |
+| REG-02 | Phase 1 | Complete |
 | PROD-01 | Phase 2 | Pending |
 | PROD-02 | Phase 2 | Pending |
 | CHKOUT-01 | Phase 2 | Pending |

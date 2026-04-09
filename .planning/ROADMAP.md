@@ -16,7 +16,7 @@ A pre-sales frontend demo built to close the client deal before Phase 1 producti
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - App scaffold with multi-region routing and regional config switching
+- [x] **Phase 1: Foundation** - App scaffold with multi-region routing and regional config switching (completed 2026-04-09)
 - [ ] **Phase 2: Storefront** - Product catalogue, product detail, age gate, and checkout flow
 - [ ] **Phase 3: Customer Account** - Order history, order status, and referral code display
 - [ ] **Phase 4: Admin Dashboard** - Orders, customers, and product management views
@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   1. Visiting the CA, UK, and US routes (or localhost equivalents) loads the app with the correct regional currency and payment method displayed for each
   2. A visible region selector on the storefront allows switching between CAD, GBP, and USD and the displayed currency updates immediately on switch
   3. The app runs without errors and all three regional configs resolve correctly
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 01-01-PLAN.md — Scaffold demo app from puxxireland + regional config, middleware, and [region] layout (REG-01)
@@ -98,7 +98,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 1/2 | In Progress|  |
+| 1. Foundation | 2/2 | Complete   | 2026-04-09 |
 | 2. Storefront | 0/TBD | Not started | - |
 | 3. Customer Account | 0/TBD | Not started | - |
 | 4. Admin Dashboard | 0/TBD | Not started | - |

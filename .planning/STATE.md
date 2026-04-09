@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-foundation-01-PLAN.md
-last_updated: "2026-04-09T05:40:02.535Z"
+stopped_at: Completed 01-foundation-02-PLAN.md
+last_updated: "2026-04-09T05:43:21.606Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 5 | 2 tasks | 14 files |
+| Phase 01-foundation P02 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: PublicLayout moved from root layout to [region]/layout.tsx so each region gets header/footer
 - [Phase 01-foundation]: RegionContext uses separate 'use client' file so server layout can import without forcing client boundary
 - [Phase 01-foundation]: middleware.ts keeps nonRegionPrefixes allowlist to prevent false-positive redirects for admin/auth/api
+- [Phase 01-foundation]: RegionSelector uses native <select> over custom popover — accessible by default, no library dependency
+- [Phase 01-foundation]: All Header nav links (including Login/Shop Now CTAs) region-prefixed to maintain consistent region-aware navigation
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T05:40:02.532Z
-Stopped at: Completed 01-foundation-01-PLAN.md
+Last session: 2026-04-09T05:43:21.604Z
+Stopped at: Completed 01-foundation-02-PLAN.md
 Resume file: None
