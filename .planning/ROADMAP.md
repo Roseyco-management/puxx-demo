@@ -33,7 +33,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   1. Visiting the CA, UK, and US routes (or localhost equivalents) loads the app with the correct regional currency and payment method displayed for each
   2. A visible region selector on the storefront allows switching between CAD, GBP, and USD and the displayed currency updates immediately on switch
   3. The app runs without errors and all three regional configs resolve correctly
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold demo app from puxxireland + regional config, middleware, and [region] layout (REG-01)
+- [ ] 01-02-PLAN.md — RegionSelector component wired into Header (REG-02)
 
 ### Phase 2: Storefront
 **Goal**: A visitor can browse products and complete a checkout with age verification
@@ -94,7 +98,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/2 | Not started | - |
 | 2. Storefront | 0/TBD | Not started | - |
 | 3. Customer Account | 0/TBD | Not started | - |
 | 4. Admin Dashboard | 0/TBD | Not started | - |
