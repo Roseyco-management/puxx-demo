@@ -133,12 +133,13 @@ Plans:
 
 **Root cause:** All Drizzle/Postgres direct connections fail from Vercel (DNS/pooler issues). All auth checks using `supabase.auth.getUser()` return null (app uses custom cookie auth). Fix: migrate to Supabase REST API + `getSession()` pattern throughout.
 
-**Plans:** 3/4 plans executed
+**Plans:** 4 plans
 
 Plans:
 - [ ] 07-01-PLAN.md — Fix admin API 500s (Drizzle to REST) + admin settings 401s (auth pattern) + manifest (ADMIN-01, ADMIN-02, ADMIN-03)
 - [ ] 07-02-PLAN.md — Storefront product display (12 flavors) + product images + portal orders (PROD-01, RETAIL-03, FULFL-02)
 - [ ] 07-03-PLAN.md — Customer account page + logo verification + preload cleanup (CUST-01, MOB-01)
+- [ ] 07-04-PLAN.md — Gap closure: portal products Drizzle-to-REST + manifest metadata fix (RETAIL-03, MOB-01)
 
 ## Progress
 
