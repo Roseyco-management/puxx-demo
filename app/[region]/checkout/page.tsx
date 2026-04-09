@@ -94,7 +94,7 @@ export default function CheckoutPage() {
     <main className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 pb-6 border-b-2">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-8 pb-6 border-b-2">
           <div>
             <h1 className="text-3xl sm:text-4xl font-heading mb-2">Checkout</h1>
             <p className="text-muted-foreground">Complete your purchase securely</p>
@@ -130,7 +130,7 @@ export default function CheckoutPage() {
                       <step.icon className="h-6 w-6" />
                     )}
                   </div>
-                  <p className="text-xs sm:text-sm font-medium mt-2 text-center">
+                  <p className="hidden sm:block text-xs sm:text-sm font-medium mt-2 text-center">
                     {step.label}
                   </p>
                 </div>

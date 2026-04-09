@@ -172,7 +172,7 @@ export default function ProductsPage() {
               asChild
               size="lg"
               variant="outline"
-              className="bg-white/10 border-2 border-white/30 text-white hover:bg-white hover:text-black backdrop-blur-sm text-base px-8 transition-all"
+              className="w-full sm:w-auto bg-white/10 border-2 border-white/30 text-white hover:bg-white hover:text-black backdrop-blur-sm text-base px-8 transition-all"
             >
               <Link href={`/${region}/products#shop`}>
                 Skip to All Products →
