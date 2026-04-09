@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 03-customer-account-02-PLAN.md
-last_updated: "2026-04-09T06:57:56.490Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-04-09T07:10:26.463Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 12
+  completed_plans: 11
   percent: 0
 ---
 
@@ -60,6 +60,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-storefront P06 | 8 | 2 tasks | 2 files |
 | Phase 03-customer-account P01 | 8 | 2 tasks | 4 files |
 | Phase 03-customer-account P02 | 3 | 2 tasks | 6 files |
+| Phase 04-admin-dashboard P01 | 59s | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,8 @@ Recent decisions affecting current work:
 - [Phase 03-customer-account]: Account layout uses Drizzle (not Supabase) for profile query — consistent with schema established in plan 01
 - [Phase 03-customer-account]: OrdersDataTable currencySymbol defaults to £ and ordersBasePath defaults to /account/orders for backward compat with (account) group routes
 - [Phase 03-customer-account]: ReferralCard is pure server component — no clipboard JS needed for demo visual fidelity
+- [Phase 04-admin-dashboard]: Followed existing delete-before-insert idempotency pattern for admin user seed
+- [Phase 04-admin-dashboard]: Removed all Supabase client calls and realtime subscription from dashboard — replaced with static stub data
 
 ### Pending Todos
 
@@ -106,6 +109,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T06:55:00.797Z
-Stopped at: Completed 03-customer-account-02-PLAN.md
+Last session: 2026-04-09T07:10:26.460Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None

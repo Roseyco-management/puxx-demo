@@ -78,7 +78,7 @@ Plans:
   1. Admin orders list is visible and browsable with order status shown per row
   2. Admin customer list is visible and browsable
   3. Admin product catalogue view is visible and browsable with product details accessible
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 04-01-PLAN.md — Seed admin@puxx.com user + stub dashboard overview page (ADMIN-01, ADMIN-02, ADMIN-03)
@@ -116,7 +116,7 @@ Plans:
 | 1. Foundation | 2/2 | Complete   | 2026-04-09 |
 | 2. Storefront | 5/5 | Complete   | 2026-04-09 |
 | 3. Customer Account | 0/2 | Not started | - |
-| 4. Admin Dashboard | 0/2 | Not started | - |
+| 4. Admin Dashboard | 1/2 | In Progress|  |
 | 5. Portals | 0/TBD | Not started | - |
 | 6. Polish | 0/TBD | Not started | - |
 
