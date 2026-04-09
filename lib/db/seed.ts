@@ -1,6 +1,7 @@
 import { getDb } from './drizzle';
-import { users, teams, teamMembers, products } from './schema';
+import { users, teams, teamMembers, products, profiles, orders, orderItems } from './schema';
 import { hashPassword } from '@/lib/auth/session';
+import { eq } from 'drizzle-orm';
 
 const FLAVOURS = [
   'Mango Ice',
@@ -64,6 +65,101 @@ async function seedProducts() {
   console.log('Products seeded successfully.');
 }
 
+async function seedDemoAccount() {
+  const db = getDb();
+
+  // Idempotent: delete existing demo user (cascade deletes profile + orders via FK)
+  await db.delete(users).where(eq(users.email, 'demo@puxx.com'));
+
+  // Insert demo user
+  const [demoUser] = await db.insert(users).values({
+    name: 'Demo Customer',
+    email: 'demo@puxx.com',
+    passwordHash: await hashPassword('demo123'),
+    role: 'member',
+  }).returning();
+
+  // Insert profile with referral codes and commission stub
+  await db.insert(profiles).values({
+    userId: demoUser.id,
+    ageVerified: true,
+    retailReferralCode: 'PUXX-R-DEMO1',
+    wholesaleReferralCode: 'PUXX-W-DEMO1',
+    commissionEarned: '24.50',
+    marketingConsent: false,
+  });
+
+  const now = new Date();
+  const daysAgo = (n: number) => new Date(now.getTime() - n * 24 * 60 * 60 * 1000);
+
+  // Seed 4 stub orders with distinct statuses
+  const stubOrders = [
+    {
+      orderNumber: 'PX-DEMO-0004',
+      status: 'pending',
+      subtotal: '18.00',
+      total: '18.00',
+      paymentStatus: 'pending',
+      createdAt: daysAgo(3),
+    },
+    {
+      orderNumber: 'PX-DEMO-0003',
+      status: 'processing',
+      subtotal: '24.00',
+      total: '24.00',
+      paymentStatus: 'pending',
+      createdAt: daysAgo(14),
+    },
+    {
+      orderNumber: 'PX-DEMO-0002',
+      status: 'shipped',
+      subtotal: '12.00',
+      total: '12.00',
+      paymentStatus: 'paid',
+      createdAt: daysAgo(30),
+    },
+    {
+      orderNumber: 'PX-DEMO-0001',
+      status: 'delivered',
+      subtotal: '36.00',
+      total: '36.00',
+      paymentStatus: 'paid',
+      createdAt: daysAgo(60),
+    },
+  ];
+
+  for (const stub of stubOrders) {
+    const [order] = await db.insert(orders).values({
+      userId: demoUser.id,
+      orderNumber: stub.orderNumber,
+      status: stub.status,
+      subtotal: stub.subtotal,
+      total: stub.total,
+      currency: 'GBP',
+      paymentMethod: 'worldpay',
+      paymentStatus: stub.paymentStatus,
+      shippingName: 'Demo Customer',
+      shippingEmail: 'demo@puxx.com',
+      shippingAddress: '1 Demo Street',
+      shippingCity: 'London',
+      shippingPostcode: 'SW1A 1AA',
+      shippingCountry: 'GB',
+      createdAt: stub.createdAt,
+    }).returning();
+
+    await db.insert(orderItems).values({
+      orderId: order.id,
+      productId: 1,
+      productName: 'Mango Ice 4mg',
+      quantity: 2,
+      price: '6.00',
+      total: stub.total,
+    });
+  }
+
+  console.log('Demo account seeded: demo@puxx.com with 4 stub orders and referral profile.');
+}
+
 async function seed() {
   const db = getDb();
   const email = 'test@test.com';
@@ -97,6 +193,7 @@ async function seed() {
   });
 
   await seedProducts();
+  await seedDemoAccount();
 }
 
 seed()
