@@ -50,7 +50,7 @@
 ### Fulfilment View
 
 - [x] **FULFL-01**: Fulfilment team has separate login and sees pending orders queue
-- [ ] **FULFL-02**: Fulfilment team can mark an order as shipped from their dashboard
+- [x] **FULFL-02**: Fulfilment team can mark an order as shipped from their dashboard
 
 ### CRM Preview
 
@@ -219,7 +219,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | RETAIL-02 | Phase 5 | Complete |
 | RETAIL-03 | Phase 5 | Complete |
 | FULFL-01 | Phase 5 | Complete |
-| FULFL-02 | Phase 5 | Pending |
+| FULFL-02 | Phase 5 | Complete |
 | CRM-01 | Phase 5 | Complete |
 | MOB-01 | Phase 6 | Pending |
 
