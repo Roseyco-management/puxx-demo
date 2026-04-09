@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getSession } from '@/lib/auth/session';
 import { getDb } from '@/lib/db/drizzle';
 import { orders } from '@/lib/db/schema';

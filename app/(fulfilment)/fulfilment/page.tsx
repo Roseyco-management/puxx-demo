@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getDb } from '@/lib/db/drizzle';
 import { orders } from '@/lib/db/schema';
 import { inArray, asc } from 'drizzle-orm';

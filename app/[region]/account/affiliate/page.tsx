@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getUser } from '@/lib/db/queries';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/db/drizzle';
