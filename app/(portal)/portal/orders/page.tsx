@@ -1,9 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import { getSession } from '@/lib/auth/session';
-import { getDb } from '@/lib/db/drizzle';
-import { orders } from '@/lib/db/schema';
-import { eq, desc } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 import InvoiceButton from '@/components/portal/InvoiceButton';
 
 const statusColour: Record<string, string> = {
@@ -17,14 +15,18 @@ const statusColour: Record<string, string> = {
 export default async function PortalOrdersPage() {
   const session = await getSession();
 
-  const db = getDb();
-  const retailerOrders = session?.user?.id
-    ? await db
-        .select()
-        .from(orders)
-        .where(eq(orders.userId, session.user.id))
-        .orderBy(desc(orders.createdAt))
-    : [];
+  let retailerOrders: any[] = [];
+  if (session?.user?.id) {
+    const supabase = getSupabaseClient();
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .order('created_at', { ascending: false });
+    if (!error && data) {
+      retailerOrders = data;
+    }
+  }
 
   return (
     <div>
@@ -61,10 +63,10 @@ export default async function PortalOrdersPage() {
               {retailerOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 font-medium text-gray-900">
-                    {order.orderNumber}
+                    {order.order_number}
                   </td>
                   <td className="px-6 py-4 text-gray-600">
-                    {order.createdAt.toLocaleDateString('en-GB')}
+                    {new Date(order.created_at).toLocaleDateString('en-GB')}
                   </td>
                   <td className="px-6 py-4 text-gray-900">£{order.total}</td>
                   <td className="px-6 py-4">

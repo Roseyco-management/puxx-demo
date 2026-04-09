@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db/drizzle';
-import { orders } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 
 export async function PATCH(
   request: NextRequest,
@@ -9,10 +7,15 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const db = getDb();
-    await db.update(orders)
-      .set({ status: 'shipped', updatedAt: new Date() })
-      .where(eq(orders.id, parseInt(id)));
+    const supabase = getSupabaseClient();
+    const { error } = await supabase
+      .from('orders')
+      .update({ status: 'shipped', updated_at: new Date().toISOString() })
+      .eq('id', parseInt(id));
+    if (error) {
+      console.error('Error marking order shipped:', error);
+      return NextResponse.json({ success: false, error: 'Failed to update order' }, { status: 500 });
+    }
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error marking order shipped:', error);
