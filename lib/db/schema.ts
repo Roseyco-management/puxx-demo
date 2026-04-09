@@ -132,6 +132,9 @@ export const profiles = pgTable('profiles', {
   ageVerified: boolean('age_verified').notNull().default(false),
   referralSource: varchar('referral_source', { length: 100 }),
   marketingConsent: boolean('marketing_consent').notNull().default(false),
+  retailReferralCode: varchar('retail_referral_code', { length: 20 }),
+  wholesaleReferralCode: varchar('wholesale_referral_code', { length: 20 }),
+  commissionEarned: decimal('commission_earned', { precision: 10, scale: 2 }).notNull().default('0'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
