@@ -88,9 +88,30 @@ The three e-commerce sites must process orders end-to-end — from checkout thro
 |----------|-----------|---------|
 | Fix existing WooCommerce platform rather than rebuild | Platform is partially built, client wants it working ASAP, rebuild would take too long | — Pending |
 | Separate referral codes for wholesale vs retail | Different commission structures and rules per type, single code doesn't work | — Pending |
-| Use AffiliateWP vs custom affiliate system | AJ claimed AffiliateWP covers all needs — needs verification on first access | — Pending |
-| Gift card payment workaround for CA/US | Only viable option after Stripe ban, friend's team has built the plugin | — Pending |
+| AffiliateWP NOT installed — system is fully custom | API audit confirmed no AffiliateWP. "Pouches Worldwide" plugin (Amaan Azkar) handles affiliate, wholesale approvals, consignment loans | — Confirmed |
+| Gift card payment workaround for CA/US | Only viable option after Stripe ban, friend's team has built the plugin. Also researching AllayPay as proper nicotine payment processor | — Pending |
 | CRM: build custom vs migrate to existing platform | Client wants basics first (data, comms, history), then add features — approach TBD after audit | — Pending |
+| Plan A vs Plan B | Plan A = fix WooCommerce (what client asked for). Plan B = custom build using puxxireland stack (Next.js/Supabase). Presenting both to client. | — Pending |
+| AllayPay over Tower Payments | Tower has only 13 Trustpilot reviews, poor web presence. AllayPay has better website, explicit nicotine pouch support, API integrations | — Pending |
+
+## Pricing & Commercial
+
+- **Retainer:** £2,000/month for 6 months = £12,000 total
+- **Payment:** Installments, first payment after detailed breakdown delivered
+- **Original Elevateo proposal:** 9 modules at £28,000 (£1k/month retainer) — different scope
+- **Phase 1 target:** 2-4 weeks for website fixes
+- **Client status:** Not yet paid. Wants detailed breakdown + timeline before committing.
+
+## Strategic Context
+
+**Two paths under consideration:**
+- **Plan A (WooCommerce Fix):** Fix three existing WP sites. Faster perceived start, client has sunk cost. Limited by WP ecosystem, three separate backends.
+- **Plan B (Custom Build):** Fork puxxireland (Next.js 15/Supabase/WorldPay). Single backend for all regions, domain routing. Already has age verification, admin dashboard, checkout. Better long-term but needs to be "sold" to client.
+
+**Existing assets:**
+- `puxxireland` — production-ready Puxx e-commerce site (Ireland) on Next.js/Supabase. Has age verification, admin dashboard, full checkout, WorldPay integration.
+- `Blue Pillar` — multi-tenant e-commerce framework with affiliate system, investor portal, admin portal.
+- Both can be adapted for Puxx CA/UK/US.
 
 ---
-*Last updated: 2026-04-08 after initialization*
+*Last updated: 2026-04-09 after roadmap creation and strategic analysis*
