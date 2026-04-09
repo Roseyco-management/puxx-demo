@@ -1,38 +1,50 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useCheckoutStore } from '@/lib/stores/checkout-store';
-import { useCartStore } from '@/lib/stores/cart-store';
+import { useCartStore } from '@/lib/store/cart-store';
+import { useRegion } from '@/lib/config/region-context';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Package, Mail, Truck, Home } from 'lucide-react';
 
 interface Step6ConfirmationProps {
+  email: string;
+  fullName: string;
+  address: string;
+  city: string;
+  county: string;
+  postcode: string;
+  shippingMethod: 'standard' | 'express';
   onStartOver?: () => void;
 }
 
-export function Step6Confirmation({ onStartOver }: Step6ConfirmationProps) {
-  const { checkoutData, resetCheckout } = useCheckoutStore();
-  const { clearCart, getTotalPrice } = useCartStore();
+const SHIPPING_LABELS: Record<'standard' | 'express', { name: string; estimatedDays: string }> = {
+  standard: { name: 'Standard Shipping', estimatedDays: '3-5 business days' },
+  express: { name: 'Express Shipping', estimatedDays: '1-2 business days' },
+};
 
-  const subtotal = getTotalPrice();
-  const discount = checkoutData.couponDiscount || 0;
-  const shipping = checkoutData.shippingMethod?.price || 0;
-  const total = subtotal - discount + shipping;
+export function Step6Confirmation({
+  email,
+  fullName,
+  address,
+  city,
+  county,
+  postcode,
+  shippingMethod,
+}: Step6ConfirmationProps) {
+  const { region, config } = useRegion();
+  const clearCart = useCartStore((state) => state.clearCart);
+  const subtotal = useCartStore((state) => state.getSubtotal());
+  const shipping = useCartStore((state) => state.getShippingCost());
+  const total = useCartStore((state) => state.getTotal());
 
-  // Mock order number - in production this would come from the backend
   const orderNumber = `PUXX-${Date.now().toString().slice(-8)}`;
-
-  // Clear cart and reset checkout on mount (simulating successful payment)
-  useEffect(() => {
-    // In production, this would only happen after successful payment confirmation
-    // For now, we'll just simulate it
-  }, []);
+  const shippingLabel = SHIPPING_LABELS[shippingMethod];
 
   const handleContinueShopping = () => {
     clearCart();
-    resetCheckout();
-    window.location.href = '/products';
+    window.location.href = `/${region}/products`;
   };
+
+  const addressLine = [city, county, postcode].filter(Boolean).join(', ');
 
   return (
     <div className="space-y-6">
@@ -61,67 +73,45 @@ export function Step6Confirmation({ onStartOver }: Step6ConfirmationProps) {
         </h3>
         <div className="space-y-4">
           {/* Email Confirmation */}
-          {checkoutData.customerInfo && (
-            <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-              <Mail className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground mb-1">
-                  Confirmation Email Sent
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  We've sent an order confirmation to{' '}
-                  <span className="font-medium text-foreground">
-                    {checkoutData.customerInfo.email}
-                  </span>
-                </p>
-              </div>
+          <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+            <Mail className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-foreground mb-1">
+                Confirmation Email Sent
+              </p>
+              <p className="text-sm text-muted-foreground">
+                We&apos;ve sent an order confirmation to{' '}
+                <span className="font-medium text-foreground">{email}</span>
+              </p>
             </div>
-          )}
+          </div>
 
           {/* Shipping Address */}
-          {checkoutData.shippingAddress && (
-            <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-              <Home className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground mb-1">
-                  Shipping Address
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {checkoutData.shippingAddress.fullName}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {checkoutData.shippingAddress.addressLine1}
-                  {checkoutData.shippingAddress.addressLine2 &&
-                    `, ${checkoutData.shippingAddress.addressLine2}`}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {checkoutData.shippingAddress.city}
-                  {checkoutData.shippingAddress.county &&
-                    `, ${checkoutData.shippingAddress.county}`}
-                  {checkoutData.shippingAddress.eircode &&
-                    ` ${checkoutData.shippingAddress.eircode}`}
-                </p>
-              </div>
+          <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+            <Home className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-foreground mb-1">
+                Shipping Address
+              </p>
+              <p className="text-sm text-muted-foreground">{fullName}</p>
+              <p className="text-sm text-muted-foreground">{address}</p>
+              <p className="text-sm text-muted-foreground">{addressLine}</p>
             </div>
-          )}
+          </div>
 
           {/* Shipping Method */}
-          {checkoutData.shippingMethod && (
-            <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-              <Truck className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground mb-1">
-                  Delivery Method
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {checkoutData.shippingMethod.name}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Estimated delivery: {checkoutData.shippingMethod.estimatedDays}
-                </p>
-              </div>
+          <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+            <Truck className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-foreground mb-1">
+                Delivery Method
+              </p>
+              <p className="text-sm text-muted-foreground">{shippingLabel.name}</p>
+              <p className="text-sm text-muted-foreground">
+                Estimated delivery: {shippingLabel.estimatedDays}
+              </p>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
@@ -131,23 +121,15 @@ export function Step6Confirmation({ onStartOver }: Step6ConfirmationProps) {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Subtotal</span>
-            <span className="font-medium">€{subtotal.toFixed(2)}</span>
+            <span className="font-medium">{config.currencySymbol}{subtotal.toFixed(2)}</span>
           </div>
-          {discount > 0 && (
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Discount</span>
-              <span className="font-medium text-primary">
-                -€{discount.toFixed(2)}
-              </span>
-            </div>
-          )}
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Shipping</span>
             <span className="font-medium">
               {shipping === 0 ? (
                 <span className="text-primary">FREE</span>
               ) : (
-                `€${shipping.toFixed(2)}`
+                `${config.currencySymbol}${shipping.toFixed(2)}`
               )}
             </span>
           </div>
@@ -155,7 +137,7 @@ export function Step6Confirmation({ onStartOver }: Step6ConfirmationProps) {
             <div className="flex justify-between">
               <span className="font-semibold text-foreground">Total Paid</span>
               <span className="text-2xl font-bold text-primary">
-                €{total.toFixed(2)}
+                {config.currencySymbol}{total.toFixed(2)}
               </span>
             </div>
           </div>
@@ -168,45 +150,34 @@ export function Step6Confirmation({ onStartOver }: Step6ConfirmationProps) {
         <ul className="space-y-2 text-sm text-blue-900">
           <li className="flex items-start gap-2">
             <span className="font-bold text-primary">1.</span>
-            <span>
-              You'll receive a confirmation email with your order details
-            </span>
+            <span>You&apos;ll receive a confirmation email with your order details</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="font-bold text-primary">2.</span>
-            <span>We'll prepare your order for shipment</span>
+            <span>We&apos;ll prepare your order for shipment</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="font-bold text-primary">3.</span>
-            <span>
-              You'll receive tracking information once your order ships
-            </span>
+            <span>You&apos;ll receive tracking information once your order ships</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="font-bold text-primary">4.</span>
-            <span>
-              Your order will arrive in {checkoutData.shippingMethod?.estimatedDays || '2-3 business days'}
-            </span>
+            <span>Your order will arrive in {shippingLabel.estimatedDays}</span>
           </li>
         </ul>
       </div>
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 pt-4">
-        <Button
-          asChild
-          variant="outline"
-          size="lg"
-          className="flex-1"
-        >
-          <a href="/account/orders">View Order History</a>
+        <Button asChild variant="outline" size="lg" className="flex-1">
+          <a href={`/${region}/products`}>Continue Shopping</a>
         </Button>
         <Button
           onClick={handleContinueShopping}
           className="gradient-emerald flex-1"
           size="lg"
         >
-          Continue Shopping
+          Clear Cart &amp; Continue
         </Button>
       </div>
 
@@ -214,10 +185,7 @@ export function Step6Confirmation({ onStartOver }: Step6ConfirmationProps) {
       <div className="text-center text-sm text-muted-foreground">
         <p>
           Need help?{' '}
-          <a
-            href="/contact"
-            className="text-primary hover:underline font-medium"
-          >
+          <a href="/contact" className="text-primary hover:underline font-medium">
             Contact our support team
           </a>
         </p>
