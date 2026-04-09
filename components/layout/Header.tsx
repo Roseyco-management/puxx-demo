@@ -2,22 +2,32 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { ShoppingCart, Menu, X, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/Logo';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { useCartStore, cartSelectors } from '@/lib/store/cart-store';
+import { RegionSelector } from '@/components/region/RegionSelector';
+import { VALID_REGIONS, type RegionCode } from '@/lib/config/regions';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const cartItemCount = useCartStore(cartSelectors.totalItems);
+  const pathname = usePathname();
+
+  // Derive current region from URL path
+  const segments = pathname.split('/').filter(Boolean);
+  const region: RegionCode = (VALID_REGIONS.includes(segments[0] as RegionCode)
+    ? segments[0]
+    : 'uk') as RegionCode;
 
   const navigation = [
-    { name: 'Shop', href: '/shop' },
-    { name: 'About', href: '/about' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Shop', href: `/${region}/shop` },
+    { name: 'About', href: `/${region}/about` },
+    { name: 'Blog', href: `/${region}/blog` },
+    { name: 'Contact', href: `/${region}/contact` },
   ];
 
   return (
@@ -58,7 +68,8 @@ export function Header() {
         </div>
 
         {/* Desktop actions */}
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4 lg:items-center">
+          <RegionSelector />
           <button
             onClick={() => setCartOpen(true)}
             className="relative -m-2 p-2 text-foreground hover:text-primary transition-colors"
@@ -74,14 +85,14 @@ export function Header() {
           </button>
 
           <Button asChild variant="ghost" size="sm">
-            <Link href="/login">
+            <Link href={`/${region}/login`}>
               <User className="mr-2 h-4 w-4" />
               Login
             </Link>
           </Button>
 
           <Button asChild size="sm" className="gradient-emerald hover:opacity-90">
-            <Link href="/shop">Shop Now</Link>
+            <Link href={`/${region}/shop`}>Shop Now</Link>
           </Button>
         </div>
       </nav>
@@ -102,6 +113,9 @@ export function Header() {
             ))}
 
             <div className="mt-4 space-y-2 border-t border-border pt-4">
+              <div className="px-3 py-2">
+                <RegionSelector />
+              </div>
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -114,7 +128,7 @@ export function Header() {
               </button>
 
               <Link
-                href="/login"
+                href={`/${region}/login`}
                 className="flex items-center rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -123,7 +137,7 @@ export function Header() {
               </Link>
 
               <Button asChild className="w-full gradient-emerald">
-                <Link href="/shop">Shop Now</Link>
+                <Link href={`/${region}/shop`}>Shop Now</Link>
               </Button>
             </div>
           </div>
