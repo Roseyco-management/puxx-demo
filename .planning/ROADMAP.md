@@ -94,7 +94,14 @@ Plans:
   3. Fulfilment team has a separate login and sees a queue of pending orders; they can mark an order as shipped from their dashboard
   4. Affiliate dashboard preview (read-only, Blue Pillar components) shows referral codes, referred customers, and commission summary
   5. CRM customer profile page shows contact info, an order timeline, and stubbed communication history in a read-only view
-**Plans**: TBD
+**Plans:** 5 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Seed 3 portal users + signIn role redirects (RETAIL-01, RETAIL-03, FULFL-01, AFF-01)
+- [ ] 05-02-PLAN.md — Retailer portal layout + product catalogue with wholesale pricing (RETAIL-01, RETAIL-02)
+- [ ] 05-03-PLAN.md — Retailer orders page + fulfilment layout/queue/mark-shipped API (RETAIL-03, FULFL-01, FULFL-02)
+- [ ] 05-04-PLAN.md — Affiliate nav link + affiliate preview page (AFF-01)
+- [ ] 05-05-PLAN.md — CRM customer profile: Drizzle rewrite + order timeline + stub comms (CRM-01)
 
 ### Phase 6: Polish
 **Goal**: All key views are mobile-responsive and demo-ready on any device
@@ -117,7 +124,7 @@ Plans:
 | 2. Storefront | 5/5 | Complete   | 2026-04-09 |
 | 3. Customer Account | 0/2 | Not started | - |
 | 4. Admin Dashboard | 1/2 | In Progress|  |
-| 5. Portals | 0/TBD | Not started | - |
+| 5. Portals | 0/5 | Not started | - |
 | 6. Polish | 0/TBD | Not started | - |
 
 ---
