@@ -64,7 +64,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Customer account page shows a list of past orders with current status displayed per order
   2. Customer account page shows two referral codes (retail and wholesale) and a commission earned summary
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Extend profiles schema with referral columns, run migration, seed demo user + 4 stub orders (CUST-01, CUST-02)
+- [ ] 03-02-PLAN.md — Create [region]/account/ route tree, ReferralCard component, wire OrdersDataTable with region currency (CUST-01, CUST-02)
 
 ### Phase 4: Admin Dashboard
 **Goal**: An admin can view and manage orders, customers, and products from the TailAdmin Pro layout
@@ -107,7 +111,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-04-09 |
 | 2. Storefront | 5/5 | Complete   | 2026-04-09 |
-| 3. Customer Account | 0/TBD | Not started | - |
+| 3. Customer Account | 0/2 | Not started | - |
 | 4. Admin Dashboard | 0/TBD | Not started | - |
 | 5. Portals | 0/TBD | Not started | - |
 | 6. Polish | 0/TBD | Not started | - |
