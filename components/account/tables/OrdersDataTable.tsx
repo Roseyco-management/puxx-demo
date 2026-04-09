@@ -205,8 +205,43 @@ export default function OrdersDataTable({ orders, currencySymbol = '£', ordersB
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+      {/* Mobile card list */}
+      <div className="block md:hidden space-y-3">
+        {table.getRowModel().rows.length === 0 ? (
+          <div className="rounded-xl border border-gray-200 bg-white px-4 py-8 text-center text-sm text-gray-500">
+            No orders found
+          </div>
+        ) : (
+          table.getRowModel().rows.map((row) => {
+            const order = row.original;
+            return (
+              <div key={row.id} className="rounded-xl border border-gray-200 bg-white p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-gray-900">#{order.orderNumber}</span>
+                  <Badge variant={getStatusBadgeVariant(order.status)}>
+                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-between text-sm text-gray-600">
+                  <span>{format(new Date(order.createdAt), 'dd MMM yyyy')}</span>
+                  <span className="font-semibold text-gray-900">{currencySymbol}{parseFloat(order.total).toFixed(2)}</span>
+                </div>
+                <div className="pt-1">
+                  <Link href={`${ordersBasePath}/${order.id}`}>
+                    <Button variant="outline" size="sm" className="w-full border-green-600 text-green-600 hover:bg-green-50">
+                      <Eye className="mr-1 h-4 w-4" />
+                      View Order
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Table — desktop only */}
+      <div className="hidden md:block overflow-hidden rounded-xl border border-gray-200 bg-white">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
