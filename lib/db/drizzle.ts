@@ -21,7 +21,7 @@ let db: ReturnType<typeof drizzle> | null = null;
 
 if (isValidDatabaseUrl(process.env.POSTGRES_URL)) {
   try {
-    client = postgres(process.env.POSTGRES_URL!, { ssl: 'require', max: 1 });
+    client = postgres(process.env.POSTGRES_URL!, { prepare: false });
     db = drizzle(client, { schema });
   } catch (error) {
     console.warn('Failed to initialize database connection:', error);
