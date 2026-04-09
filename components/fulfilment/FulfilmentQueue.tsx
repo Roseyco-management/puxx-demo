@@ -58,7 +58,33 @@ export default function FulfilmentQueue({ initialOrders }: { initialOrders: Orde
           {activeCount} order{activeCount !== 1 ? 's' : ''} to process
         </span>
       </div>
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      {/* Mobile card view */}
+      <div className="block md:hidden space-y-3">
+        {orders.map((order) => (
+          <div key={order.id} className="bg-white rounded-lg border border-gray-200 p-4 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-medium text-gray-900">{order.orderNumber}</span>
+              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColour[order.status] ?? 'bg-gray-100 text-gray-700'}`}>
+                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+              </span>
+            </div>
+            <div className="text-sm text-gray-600 truncate">{order.shippingEmail}</div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-gray-900">£{order.total}</span>
+              <button
+                onClick={() => markShipped(order.id)}
+                disabled={order.status === 'shipped'}
+                className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-emerald-600 rounded-md hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Mark Shipped
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop table view */}
+      <div className="hidden md:block bg-white rounded-lg border border-gray-200 overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>

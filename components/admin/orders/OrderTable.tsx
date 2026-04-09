@@ -195,8 +195,51 @@ export function OrderTable({ orders, onRefresh }: OrderTableProps) {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:border-gray-800">
-      {/* Table */}
-      <div className="overflow-x-auto">
+      {/* Mobile card view */}
+      <div className="block md:hidden divide-y divide-gray-200 dark:divide-gray-800">
+        {table.getRowModel().rows.length === 0 ? (
+          <div className="px-4 py-12 text-center text-gray-500 dark:text-gray-400">
+            <p className="text-lg font-medium">No orders found</p>
+            <p className="mt-1 text-sm">Try adjusting your filters</p>
+          </div>
+        ) : (
+          table.getRowModel().rows.map((row) => {
+            const order = row.original;
+            const paymentColors = PAYMENT_STATUS_COLORS[order.paymentStatus as PaymentStatus];
+            return (
+              <div
+                key={row.id}
+                className="p-4 space-y-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer"
+                onClick={() => router.push(`/admin/orders/${order.id}`)}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                    {order.orderNumber}
+                  </span>
+                  <OrderStatusBadge status={order.status as OrderStatus} />
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium text-gray-900 dark:text-white truncate max-w-[60%]">
+                    {order.customerName}
+                  </span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    €{parseFloat(order.total).toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                  <span>{formatDate(order.createdAt)}</span>
+                  <span className={`px-2 py-0.5 rounded-full font-medium ${paymentColors}`}>
+                    {order.paymentStatus.charAt(0).toUpperCase() + order.paymentStatus.slice(1)}
+                  </span>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Table — desktop only */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
           <thead className="border-b border-gray-200 dark:border-gray-800">
             {table.getHeaderGroups().map((headerGroup) => (
