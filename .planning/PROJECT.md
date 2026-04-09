@@ -98,9 +98,21 @@ The three e-commerce sites must process orders end-to-end — from checkout thro
 
 - **Retainer:** £2,000/month for 6 months = £12,000 total
 - **Payment:** Installments, first payment after detailed breakdown delivered
-- **Original Elevateo proposal:** 9 modules at £28,000 (£1k/month retainer) — different scope
-- **Phase 1 target:** 2-4 weeks for website fixes
+- **Original Elevateo proposal:** 9 modules at £28,000 — ALL 9 modules included at reduced price
+- **Phase 1 target:** 1-2 weeks for e-commerce sites working
+- **Full 9-module delivery:** 6 months
 - **Client status:** Not yet paid. Wants detailed breakdown + timeline before committing.
+
+**All 9 original modules are included:**
+1. Order Automation (Month 1)
+2. CRM & Contact Management (Month 4)
+3. Retailer Portal — B2B Ordering (Month 2)
+4. Smart Reorder Automation (Month 3)
+5. Inventory Management (Month 3)
+6. Invoicing & Payments (Month 2)
+7. Shipping & Fulfilment Dashboard (Month 3)
+8. Communication Hub (Month 4)
+9. Reporting & Analytics (Month 5-6)
 
 ## Strategic Context
 

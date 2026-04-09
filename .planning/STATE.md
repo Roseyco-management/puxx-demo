@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 
 ## Current Position
 
-Phase: 1 of 5 (Audit, Security & Infrastructure)
-Plan: 0 of 3 in current phase
+Phase: 1 of 6 (E-Commerce Core + Payments)
+Plan: 0 of 4 in current phase
 Status: Ready to plan
-Last activity: 2026-04-09 — Roadmap created with 5 phases, 16 plans, 44 requirements mapped
+Last activity: 2026-04-09 — Roadmap expanded to 6 phases (all 9 modules), 18 plans, 70 requirements mapped. Client deliverable being regenerated.
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -42,10 +42,11 @@ Progress: [░░░░░░░░░░] 0%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [Roadmap]: Fix existing WooCommerce sites, do not rebuild — client expects fixes, not a replatform
-- [Roadmap]: Affiliate system is custom "Pouches Worldwide" plugin, NOT AffiliateWP — audit must assess this code
+- [Roadmap]: Path B recommended (custom build from puxxireland). Path A (WP fix) is fallback.
+- [Roadmap]: All 9 original modules included at £12k (reduced from £28k). 70 requirements across 6 phases.
+- [Roadmap]: E-commerce sites working in Month 1 (1-2 weeks). Full 9-module delivery over 6 months.
 - [Roadmap]: CRM comes last per client priority — "get everything working, THEN we worry about automation"
-- [Roadmap]: Only US site access available currently — CA site is priority but credentials needed from client
+- [Roadmap]: AllayPay is preferred payment processor for CA/US (replacing gift card workaround)
 
 ### Pending Todos
 
@@ -61,10 +62,10 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-09
-Stopped at: Roadmap approved. Client deliverable being generated. Demo planned for next session.
+Stopped at: All 9 modules mapped, roadmap expanded to 6 phases, client deliverable being regenerated with compressed timeline.
 Resume file: None
 
 ### Next Session Plan
-- Generate Plan B roadmap variant (custom build using puxxireland)
-- Build demo by forking puxxireland for Puxx multi-region
-- Consider adding demo as a GSD phase or separate milestone
+- Build demo by forking puxxireland for Puxx multi-region (Milestone 1 in GSD)
+- Demo resources: Blue Pillar (portals), puxxireland (storefront), TailAdmin Pro (dashboards)
+- Present demo + updated deliverable to client
