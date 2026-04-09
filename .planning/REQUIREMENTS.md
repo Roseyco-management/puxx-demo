@@ -75,35 +75,64 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **HOST-03**: Regular backups with ability to restore
 - [ ] **HOST-04**: Performance baseline — sites load in under 3 seconds (currently "super slow" per client)
 
+### Retailer Portal (Module 3)
+
+- [ ] **PORTAL-01**: Branded PUX login portal for retail partners with wholesale tier pricing
+- [ ] **PORTAL-02**: Product catalogue with images, descriptions, and wholesale pricing tiers
+- [ ] **PORTAL-03**: Simple ordering flow — browse, add to cart, confirm
+- [ ] **PORTAL-04**: One-click reorder from previous orders
+- [ ] **PORTAL-05**: Order history with status tracking per retailer
+- [ ] **PORTAL-06**: Multi-location support — one owner manages all their stores under one login
+
+### Smart Reorder Automation (Module 4)
+
+- [ ] **REORDER-01**: Track each retailer's ordering frequency and patterns
+- [ ] **REORDER-02**: Predict when a retailer is due to reorder based on order history
+- [ ] **REORDER-03**: Automated outreach when reorder is due (email and/or WhatsApp with one-click reorder link)
+- [ ] **REORDER-04**: Follow-up automation if no response (configurable: 2 days, 5 days, etc.)
+- [ ] **REORDER-05**: Dashboard showing which retailers are overdue, on track, or recently ordered
+
+### Invoicing & Payments (Module 6)
+
+- [ ] **INV-01**: Automatic invoice generation on order confirmation (branded PDF with PUX logo)
+- [ ] **INV-02**: Invoice history per retailer
+- [ ] **INV-03**: Payment status tracking (paid, pending, overdue)
+- [ ] **INV-04**: Overdue payment reminders (automated email/WhatsApp)
+- [ ] **INV-05**: Exportable invoices and payment data for accounting (CSV/PDF)
+
+### Communication Hub (Module 8)
+
+- [ ] **COMMS-01**: WhatsApp Business API integration (send and receive messages)
+- [ ] **COMMS-02**: Email integration (send and receive) tied to customer CRM records
+- [ ] **COMMS-03**: Conversation history tied to retailer accounts in CRM
+- [ ] **COMMS-04**: Template messages for common scenarios (order confirmation, reorder prompt, payment reminder)
+- [ ] **COMMS-05**: Bulk messaging for announcements (new products, promotions, price changes)
+
+### Reporting & Analytics (Module 9)
+
+- [ ] **REPORT-01**: Sales reports by product, retailer, region, and time period
+- [ ] **REPORT-02**: Top retailers and underperformers dashboard
+- [ ] **REPORT-03**: Inventory turnover and demand trends
+- [ ] **REPORT-04**: Revenue tracking and growth metrics
+- [ ] **REPORT-05**: Exportable reports (CSV/PDF) with visual dashboards and KPIs
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
 
-### Growth & Analytics
-
-- **GROW-01**: Predictive reorder analytics based on retailer ordering patterns
-- **GROW-02**: POS integration for retail stores (requires per-store customisation)
-- **GROW-03**: Advanced email marketing campaigns and automations (wife/EA will manage)
-- **GROW-04**: Sales reports by product, retailer, region, and time period
-- **GROW-05**: Self-serve wholesale retailer portal with one-click reorder
-
 ### Platform Expansion
 
 - **PLAT-01**: Native mobile app (iOS/Android)
-- **PLAT-02**: WhatsApp Business API integration for retailer communication
-- **PLAT-03**: In-portal card payments (if a non-restricted processor becomes available)
-- **PLAT-04**: Banking/licensing management platform (paytrion.com)
+- **PLAT-02**: POS integration for retail stores (requires per-store customisation)
+- **PLAT-03**: Banking/licensing management platform (paytrion.com)
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
 | Stripe integration | Permanently banned for nicotine products — do not attempt |
-| WordPress Multisite | Three independent installs is correct for different currencies, payment gateways, and regulations |
 | Physical payment terminals / kiosks | Not relevant to current operations |
-| Rebuilding from scratch | Client expects fixes to existing WooCommerce platform, not a replatform |
 | Direct Freightcom API integration | Shipper must not know product is nicotine — requires intermediary |
-| GoHighLevel ongoing usage | Migrating away — replacing with purpose-built CRM |
 
 ## Traceability
 
@@ -115,55 +144,87 @@ Deferred to future release. Tracked but not in current roadmap.
 | AUDIT-04 | Phase 1 | Pending |
 | AUDIT-05 | Phase 1 | Pending |
 | AUDIT-06 | Phase 1 | Pending |
-| PAY-01 | Phase 2 | Pending |
-| PAY-02 | Phase 2 | Pending |
-| PAY-03 | Phase 2 | Pending |
-| PAY-04 | Phase 2 | Pending |
-| PAY-05 | Phase 2 | Pending |
-| PAY-06 | Phase 2 | Pending |
-| ORD-01 | Phase 2 | Pending |
-| ORD-02 | Phase 2 | Pending |
-| ORD-03 | Phase 2 | Pending |
-| ORD-04 | Phase 2 | Pending |
-| ORD-05 | Phase 2 | Pending |
-| ORD-06 | Phase 2 | Pending |
-| ROLE-01 | Phase 3 | Pending |
-| ROLE-02 | Phase 3 | Pending |
-| ROLE-03 | Phase 3 | Pending |
-| ROLE-04 | Phase 3 | Pending |
-| ROLE-05 | Phase 3 | Pending |
-| AFF-01 | Phase 3 | Pending |
-| AFF-02 | Phase 3 | Pending |
-| AFF-03 | Phase 3 | Pending |
-| AFF-04 | Phase 3 | Pending |
-| AFF-05 | Phase 3 | Pending |
-| AFF-06 | Phase 3 | Pending |
+| PAY-01 | Phase 1 | Pending |
+| PAY-02 | Phase 1 | Pending |
+| PAY-03 | Phase 1 | Pending |
+| PAY-04 | Phase 1 | Pending |
+| PAY-05 | Phase 1 | Pending |
+| PAY-06 | Phase 1 | Pending |
+| ORD-01 | Phase 1 | Pending |
+| ORD-02 | Phase 1 | Pending |
+| ORD-03 | Phase 1 | Pending |
+| ORD-04 | Phase 1 | Pending |
+| ORD-05 | Phase 1 | Pending |
+| ORD-06 | Phase 1 | Pending |
+| HOST-01 | Phase 1 | Pending |
+| HOST-02 | Phase 1 | Pending |
+| HOST-03 | Phase 1 | Pending |
+| HOST-04 | Phase 1 | Pending |
+| SHIP-06 | Phase 1 | Pending |
+| ROLE-01 | Phase 2 | Pending |
+| ROLE-02 | Phase 2 | Pending |
+| ROLE-03 | Phase 2 | Pending |
+| ROLE-04 | Phase 2 | Pending |
+| ROLE-05 | Phase 2 | Pending |
+| AFF-01 | Phase 2 | Pending |
+| AFF-02 | Phase 2 | Pending |
+| AFF-03 | Phase 2 | Pending |
+| AFF-04 | Phase 2 | Pending |
+| AFF-05 | Phase 2 | Pending |
+| AFF-06 | Phase 2 | Pending |
+| PORTAL-01 | Phase 3 | Pending |
+| PORTAL-02 | Phase 3 | Pending |
+| PORTAL-03 | Phase 3 | Pending |
+| PORTAL-04 | Phase 3 | Pending |
+| PORTAL-05 | Phase 3 | Pending |
+| PORTAL-06 | Phase 3 | Pending |
+| INV-01 | Phase 3 | Pending |
+| INV-02 | Phase 3 | Pending |
+| INV-03 | Phase 3 | Pending |
+| INV-04 | Phase 3 | Pending |
+| INV-05 | Phase 3 | Pending |
 | SHIP-01 | Phase 4 | Pending |
 | SHIP-02 | Phase 4 | Pending |
 | SHIP-03 | Phase 4 | Pending |
 | SHIP-04 | Phase 4 | Pending |
 | SHIP-05 | Phase 4 | Pending |
-| SHIP-06 | Phase 1 | Pending |
+| REORDER-01 | Phase 4 | Pending |
+| REORDER-02 | Phase 4 | Pending |
+| REORDER-03 | Phase 4 | Pending |
+| REORDER-04 | Phase 4 | Pending |
+| REORDER-05 | Phase 4 | Pending |
 | CRM-01 | Phase 5 | Pending |
 | CRM-02 | Phase 5 | Pending |
 | CRM-03 | Phase 5 | Pending |
 | CRM-04 | Phase 5 | Pending |
 | CRM-05 | Phase 5 | Pending |
-| HOST-01 | Phase 1 | Pending |
-| HOST-02 | Phase 1 | Pending |
-| HOST-03 | Phase 1 | Pending |
-| HOST-04 | Phase 1 | Pending |
+| COMMS-01 | Phase 5 | Pending |
+| COMMS-02 | Phase 5 | Pending |
+| COMMS-03 | Phase 5 | Pending |
+| COMMS-04 | Phase 5 | Pending |
+| COMMS-05 | Phase 5 | Pending |
+| REPORT-01 | Phase 6 | Pending |
+| REPORT-02 | Phase 6 | Pending |
+| REPORT-03 | Phase 6 | Pending |
+| REPORT-04 | Phase 6 | Pending |
+| REPORT-05 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 44 total
-- Mapped to phases: 44
+- v1 requirements: 70 total (expanded to include all 9 original modules)
+- Mapped to phases: 70
 - Unmapped: 0
 
-**Client issue coverage (CLIENT-ISSUES.md):**
-- Total issues: 53 (A1-J5)
-- Actionable issues mapped: 40+
-- INFO-only items (A3, C6, E4, F5, J1, J2, J4, J5): acknowledged, no standalone work required
+**Module coverage:**
+- Module 1 (Order Automation): Phase 1
+- Module 2 (CRM & Contact Management): Phase 5
+- Module 3 (Retailer Portal): Phase 3
+- Module 4 (Smart Reorder Automation): Phase 4
+- Module 5 (Inventory Management): Phase 4
+- Module 6 (Invoicing & Payments): Phase 3
+- Module 7 (Shipping & Fulfilment Dashboard): Phase 4
+- Module 8 (Communication Hub): Phase 5
+- Module 9 (Reporting & Analytics): Phase 6
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-09 after roadmap creation — traceability populated*
+*Last updated: 2026-04-09 — expanded to all 9 modules, 70 requirements across 6 phases*

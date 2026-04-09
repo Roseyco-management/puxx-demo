@@ -2,132 +2,175 @@
 
 ## Overview
 
-Fix and launch three WooCommerce e-commerce sites (Canada, UK, US) that were partially built by two previous dev teams but never made it to production. The work moves from foundation (audit, security, hosting) through revenue-critical fixes (payments, order flow) to launch-enabling features (users, pricing, affiliate), then automation (shipping, inventory), and finally the CRM the client wants as a byproduct. Each phase delivers observable value to the client on a roughly monthly cadence aligned with the GBP 2,000/month retainer.
+Build and launch a multi-region e-commerce platform for Puxx (Canada, UK, US) with all 9 modules from the original proposal. £2,000/month retainer for 6 months (£12,000 total). E-commerce sites working within 1-2 months, remaining modules delivered over the retainer period.
+
+**Approach:** Path B (custom build) recommended — single platform for all regions using existing puxxireland codebase. Path A (WordPress fix) documented as fallback.
 
 ## Phases
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+- [ ] **Phase 1: E-Commerce Core + Payments** — Working storefront with checkout, payments (AllayPay CA/US, WorldPay UK, bank transfer), age verification, order flow end-to-end, transactional emails (Weeks 1-4)
+- [ ] **Phase 2: Users, Pricing & Affiliate System** — User roles, custom wholesale pricing, document verification, two-tier referral system, fulfilment team dashboard (Weeks 3-6)
+- [ ] **Phase 3: Retailer Portal + Invoicing** — Branded B2B ordering portal, one-click reorder, auto invoicing, payment tracking (Weeks 7-10)
+- [ ] **Phase 4: Shipping, Inventory & Smart Reorder** — ShipStation UK, Freightcom intermediary CA/US, stock management, low-stock alerts, predictive reorder automation (Weeks 9-14)
+- [ ] **Phase 5: CRM & Communication Hub** — Customer data, interaction timeline, WhatsApp + email integration, GHL migration, mobile-first, staff access (Weeks 13-18)
+- [ ] **Phase 6: Reporting, Analytics & Polish** — Sales dashboards, retailer performance, KPIs, exportable reports, hosting/monitoring, optimization, handover (Weeks 17-24)
 
-Decimal phases appear between their surrounding integers in numeric order.
+## Module-to-Phase Mapping
 
-- [ ] **Phase 1: Audit, Security & Infrastructure** - Gain access, lock out previous dev, audit all three sites, set up staging, fix hosting/performance/monitoring
-- [ ] **Phase 2: Payments & Order Flow** - Get money flowing and orders processing end-to-end across all three sites
-- [ ] **Phase 3: Users, Pricing & Affiliate System** - User roles, custom wholesale pricing, document verification, and the full two-tier referral system
-- [ ] **Phase 4: Shipping Automation & Inventory** - Eliminate manual shipping workflow, integrate ShipStation (UK) and Freightcom intermediary (CA/US), enable stock management
-- [ ] **Phase 5: CRM & Admin Polish** - Build basic CRM, migrate data from GoHighLevel, polish admin dashboard for mobile-first usage
+| # | Original Module | Phase | Timeline |
+|---|----------------|-------|----------|
+| 1 | Order Automation | Phase 1 | Weeks 1-4 |
+| 2 | CRM & Contact Management | Phase 5 | Weeks 13-18 |
+| 3 | Retailer Portal (B2B) | Phase 3 | Weeks 7-10 |
+| 4 | Smart Reorder Automation | Phase 4 | Weeks 9-14 |
+| 5 | Inventory Management | Phase 4 | Weeks 9-14 |
+| 6 | Invoicing & Payments | Phase 3 | Weeks 7-10 |
+| 7 | Shipping & Fulfilment Dashboard | Phase 4 | Weeks 9-14 |
+| 8 | Communication Hub | Phase 5 | Weeks 13-18 |
+| 9 | Reporting & Analytics | Phase 6 | Weeks 17-24 |
 
 ## Phase Details
 
-### Phase 1: Audit, Security & Infrastructure
-**Goal**: All three sites are under our control, audited, secured, monitored, and performant enough to build on — with a staging environment ready for development
+### Phase 1: E-Commerce Core + Payments
+**Goal**: A customer can browse products, check out, pay by credit card or bank transfer, and receive order confirmation — across all three regions (CA/UK/US) from a single platform
 **Depends on**: Nothing (first phase)
-**Requirements**: AUDIT-01, AUDIT-02, AUDIT-03, AUDIT-04, AUDIT-05, AUDIT-06, HOST-01, HOST-02, HOST-03, HOST-04, SHIP-06
-**Success Criteria** (what must be TRUE):
-  1. Previous developer (AJ) access is revoked and all credentials are rotated — client can verify no unauthorized access exists
-  2. A staging copy of the US site exists where changes can be tested without affecting live sites
-  3. All three e-commerce sites plus dummy sites load in under 3 seconds with valid SSL certificates
-  4. Uptime monitoring is active and alerts the team within 5 minutes of any site going down
-  5. A complete audit document exists cataloguing every plugin, hook, custom code block, and divergence between the three sites
-**Plans**: TBD
+**Timeline**: Weeks 1-4 (Month 1)
+**Modules**: Module 1 (Order Automation) + payment integrations + age verification
+**Requirements**: AUDIT-01 to 06, PAY-01 to 06, ORD-01 to 06, HOST-01 to 04, SHIP-06
+**Success Criteria**:
+  1. UK customer pays via WorldPay and order auto-progresses to processing
+  2. CA/US customer pays via AllayPay (or alternative nicotine processor) and order auto-progresses
+  3. Age verification gate blocks checkout for unverified users
+  4. Customer receives automated emails at each order stage
+  5. All three domains (puxxpouches.ca, .co.uk, .com) route to the platform with correct regional config
+  6. Uptime monitoring active with alerts within 5 minutes of downtime
 
 Plans:
-- [ ] 01-01: Access takeover, credential rotation, and staging setup
-- [ ] 01-02: Full codebase audit across all three sites
-- [ ] 01-03: Hosting hardening — cron, PHP, SSL, backups, performance, uptime monitoring
+- [ ] 01-01: Platform foundation — fork puxxireland, multi-region routing, products, checkout
+- [ ] 01-02: Payment integration — AllayPay (CA/US), WorldPay (UK), bank transfer, age verification
+- [ ] 01-03: Order flow — status progression, fulfilment assignment, transactional emails
+- [ ] 01-04: Infrastructure — hosting, SSL, backups, uptime monitoring, cron
 
-**Client issues addressed:** I1, I2, I3, I4, I5, I6, I7, I8, J3, J4, J5, H4
+**Client issues addressed:** A1, A2, A3, A4, A5, A6, B1, B2, B3, B4, B5, I1-I8, J1, J3, H4
 
-### Phase 2: Payments & Order Flow
-**Goal**: A customer can place an order on any of the three sites, pay by credit card (gift card workaround for CA/US, WorldPay for UK) or bank transfer, and the order flows through to the fulfilment team automatically — unblocking all three site launches
+### Phase 2: Users, Pricing & Affiliate System
+**Goal**: Distinct user types with custom pricing, wholesale document verification, and a working two-tier affiliate system that earns residual commissions
 **Depends on**: Phase 1
-**Requirements**: PAY-01, PAY-02, PAY-03, PAY-04, PAY-05, PAY-06, ORD-01, ORD-02, ORD-03, ORD-04, ORD-05, ORD-06
-**Success Criteria** (what must be TRUE):
-  1. A customer on the UK site can pay by credit card via WorldPay and the order automatically moves to "processing" without admin intervention
-  2. A customer on the CA/US site can pay by credit card via the gift card workaround and the order automatically moves to "processing" without admin intervention
-  3. A bank transfer order sits at "awaiting payment" until an admin manually confirms it, then progresses normally
-  4. The fulfilment team sees new orders on their dashboard, can view order details, enter a tracking number, and mark the order complete
-  5. The customer receives automated emails at each stage: order placed, payment confirmed, shipped (with tracking), and delivered
-**Plans**: TBD
+**Timeline**: Weeks 3-6 (overlaps with end of Phase 1)
+**Modules**: Core user/pricing/affiliate features from discovery call
+**Requirements**: ROLE-01 to 05, AFF-01 to 06
+**Success Criteria**:
+  1. Wholesale customers see custom pricing; admin can set per-account prices
+  2. Wholesale signup requires document upload; account held for admin verification
+  3. Every account auto-issued two referral codes (retail + wholesale) visible on dashboard
+  4. Two-tier commission works (A refers B refers C, both A and B earn)
+  5. Commission rates adjustable per account and per country
+  6. Platform terminology consistent across all pages
 
 Plans:
-- [ ] 02-01: WorldPay UK fix and gift card plugin CA/US integration
-- [ ] 02-02: Bank transfer approval flow and regional payment configuration
-- [ ] 02-03: End-to-end order pipeline — status progression, geo-assignment, fulfilment dashboard
-- [ ] 02-04: Transactional emails and age verification
+- [ ] 02-01: User roles, guest checkout, wholesale document verification
+- [ ] 02-02: Custom wholesale pricing replacing coupon workaround
+- [ ] 02-03: Two-tier affiliate system — codes, residual linking, commissions, payouts
 
-**Client issues addressed:** A1, A2, A3 (info), A4, A5, A6, B1, B2, B3, B4, B5, J1
+**Client issues addressed:** C1-C7, D1-D4, H2
 
-### Phase 3: Users, Pricing & Affiliate System
-**Goal**: The platform supports distinct user types with appropriate pricing, and every account has a working two-tier referral system that earns residual commissions — eliminating the coupon code workaround and enabling the client's affiliate-driven growth model
-**Depends on**: Phase 2
-**Requirements**: ROLE-01, ROLE-02, ROLE-03, ROLE-04, ROLE-05, AFF-01, AFF-02, AFF-03, AFF-04, AFF-05, AFF-06
-**Success Criteria** (what must be TRUE):
-  1. A wholesale customer sees different (custom) pricing from a retail customer for the same product, and admin can set pricing per individual wholesale account
-  2. A new wholesale signup is prompted to upload business ID and trade licence, and their account is held for admin verification before activation
-  3. Every new account is automatically issued two separate referral codes (one retail, one wholesale) and can view them on their dashboard
-  4. When Customer B (referred by A) refers Customer C, both A and B earn commission on C's purchases — but the chain stops at two tiers
-  5. Platform terminology is consistent and clear across all pages, dashboards, and user-facing labels
-**Plans**: TBD
-
-Plans:
-- [ ] 03-01: User roles, guest checkout, and terminology standardisation
-- [ ] 03-02: Custom wholesale pricing and document verification
-- [ ] 03-03: Two-tier affiliate system — codes, residual linking, commissions, country rules, payout dashboard
-
-**Client issues addressed:** C1, C2, C3, C4, C5, C6, C7, D1, D2, D3, D4, H2
-
-### Phase 4: Shipping Automation & Inventory
-**Goal**: Orders flow from the site to the shipping provider and back with tracking numbers automatically — eliminating the manual copy-paste-email workflow — and stock levels are tracked with low-stock alerts
-**Depends on**: Phase 2 (order flow must work), Phase 3 (fulfilment role must exist)
-**Requirements**: SHIP-01, SHIP-02, SHIP-03, SHIP-04, SHIP-05
-**Success Criteria** (what must be TRUE):
-  1. When a UK fulfilment team member creates a shipping label in ShipStation, the tracking number automatically appears on the order in WooCommerce and the customer is notified
-  2. CA/US orders can be shipped via Freightcom through an intermediary layer that does not expose that the product is nicotine
-  3. Stock automatically deducts when a purchase is made, and products show accurate availability
-  4. When stock drops below a configurable threshold, the item appears on an automatic reorder list that admin can review
-**Plans**: TBD
+### Phase 3: Retailer Portal + Invoicing
+**Goal**: Retail partners have a branded portal to browse products, place orders, reorder with one click, and receive professional invoices with payment tracking
+**Depends on**: Phase 1 (products + checkout), Phase 2 (user roles + pricing)
+**Timeline**: Weeks 7-10 (Month 2-3)
+**Modules**: Module 3 (Retailer Portal) + Module 6 (Invoicing & Payments)
+**Requirements**: PORTAL-01 to 06, INV-01 to 05
+**Success Criteria**:
+  1. Retailer logs into branded PUX portal and sees wholesale pricing
+  2. Retailer can browse catalogue, add to cart, and confirm order in under 60 seconds
+  3. One-click reorder from previous orders works
+  4. Branded PDF invoice auto-generated on order confirmation
+  5. Payment status tracking (paid, pending, overdue) visible to admin
+  6. Overdue payment reminders sent automatically
 
 Plans:
-- [ ] 04-01: ShipStation UK integration
-- [ ] 04-02: Freightcom CA/US intermediary workflow
-- [ ] 04-03: Inventory management — stock tracking, low-stock alerts, reorder list
+- [ ] 03-01: Retailer portal — branded login, catalogue, ordering flow, order history
+- [ ] 03-02: Invoicing system — auto-generation, PDF branding, payment tracking, reminders
 
-**Client issues addressed:** E1, E2, E3, E4, E5, G1, G2
+**Client issues addressed:** Original Module 3 + Module 6 features
 
-### Phase 5: CRM & Admin Polish
-**Goal**: Client and staff can look up any customer, see their full purchase and communication history, send emails or make notes, all from a mobile-friendly interface that does not require WordPress admin access — and the admin dashboard is clean and purpose-built
-**Depends on**: Phase 2 (order data must exist), Phase 3 (user data must exist)
-**Requirements**: CRM-01, CRM-02, CRM-03, CRM-04, CRM-05
-**Success Criteria** (what must be TRUE):
-  1. Client can open the CRM on his phone, search for any customer, and see their full timeline (orders, emails, form submissions, notes)
-  2. Staff (wife, EA) can access the CRM to view customers and send communications without having WordPress admin access
-  3. Contact form submissions and emails automatically appear in the customer's CRM timeline
-  4. Existing customer data from GoHighLevel has been migrated and is searchable in the new CRM
-  5. The admin dashboard shows a clean summary of pending/overdue/completed orders with click-through to details and basic sales analytics
-**Plans**: TBD
+### Phase 4: Shipping, Inventory & Smart Reorder
+**Goal**: Shipping is automated (ShipStation UK, Freightcom intermediary CA/US), stock levels track accurately with low-stock alerts, and the smart reorder engine predicts when retailers need to restock
+**Depends on**: Phase 1 (order flow), Phase 2 (fulfilment roles), Phase 3 (retailer data)
+**Timeline**: Weeks 9-14 (Month 3-4)
+**Modules**: Module 4 (Smart Reorder) + Module 5 (Inventory) + Module 7 (Shipping Dashboard)
+**Requirements**: SHIP-01 to 05, REORDER-01 to 05
+**Success Criteria**:
+  1. ShipStation label creation auto-uploads tracking to platform and notifies customer
+  2. CA/US orders ship via Freightcom intermediary without exposing nicotine product type
+  3. Stock auto-deducts on purchase with accurate availability displayed
+  4. Low-stock items appear on reorder list at configurable threshold
+  5. Smart reorder predicts when retailers are due to reorder and sends automated outreach
+  6. Reorder dashboard shows overdue, on-track, and recently ordered retailers
 
 Plans:
-- [ ] 05-01: CRM core — customer data, timeline, communication, mobile-friendly interface
-- [ ] 05-02: CRM data migration from GoHighLevel and contact form routing
-- [ ] 05-03: Admin dashboard polish — simplified views, analytics, role-based access
+- [ ] 04-01: ShipStation UK integration + Freightcom CA/US intermediary
+- [ ] 04-02: Inventory management — stock tracking, low-stock alerts, reorder list
+- [ ] 04-03: Smart reorder engine — pattern tracking, predictions, automated outreach
 
-**Client issues addressed:** F1, F2, F3, F4, F5 (info), F6, H1, H3
+**Client issues addressed:** E1-E5, G1-G3, Original Module 4 + 5 + 7 features
+
+### Phase 5: CRM & Communication Hub
+**Goal**: Client and staff can look up any customer, see full history, communicate via email and WhatsApp, all from a mobile-first interface without needing admin backend access
+**Depends on**: Phase 1 (customer data), Phase 3 (retailer data)
+**Timeline**: Weeks 13-18 (Month 4-5)
+**Modules**: Module 2 (CRM) + Module 8 (Communication Hub)
+**Requirements**: CRM-01 to 05, COMMS-01 to 05
+**Success Criteria**:
+  1. Client can search any customer on phone and see full timeline (orders, emails, WhatsApp, notes)
+  2. Staff access CRM without admin backend access
+  3. WhatsApp Business API sends and receives messages tied to customer records
+  4. Template messages for order confirmation, reorder prompts, payment reminders
+  5. GoHighLevel data migrated and searchable
+  6. Bulk messaging for announcements works
+
+Plans:
+- [ ] 05-01: CRM core — customer data, timeline, communication, mobile-first
+- [ ] 05-02: WhatsApp + email integration, conversation history, templates, bulk messaging
+- [ ] 05-03: GHL data migration, contact form routing, staff access
+
+**Client issues addressed:** F1-F6, Original Module 2 + 8 features
+
+### Phase 6: Reporting, Analytics & Polish
+**Goal**: Data-driven dashboards showing sales, stock, and retailer performance with exportable reports — plus final optimization, documentation, and handover
+**Depends on**: All previous phases (data must exist)
+**Timeline**: Weeks 17-24 (Month 5-6)
+**Modules**: Module 9 (Reporting & Analytics) + admin polish + handover
+**Requirements**: REPORT-01 to 05
+**Success Criteria**:
+  1. Sales reports by product, retailer, region, and time period
+  2. Top retailers and underperformers visible on dashboard
+  3. Revenue tracking and growth metrics displayed with visual charts
+  4. All reports exportable as CSV/PDF
+  5. Admin dashboard shows clean pending/overdue/completed orders
+  6. Full documentation and handover complete
+
+Plans:
+- [ ] 06-01: Reporting dashboards — sales, inventory, retailer performance, KPIs
+- [ ] 06-02: Admin dashboard polish — simplified views, analytics, role-based access
+- [ ] 06-03: Optimization, documentation, training, handover
+
+**Client issues addressed:** H1, H3, Original Module 9 features
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
+Phases 1-2 overlap slightly. Phases 3-6 are sequential with some overlap.
 
-| Phase | Plans Complete | Status | Completed |
-|-------|---------------|--------|-----------|
-| 1. Audit, Security & Infrastructure | 0/3 | Not started | - |
-| 2. Payments & Order Flow | 0/4 | Not started | - |
-| 3. Users, Pricing & Affiliate System | 0/3 | Not started | - |
-| 4. Shipping Automation & Inventory | 0/3 | Not started | - |
-| 5. CRM & Admin Polish | 0/3 | Not started | - |
+| Phase | Plans Complete | Status | Timeline |
+|-------|---------------|--------|----------|
+| 1. E-Commerce Core + Payments | 0/4 | Not started | Weeks 1-4 |
+| 2. Users, Pricing & Affiliate | 0/3 | Not started | Weeks 3-6 |
+| 3. Retailer Portal + Invoicing | 0/2 | Not started | Weeks 7-10 |
+| 4. Shipping, Inventory & Smart Reorder | 0/3 | Not started | Weeks 9-14 |
+| 5. CRM & Communication Hub | 0/3 | Not started | Weeks 13-18 |
+| 6. Reporting, Analytics & Polish | 0/3 | Not started | Weeks 17-24 |
 
 ---
 *Roadmap created: 2026-04-09*
-*Last updated: 2026-04-09*
+*Last updated: 2026-04-09 — expanded to all 9 modules, compressed timeline*
