@@ -31,9 +31,30 @@
 | WooCommerce BACS (built-in) | Core | All regions | Bank transfer built into WooCommerce core; requires order approval plugin layered on top |
 | Order Approval for WooCommerce | Free (core) / Pro | All regions | Intercepts BACS orders before Processing; adds "Awaiting Approval" status; admin approve/reject buttons; updated Oct 2025. Plugin: `order-approval-woocommerce` on wordpress.org |
 
+**Dedicated Nicotine Payment Processors (Perplexity research 2026-04-08):**
+
+| Processor | Nicotine Support | WooCommerce | Regions | Notes |
+|-----------|-----------------|-------------|---------|-------|
+| **Tower Payments** | Yes — dedicated gateway for nicotine pouches, launched Jan 2026 | Yes (native integration) | US, International | No hidden fees, upfront pricing, fraud tools, Visa/Mastercard registration assistance. Purpose-built for post-Stripe-ban nicotine e-commerce. Source: nicotineinsider.com, tobaccoreporter.com |
+| **AllayPay** | Yes — nicotine pouches explicitly listed | Likely (check docs) | International | Competitive fees, compliance support, praised for CBD/nicotine support. Source: allaypay.com |
+| **Vector Payments** | Yes — tobacco/nicotine pouches | Not specified | US-based, global | Low fees, high approval rates for nicotine. Source: vectorpayments.com |
+| **SagePay (Opayo)** | Yes — high-risk vapes/e-cigs | Via plugins | UK/Europe focus | Trusted for 4B+ payments, fraud prevention. Source: metizsoft.com |
+
+**Key insight:** Tower Payments is purpose-built for nicotine pouches post-Stripe-ban (Jan 2026). This may be a better long-term solution than the gift card workaround for CA/US, and a WorldPay alternative for UK. **Recommend evaluating Tower Payments during Phase 2 as potential replacement for gift card workaround.**
+
+**Age Verification (legal requirement — Perplexity research 2026-04-08):**
+
+| Service | Features | WooCommerce | Cost |
+|---------|----------|-------------|------|
+| **Token of Trust** | Database checks, ID/selfie, repeat customer bypass | Official WP plugin | Free trial, paid subscription |
+| **Shufti Pro** | Real-time ID validation, selfie re-verification | API integration | Contact for pricing |
+| **ShipRestrict** | Public records age check + shipping rules | WooCommerce plugin | Contact for pricing |
+
+US PACT Act requires: pre-checkout age verification, ATF registration, private carrier only (no USPS), adult signature at delivery. UK requires 18+ verification. These are **launch blockers**, not optional features.
+
 **What NOT to use:** Stripe — permanently banned for nicotine products. PayPal — verify separately for nicotine compliance before considering.
 
-**Confidence: HIGH-MEDIUM** — WorldPay fix approach is standard PHP/server config. Gift card plugin is bespoke; integration approach TBD on audit.
+**Confidence: HIGH-MEDIUM** — WorldPay fix approach is standard PHP/server config. Gift card plugin is bespoke; integration approach TBD on audit. Tower Payments is HIGH confidence as a viable alternative (multiple independent 2026 sources).
 
 ---
 
