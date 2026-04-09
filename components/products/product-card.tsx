@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -5,6 +7,7 @@ import { Product } from '@/lib/db/schema';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useRegion } from '@/lib/config/region-context';
 
 interface ProductCardProps {
   product: Product;
@@ -29,12 +32,13 @@ function getStrengthLabel(strength: string | null): string {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const { region, config } = useRegion();
   const strengthVariant = getStrengthBadgeVariant(product.nicotineStrength);
   const strengthLabel = getStrengthLabel(product.nicotineStrength);
 
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg">
-      <Link href={`/products/${product.slug}`} className="block">
+      <Link href={`/${region}/products/${product.slug}`} className="block">
         <div className="relative aspect-square overflow-hidden bg-gray-100">
           {product.imageUrl ? (
             <Image
@@ -74,7 +78,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
       <CardContent className="space-y-3 p-4">
         <div className="space-y-1">
-          <Link href={`/products/${product.slug}`}>
+          <Link href={`/${region}/products/${product.slug}`}>
             <h3 className="font-semibold text-base line-clamp-2 hover:text-green-600 transition-colors">
               {product.name}
             </h3>
@@ -103,11 +107,11 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center justify-between pt-2">
           <div>
             <p className="text-xl font-bold text-green-600">
-              €{parseFloat(product.price).toFixed(2)}
+              {config.currencySymbol}{config.basePrice.toFixed(2)}
             </p>
             {product.compareAtPrice && parseFloat(product.compareAtPrice) > parseFloat(product.price) && (
               <p className="text-xs text-muted-foreground line-through">
-                €{parseFloat(product.compareAtPrice).toFixed(2)}
+                {config.currencySymbol}{parseFloat(product.compareAtPrice!).toFixed(2)}
               </p>
             )}
           </div>
