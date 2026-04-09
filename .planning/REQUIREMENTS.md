@@ -54,7 +54,7 @@
 
 ### CRM Preview
 
-- [ ] **CRM-01**: Customer profile page shows contact info, order timeline, and stubbed communication history (read-only preview)
+- [x] **CRM-01**: Customer profile page shows contact info, order timeline, and stubbed communication history (read-only preview)
 
 ### Mobile
 
@@ -125,7 +125,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### CRM
 
-- [ ] **CRM-01**: Basic CRM with customer data storage, email/phone communication capabilities, and full interaction history per customer
+- [x] **CRM-01**: Basic CRM with customer data storage, email/phone communication capabilities, and full interaction history per customer
 - [ ] **CRM-02**: Migrate existing customer data from GoHighLevel (white-label: OpenDoors at app.opendoors.ai)
 - [ ] **CRM-03**: Staff access to CRM without WordPress admin access — wife and EA can manage marketing/automations
 - [ ] **CRM-04**: Mobile-friendly CRM interface — client does everything on phone
@@ -220,7 +220,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | RETAIL-03 | Phase 5 | Complete |
 | FULFL-01 | Phase 5 | Complete |
 | FULFL-02 | Phase 5 | Pending |
-| CRM-01 | Phase 5 | Pending |
+| CRM-01 | Phase 5 | Complete |
 | MOB-01 | Phase 6 | Pending |
 
 **Coverage:**
