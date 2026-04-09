@@ -160,6 +160,22 @@ async function seedDemoAccount() {
   console.log('Demo account seeded: demo@puxx.com with 4 stub orders and referral profile.');
 }
 
+async function seedAdminUser() {
+  const db = getDb();
+
+  // Idempotent: delete existing admin user before re-seeding
+  await db.delete(users).where(eq(users.email, 'admin@puxx.com'));
+
+  await db.insert(users).values({
+    name: 'Admin User',
+    email: 'admin@puxx.com',
+    passwordHash: await hashPassword('admin123'),
+    role: 'admin',
+  });
+
+  console.log('Admin user seeded: admin@puxx.com');
+}
+
 async function seed() {
   const db = getDb();
   const email = 'test@test.com';
@@ -194,6 +210,7 @@ async function seed() {
 
   await seedProducts();
   await seedDemoAccount();
+  await seedAdminUser();
 }
 
 seed()
