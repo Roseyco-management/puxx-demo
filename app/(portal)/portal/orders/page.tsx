@@ -6,8 +6,6 @@ import { orders } from '@/lib/db/schema';
 import { eq, desc } from 'drizzle-orm';
 import InvoiceButton from '@/components/portal/InvoiceButton';
 
-export const dynamic = 'force-dynamic';
-
 const statusColour: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-800',
   processing: 'bg-blue-100 text-blue-800',
