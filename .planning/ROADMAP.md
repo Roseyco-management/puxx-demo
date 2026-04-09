@@ -22,6 +22,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 4: Admin Dashboard** - Orders, customers, and product management views
 - [x] **Phase 5: Portals** - Retailer portal, fulfilment view, affiliate preview, and CRM stub (completed 2026-04-09)
 - [x] **Phase 6: Polish** - Mobile responsiveness across all key views (completed 2026-04-09)
+- [ ] **Phase 7: Demo Bug Fix** - Fix all API 500s/401s, auth pattern, product display, images, and manifest so every client-facing page renders without errors
 
 ## Phase Details
 
@@ -116,6 +117,26 @@ Plans:
 Plans:
 - [ ] 06-01-PLAN.md — Fix public views: storefront product page, checkout progress steps, customer account orders table (MOB-01)
 - [ ] 06-02-PLAN.md — Fix internal views: portal header nav, portal tables, fulfilment layout/queue, admin orders table (MOB-01)
+
+### Phase 7: Demo Bug Fix
+**Goal**: Every client-facing page in the demo renders without errors — no 500s, no 401s, no broken UI
+**Depends on**: Phase 6
+**Requirements**: Cross-cutting (fixes issues across Phases 2–5)
+**Success Criteria** (what must be TRUE):
+  1. Shop page shows 12 flavor cards (not 72 variants), each with a visible image, logo in header
+  2. Admin panel: orders, customers, and products list pages load with seeded data
+  3. Admin settings pages render (with defaults) — no 401 errors
+  4. Retailer portal orders page shows seeded orders without errors
+  5. Customer account page shows order history for the demo user
+  6. No 500 or 401 errors on any page in the demo critical path
+  7. manifest.json loads without redirect; no invalid `as` preload warnings
+
+**Root cause:** All Drizzle/Postgres direct connections fail from Vercel (DNS/pooler issues). All auth checks using `supabase.auth.getUser()` return null (app uses custom cookie auth). Fix: migrate to Supabase REST API + `getSession()` pattern throughout.
+
+Plans:
+- [ ] 07-01-PLAN.md — Wave 1: Fix admin API 500s (Drizzle→REST) + admin settings 401s (auth pattern) + manifest
+- [ ] 07-02-PLAN.md — Wave 2: Storefront product display (12 flavors) + product images + portal orders
+- [ ] 07-03-PLAN.md — Wave 3: Customer account page + admin chart dimensions + preload cleanup
 
 ## Progress
 
