@@ -1,8 +1,6 @@
 import { getUser } from '@/lib/db/queries';
 import { redirect } from 'next/navigation';
-import { db } from '@/lib/db/drizzle';
-import { orders, profiles } from '@/lib/db/schema';
-import { eq, desc } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 import { getRegionConfig } from '@/lib/config/regions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -35,34 +33,33 @@ export default async function AccountPage({ params }: AccountPageProps) {
     redirect(`/${region}/sign-in`);
   }
 
-  if (!db) {
-    throw new Error('Database not configured');
-  }
-
   const config = getRegionConfig(region);
+  const supabase = getSupabaseClient();
 
   // Get user profile
-  const profileResult = await db
-    .select()
-    .from(profiles)
-    .where(eq(profiles.userId, user.id))
-    .limit(1);
-  const profile = profileResult[0] || null;
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .limit(1)
+    .single();
+  const profile = profileData || null;
 
   // Get all orders count
-  const allOrders = await db
-    .select()
-    .from(orders)
-    .where(eq(orders.userId, user.id));
-  const totalOrderCount = allOrders.length;
+  const { data: allOrders } = await supabase
+    .from('orders')
+    .select('id')
+    .eq('user_id', user.id);
+  const totalOrderCount = allOrders?.length || 0;
 
   // Get recent orders (last 3)
-  const recentOrders = await db
-    .select()
-    .from(orders)
-    .where(eq(orders.userId, user.id))
-    .orderBy(desc(orders.createdAt))
+  const { data: recentOrdersData } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
     .limit(3);
+  const recentOrders = recentOrdersData || [];
 
   return (
     <div className="space-y-6">
@@ -114,7 +111,7 @@ export default async function AccountPage({ params }: AccountPageProps) {
                 >
                   <div className="flex items-center gap-3">
                     <div>
-                      <p className="font-medium text-gray-900">#{order.orderNumber}</p>
+                      <p className="font-medium text-gray-900">#{order.order_number}</p>
                       <p className="text-sm text-gray-500">
                         {config.currencySymbol}{parseFloat(order.total).toFixed(2)}
                       </p>
@@ -139,9 +136,9 @@ export default async function AccountPage({ params }: AccountPageProps) {
 
       {/* Referral Card */}
       <ReferralCard
-        retailCode={profile?.retailReferralCode ?? null}
-        wholesaleCode={profile?.wholesaleReferralCode ?? null}
-        commissionEarned={profile?.commissionEarned ?? null}
+        retailCode={profile?.retail_referral_code ?? null}
+        wholesaleCode={profile?.wholesale_referral_code ?? null}
+        commissionEarned={profile?.commission_earned ?? null}
         currencySymbol={config.currencySymbol}
       />
     </div>
