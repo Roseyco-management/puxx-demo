@@ -7,7 +7,7 @@ const protectedRoutes = ['/dashboard', '/account'];
 const adminRoutes = ['/admin'];
 
 // Routes that are not region routes and should pass through
-const nonRegionPrefixes = ['api', '_next', 'login', 'register', 'admin', 'account', 'dashboard'];
+const nonRegionPrefixes = ['api', '_next', 'login', 'register', 'admin', 'account', 'dashboard', 'portal', 'fulfilment'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
