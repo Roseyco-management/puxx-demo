@@ -1,8 +1,6 @@
 export const dynamic = 'force-dynamic';
 
-import { getDb } from '@/lib/db/drizzle';
-import { products } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 import {
   Table,
   TableBody,
@@ -20,15 +18,21 @@ import {
 import { Badge } from '@/components/ui/badge';
 
 export default async function PortalProductsPage() {
-  const db = getDb();
-  const allProducts = await db.select().from(products).where(eq(products.isActive, true));
+  const supabase = getSupabaseClient();
+  const { data: allProducts, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('is_active', true)
+    .order('name', { ascending: true });
+
+  const products = error || !allProducts ? [] : allProducts;
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Product Catalogue</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Wholesale pricing — 20% trade discount · {allProducts.length} products
+          Wholesale pricing — 20% trade discount · {products.length} products
         </p>
       </div>
 
@@ -49,12 +53,12 @@ export default async function PortalProductsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {allProducts.map((product) => (
+              {products.map((product) => (
                 <TableRow key={product.id}>
                   <TableCell className="font-medium">{product.name}</TableCell>
                   <TableCell>
-                    {product.nicotineStrength ? (
-                      <Badge variant="secondary">{product.nicotineStrength}</Badge>
+                    {product.nicotine_strength ? (
+                      <Badge variant="secondary">{product.nicotine_strength}</Badge>
                     ) : (
                       <span className="text-gray-400">—</span>
                     )}
@@ -65,7 +69,7 @@ export default async function PortalProductsPage() {
                       £{(parseFloat(product.price) * 0.8).toFixed(2)}
                     </span>
                   </TableCell>
-                  <TableCell>{product.stockQuantity}</TableCell>
+                  <TableCell>{product.stock_quantity}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
