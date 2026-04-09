@@ -18,7 +18,7 @@
 
 ### Products
 
-- [ ] **PROD-01**: Product catalogue displays 12 flavour variants, each with 6 strength options, at correct base pricing
+- [x] **PROD-01**: Product catalogue displays 12 flavour variants, each with 6 strength options, at correct base pricing
 - [ ] **PROD-02**: Individual product detail page with flavour/strength selector, images, and add-to-cart
 
 ### Checkout
@@ -205,7 +205,7 @@ Deferred to future release. Tracked but not in current roadmap.
 |-------------|-------|--------|
 | REG-01 | Phase 1 | Complete |
 | REG-02 | Phase 1 | Complete |
-| PROD-01 | Phase 2 | Pending |
+| PROD-01 | Phase 2 | Complete |
 | PROD-02 | Phase 2 | Pending |
 | CHKOUT-01 | Phase 2 | Pending |
 | CHKOUT-02 | Phase 2 | Pending |
