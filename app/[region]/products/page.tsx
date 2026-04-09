@@ -133,6 +133,25 @@ export default function ProductsPage() {
     return filtered;
   }, [products, searchQuery, filters, sortBy]);
 
+  // Group by flavor — one representative card per flavor (lowest strength)
+  const displayProducts = useMemo(() => {
+    const flavorMap = new Map<string, Product>();
+    for (const product of filteredAndSortedProducts) {
+      const flavor = product.flavor || product.name;
+      if (!flavorMap.has(flavor)) {
+        flavorMap.set(flavor, product);
+      } else {
+        const existing = flavorMap.get(flavor)!;
+        const existingMg = parseInt(existing.nicotineStrength?.replace('mg', '') || '0');
+        const currentMg = parseInt(product.nicotineStrength?.replace('mg', '') || '0');
+        if (currentMg < existingMg) {
+          flavorMap.set(flavor, product);
+        }
+      }
+    }
+    return Array.from(flavorMap.values());
+  }, [filteredAndSortedProducts]);
+
   const handleClearFilters = () => {
     setFilters({
       strength: null,
@@ -376,7 +395,7 @@ export default function ProductsPage() {
                 {(searchQuery || filters.strength || filters.flavorCategory || filters.featured) && (
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">
-                      <span className="font-semibold text-foreground">{filteredAndSortedProducts.length}</span> results
+                      <span className="font-semibold text-foreground">{displayProducts.length}</span> results
                     </span>
                     <Button
                       variant="ghost"
@@ -392,7 +411,7 @@ export default function ProductsPage() {
 
               {/* Product grid */}
               {filteredAndSortedProducts.length > 0 ? (
-                <ProductGrid products={filteredAndSortedProducts} />
+                <ProductGrid products={displayProducts} />
               ) : (
                 <div className="text-center py-16 bg-white rounded-xl border">
                   <ShoppingBag className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />

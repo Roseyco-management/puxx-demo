@@ -14,38 +14,34 @@ interface ProductCardProps {
   product: Product;
 }
 
-// Helper function to get strength badge variant
-function getStrengthBadgeVariant(strength: string | null): 'success' | 'warning' | 'destructive' {
-  if (!strength) return 'success';
-  const mg = parseInt(strength.replace('mg', ''));
-  if (mg <= 6) return 'success';
-  if (mg <= 16) return 'warning';
-  return 'destructive';
-}
-
-// Helper function to get strength label
-function getStrengthLabel(strength: string | null): string {
-  if (!strength) return 'Mild';
-  const mg = parseInt(strength.replace('mg', ''));
-  if (mg <= 6) return 'Mild';
-  if (mg <= 16) return 'Medium';
-  return 'Strong';
-}
+const FLAVOR_IMAGE_MAP: Record<string, string> = {
+  'Cool Mint': '/images/graphics/image.svg',
+  'Spearmint': '/images/graphics/image (1).svg',
+  'Peppermint': '/images/graphics/image (2).svg',
+  'Cherry': '/images/graphics/image (3).svg',
+  'Watermelon': '/images/graphics/image (4).svg',
+  'Strawberry': '/images/graphics/image (5).svg',
+  'Raspberry': '/images/graphics/image.svg',
+  'Blueberry': '/images/graphics/image (1).svg',
+  'Grape': '/images/graphics/image (2).svg',
+  'Citrus': '/images/graphics/image (3).svg',
+  'Cola': '/images/graphics/image (4).svg',
+  'Wintergreen': '/images/graphics/image (5).svg',
+};
 
 export function ProductCard({ product }: ProductCardProps) {
   const { region, config } = useRegion();
   const addItem = useCartStore((s) => s.addItem);
-  const strengthVariant = getStrengthBadgeVariant(product.nicotineStrength);
-  const strengthLabel = getStrengthLabel(product.nicotineStrength);
+  const resolvedImageUrl = FLAVOR_IMAGE_MAP[product.flavor || ''] || product.imageUrl || '/images/graphics/image.svg';
 
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg">
       <Link href={`/${region}/products/${product.slug}`} className="block">
         <div className="relative aspect-square overflow-hidden bg-gray-100">
-          {product.imageUrl ? (
+          {resolvedImageUrl ? (
             <Image
-              src={product.imageUrl}
-              alt={`${product.name} nicotine pouches ${product.nicotineStrength || ''} - ${product.flavor || 'premium flavor'}`}
+              src={resolvedImageUrl}
+              alt={`${product.name} nicotine pouches - ${product.flavor || 'premium flavor'}`}
               fill
               className="object-cover transition-transform group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -93,17 +89,12 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        {/* Strength badge */}
-        {product.nicotineStrength && (
-          <div className="flex items-center gap-2">
-            <Badge variant={strengthVariant} className="text-xs">
-              {product.nicotineStrength}
-            </Badge>
-            <span className="text-xs text-muted-foreground">
-              {strengthLabel}
-            </span>
-          </div>
-        )}
+        {/* Strengths badge */}
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-xs">
+            Available in 6 strengths
+          </Badge>
+        </div>
 
         {/* Price and action */}
         <div className="flex items-center justify-between pt-2">
