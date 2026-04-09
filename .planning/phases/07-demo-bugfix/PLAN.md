@@ -1,180 +1,117 @@
 # Phase 7 — Demo Bug Fix Plan
 
-**Goal:** Get the demo to a presentable state for client delivery. Every page a client would see must render without errors.
+**Goal:** Every client-facing page renders without errors. Zero 500s, zero 401s.
 
-**Constraint:** Direct Postgres/Drizzle connection to Supabase does not work from Vercel functions. All DB reads/writes must go through Supabase REST API (anon key, RLS is off). All auth checks must use `getSession()` not `supabase.auth.getUser()`.
+**Strategy:** All DB reads go through Supabase REST API (anon key, RLS off). All auth checks use `getSession()` from `lib/auth/session.ts`. Settings tables that don't exist return hardcoded defaults.
 
----
-
-## Task 1 — Fix Admin API 500s (Drizzle → Supabase REST)
-
-**Files:** `app/api/admin/products/route.ts`, `app/api/admin/orders/route.ts`, `app/api/admin/customers/route.ts`
-
-For each route: replace `getDb()` Drizzle call with `createClient(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY).from(table).select(...)`.
-
-### 1a. Admin Products API
-```ts
-// app/api/admin/products/route.ts
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-```
-
-### 1b. Admin Orders API
-```ts
-const { data, error } = await supabase.from('orders').select('*, users(name, email)').order('created_at', { ascending: false });
-```
-
-### 1c. Admin Customers API
-```ts
-const { data, error } = await supabase.from('users').select('*, profiles(phone, retail_referral_code)').order('created_at', { ascending: false });
-```
+**Working pattern to follow:** `app/api/products/route.ts` — uses `createClient()` with anon key, queries via `.from('products').select('*')`, works on Vercel. Also `lib/db/supabase.ts` exports `getSupabaseClient()` which does the same thing.
 
 ---
 
-## Task 2 — Fix Admin Settings 401s (auth pattern)
+## Wave 1 — Admin API Fixes (8 tasks, parallelizable)
 
-**Files:** `app/api/admin/settings/general/route.ts`, `app/api/admin/settings/payments/route.ts`, `app/api/admin/settings/shipping/route.ts`
+### Task 1.1: Admin Products GET → Supabase REST
+**File:** `app/api/admin/products/route.ts` (GET handler only, POST already uses getSupabaseClient)
+- Replace `getDb()` + Drizzle query with `getSupabaseClient().from('products').select('*').order('created_at', { ascending: false })`
+- Transform snake_case response to match current return shape
 
-Replace:
-```ts
-const { data: { user } } = await supabase.auth.getUser();
-if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-```
+### Task 1.2: Admin Orders GET → Supabase REST
+**File:** `app/api/admin/orders/route.ts`
+- Replace `getDb()` with `getSupabaseClient().from('orders').select('*').order('created_at', { ascending: false })`
 
-With:
-```ts
-import { getSession } from '@/lib/auth/session';
-const session = await getSession();
-if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-```
+### Task 1.3: Admin Customers GET → Supabase REST
+**File:** `app/api/admin/customers/route.ts`
+- Replace `getDb()` join query with `getSupabaseClient().from('users').select('*, profiles(phone, retail_referral_code)').order('created_at', { ascending: false })`
 
-The settings table (`settings`, `shipping_zones`) doesn't exist in the demo DB — return sensible defaults instead of querying. This avoids needing to create more tables for the demo.
+### Task 1.4: Admin Customer Detail GET → Supabase REST
+**File:** `app/api/admin/customers/[id]/route.ts` (GET handler, DELETE already uses getSupabaseClient)
+- Replace `getDb()` with `getSupabaseClient().from('users').select('*, profiles(*)').eq('id', customerId).single()`
 
-### Default responses for settings routes
-- `settings/general` → return `{ storeName: 'PUXX Demo', currency: 'GBP', timezone: 'Europe/London' }`
-- `settings/payments` → return `{ provider: 'WorldPay', testMode: true }`
-- `settings/shipping` → return `{ zones: [{ name: 'UK Standard', rate: 4.99, freeOver: 50 }] }`
+### Task 1.5: Admin Subscribers → Supabase REST
+**File:** `app/api/admin/marketing/subscribers/route.ts` (GET, POST, DELETE)
+- Replace all 3 `getDb()` calls with getSupabaseClient() equivalents
+- Check if `subscribers` table exists in DB first — if not, return empty array
+
+### Task 1.6: Fix all settings routes (9 files) — auth + defaults
+**Files:**
+- `app/api/admin/settings/general/route.ts`
+- `app/api/admin/settings/payments/route.ts`
+- `app/api/admin/settings/shipping/route.ts`
+- `app/api/admin/settings/shipping/[id]/route.ts`
+- `app/api/admin/settings/taxes/route.ts`
+- `app/api/admin/settings/email-templates/route.ts`
+- `app/api/admin/settings/email-templates/[slug]/route.ts`
+
+For each:
+1. Replace `import { createClient } from "@/lib/supabase/server"` → `import { getSession } from '@/lib/auth/session'`
+2. Replace `const { data: { user } } = await supabase.auth.getUser(); if (!user)...` → `const session = await getSession(); if (!session?.user?.id)...`
+3. For tables that don't exist (`settings`, `shipping_zones`, `email_templates`): return hardcoded demo defaults instead of querying
+
+### Task 1.7: Fix admin users + activity routes — auth
+**Files:**
+- `app/api/admin/users/route.ts`
+- `app/api/admin/activity/route.ts`
+- `app/api/admin/orders/[id]/invoice/route.ts`
+
+Same auth pattern fix as Task 1.6. For activity, return empty array. For users, query via getSupabaseClient. For invoice, return placeholder PDF or error gracefully.
+
+### Task 1.8: Middleware static file fix
+**File:** `middleware.ts` line 104
+- Update matcher to: `['/((?!api|_next/static|_next/image|favicon.ico|manifest\\.json|robots\\.txt|sitemap|videos|images).*)']`
 
 ---
 
-## Task 3 — Fix Storefront: Show 12 Flavor Cards Not 72
+## Wave 2 — Storefront + Portal Fixes (5 tasks)
 
+### Task 2.1: Products page — show 12 flavors not 72
 **File:** `app/[region]/products/page.tsx`
+- After fetching products, group by `flavor` field
+- Show one card per flavor (use lowest-strength variant as representative)
+- Display strength as pills/badges on each card
 
-The products API returns 72 items. Add deduplication logic client-side to show only the first product per flavor (the 6mg variant as the representative), and display the 6 strengths as variant pills on each card.
+### Task 2.2: Product images — assign per flavor
+**File:** `components/products/product-grid.tsx` or `ProductCard`
+- Map each flavor to one of the 6 SVGs: `image.svg` through `image (5).svg`
+- Apply in the card render: `src={FLAVOR_IMAGE_MAP[product.flavor] || product.imageUrl}`
 
-```ts
-// After fetching products, group by flavor
-const flavorMap = new Map<string, Product>();
-products.forEach(p => {
-  if (!flavorMap.has(p.flavor)) flavorMap.set(p.flavor, p);
-});
-const featuredProducts = Array.from(flavorMap.values());
-```
+### Task 2.3: Portal orders page → Supabase REST
+**File:** `app/(portal)/portal/orders/page.tsx`
+- Replace `getDb()` with getSupabaseClient for orders query
+- Keep session-based user ID filter
 
-Update ProductGrid to receive the grouped 12 flavors.
+### Task 2.4: Customer account → Supabase REST
+**File:** `app/[region]/account/page.tsx`
+- Replace `getDb()` calls with getSupabaseClient for profile + orders
 
-Also update the `ProductCard` to show a strength selector (6 pills: 4mg, 6mg, 8mg, 12mg, 16mg, 20mg) below the product image.
-
----
-
-## Task 4 — Fix Product Images (Assign per Flavor)
-
-**File:** `app/api/products/route.ts` or products display logic
-
-The 6 SVG files in `/images/graphics/` exist: `image.svg`, `image (1).svg` through `image (5).svg`. Map each of the 12 flavors to one of the 6 SVGs based on flavor category:
-
-```ts
-const FLAVOR_IMAGE_MAP: Record<string, string> = {
-  'Cool Mint': '/images/graphics/image.svg',
-  'Spearmint': '/images/graphics/image (1).svg',
-  'Watermelon': '/images/graphics/image (2).svg',
-  'Strawberry': '/images/graphics/image (3).svg',
-  'Grape': '/images/graphics/image (4).svg',
-  'Citrus': '/images/graphics/image (5).svg',
-  // remaining flavors cycle through
-};
-```
-
-Apply this in the `ProductCard` component: if `imageUrl` is the generic placeholder, map to the flavor-specific SVG.
+### Task 2.5: Fulfilment order update → Supabase REST
+**File:** `app/api/fulfilment/orders/[id]/route.ts`
+- Replace `getDb()` PATCH with getSupabaseClient `.update()`
 
 ---
 
-## Task 5 — Fix Manifest Redirect
+## Wave 3 — Polish (3 tasks)
 
-**File:** `middleware.ts`
+### Task 3.1: Chart dimension fixes
+**Files:** Admin dashboard chart components (find recharts usage)
+- Wrap in container with `min-h-[300px]` and explicit width
 
-Add `'manifest.json'`, `'robots.txt'`, `'sitemap.xml'` to the static file bypass, or update the middleware config matcher:
+### Task 3.2: Logo verification
+- Confirm `PublicLayout` → `Header` renders logo from `/images/logo/PUXX-LOGO-LONG-BLACK.png`
 
-```ts
-export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|manifest.json|robots.txt|sitemap|images|videos).*)'],
-  runtime: 'nodejs'
-};
-```
-
----
-
-## Task 6 — Fix Retailer Portal API 500s
-
-**Check files:** `app/api/portal/**/route.ts`, `app/(portal)/portal/orders/page.tsx`
-
-The orders page (`app/(portal)/portal/orders/page.tsx`) already uses `getDb()` (Drizzle). Replace with Supabase REST:
-
-```ts
-const supabase = createClient(...);
-const { data: retailerOrders } = await supabase
-  .from('orders')
-  .select('*')
-  .eq('user_id', session.user.id)
-  .order('created_at', { ascending: false });
-```
-
----
-
-## Task 7 — Fix Customer Account / Phase 3
-
-**Files:** `app/(customer)/account/` or `app/[region]/account/`
-
-Implement a minimal customer account page showing:
-1. Order history table (orders from Supabase REST by user_id)
-2. Referral code from profile
-
----
-
-## Task 8 — Fix Preload and Manifest Errors (Cleanup)
-
-- `<link rel=preload> must have valid 'as' value` — find in layout files or `next.config` font/script declarations
-- Chart containers: add `style={{ minHeight: 300 }}` wrapper around recharts components in admin dashboard
+### Task 3.3: Preload cleanup
+- Find `<link rel=preload>` without valid `as` attribute in layout files
 
 ---
 
 ## Success Criteria
 
-When Phase 7 is complete, a client clicking through the demo should see:
-
-- [ ] Shop page: 12 flavor cards with images, logo visible in header
-- [ ] Admin panel: All list pages load (orders, customers, products) with seeded data
-- [ ] Admin settings: Pages render (with defaults, not errors)
-- [ ] Retailer portal: Orders page shows seeded orders
-- [ ] Customer account: Order history page renders
-- [ ] Zero 500/401 errors in browser console on any demo-path page
-- [ ] Manifest valid (no browser warning)
-
----
-
-## Execution Order
-
-Wave 1 (parallel — independent APIs):
-- Task 1: Admin API 500s
-- Task 2: Admin settings 401s
-- Task 5: Manifest fix (1-line change)
-
-Wave 2 (parallel — frontend fixes):
-- Task 3: Products display (12 flavors)
-- Task 4: Product images
-- Task 6: Portal orders
-
-Wave 3:
-- Task 7: Customer account
-- Task 8: Cleanup/polish
+- [ ] `https://puxx-demo.vercel.app/uk/products` — 12 flavor cards with images
+- [ ] `https://puxx-demo.vercel.app/admin` — dashboard loads, all nav pages render
+- [ ] `https://puxx-demo.vercel.app/admin/products` — product list with 72 items
+- [ ] `https://puxx-demo.vercel.app/admin/orders` — order list with seeded orders
+- [ ] `https://puxx-demo.vercel.app/admin/customers` — customer list
+- [ ] `https://puxx-demo.vercel.app/admin/settings` — settings pages render with defaults
+- [ ] `https://puxx-demo.vercel.app/portal/orders` — retailer orders visible
+- [ ] `https://puxx-demo.vercel.app/uk/account` — customer order history
+- [ ] `https://puxx-demo.vercel.app/manifest.json` — valid JSON, no redirect
+- [ ] Zero 500/401 errors in browser console on critical path
