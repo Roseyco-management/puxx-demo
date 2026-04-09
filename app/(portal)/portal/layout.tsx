@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import { Toaster } from "sonner";
 
 export const dynamic = 'force-dynamic';
@@ -14,6 +15,7 @@ export default function PortalLayout({
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState<string | null>(null);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -64,27 +66,64 @@ export default function PortalLayout({
   return (
     <div className="min-h-screen bg-gray-50">
       <Toaster position="top-right" richColors />
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl font-bold text-emerald-600">PUXX</span>
-          <span className="text-gray-400">|</span>
-          <span className="text-sm font-medium text-gray-600">Retailer Portal</span>
-        </div>
-        <nav className="flex items-center gap-6">
-          <Link href="/portal/products" className="text-sm font-medium text-gray-700 hover:text-emerald-600">
-            Products
-          </Link>
-          <Link href="/portal/orders" className="text-sm font-medium text-gray-700 hover:text-emerald-600">
-            Orders
-          </Link>
-          <span className="text-sm text-gray-500">{userName}</span>
+      <header className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl font-bold text-emerald-600">PUXX</span>
+            <span className="text-gray-400">|</span>
+            <span className="text-sm font-medium text-gray-600">Retailer Portal</span>
+          </div>
+          {/* Desktop nav */}
+          <nav className="hidden sm:flex items-center gap-6">
+            <Link href="/portal/products" className="text-sm font-medium text-gray-700 hover:text-emerald-600">
+              Products
+            </Link>
+            <Link href="/portal/orders" className="text-sm font-medium text-gray-700 hover:text-emerald-600">
+              Orders
+            </Link>
+            <span className="text-sm text-gray-500">{userName}</span>
+            <button
+              onClick={handleLogout}
+              className="text-sm font-medium text-red-600 hover:text-red-700"
+            >
+              Logout
+            </button>
+          </nav>
+          {/* Mobile hamburger */}
           <button
-            onClick={handleLogout}
-            className="text-sm font-medium text-red-600 hover:text-red-700"
+            className="sm:hidden p-2 text-gray-600"
+            onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+            aria-label="Toggle menu"
           >
-            Logout
+            {isMobileNavOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
-        </nav>
+        </div>
+        {/* Mobile nav dropdown */}
+        {isMobileNavOpen && (
+          <nav className="sm:hidden mt-3 pt-3 border-t border-gray-100 space-y-1">
+            <Link
+              href="/portal/products"
+              className="block px-3 py-2 text-sm font-medium text-gray-700 hover:text-emerald-600"
+              onClick={() => setIsMobileNavOpen(false)}
+            >
+              Products
+            </Link>
+            <Link
+              href="/portal/orders"
+              className="block px-3 py-2 text-sm font-medium text-gray-700 hover:text-emerald-600"
+              onClick={() => setIsMobileNavOpen(false)}
+            >
+              Orders
+            </Link>
+            <div className="px-3 py-2 text-sm text-gray-500">{userName}</div>
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left px-3 py-2 text-sm font-medium text-red-600 hover:text-red-700"
+            >
+              Logout
+            </button>
+          </nav>
+        )}
       </header>
       <main className="p-6 mx-auto max-w-screen-xl">{children}</main>
     </div>

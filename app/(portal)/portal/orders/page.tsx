@@ -36,6 +36,7 @@ export default async function PortalOrdersPage() {
             <p className="text-sm mt-1">Your orders will appear here once placed.</p>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
@@ -82,6 +83,7 @@ export default async function PortalOrdersPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>
