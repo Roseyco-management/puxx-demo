@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { signToken, verifyToken } from '@/lib/auth/session';
+import { VALID_REGIONS } from '@/lib/config/regions';
 
 const protectedRoutes = ['/dashboard', '/account'];
 const adminRoutes = ['/admin'];
+
+// Routes that are not region routes and should pass through
+const nonRegionPrefixes = ['api', '_next', 'login', 'register', 'admin', 'account', 'dashboard'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -11,7 +15,34 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
   const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
 
+  // --- Region handling (prepended before auth logic) ---
+
+  // Root redirect: / -> /uk
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/uk', request.url));
+  }
+
+  // Extract first path segment to check if it's a region
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const maybeRegion = pathSegments[0];
+  const isRegionRoute = VALID_REGIONS.includes(maybeRegion as 'ca' | 'uk' | 'us');
+  const isNonRegionRoute = nonRegionPrefixes.includes(maybeRegion);
+
+  // Unknown segment that isn't a known non-region prefix -> redirect to /uk
+  if (maybeRegion && !isRegionRoute && !isNonRegionRoute) {
+    return NextResponse.redirect(new URL('/uk', request.url));
+  }
+
+  // --- Session / auth logic (unchanged from original) ---
+
   let res = NextResponse.next();
+
+  // Set x-region header for server components on valid region routes
+  if (isRegionRoute) {
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set('x-region', maybeRegion);
+    res = NextResponse.next({ request: { headers: requestHeaders } });
+  }
 
   // Handle admin routes - require session and admin role
   if (isAdminRoute) {
@@ -24,18 +55,9 @@ export async function middleware(request: NextRequest) {
     try {
       const parsed = await verifyToken(sessionCookie.value);
 
-      // Check if user has admin role (you can customize this check)
-      // For now, we'll allow access if they have a valid session
-      // You can add role checking here when you implement the roles in your session token
       if (!parsed?.user) {
         return NextResponse.redirect(new URL('/login', request.url));
       }
-
-      // TODO: Check user role from database if needed
-      // const hasAdminRole = await checkUserRole(parsed.user.id);
-      // if (!hasAdminRole) {
-      //   return NextResponse.redirect(new URL('/', request.url));
-      // }
 
     } catch (error) {
       console.error('Invalid session for admin route:', error);
