@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Mail, ExternalLink, Trash2 } from "lucide-react";
+import { ArrowLeft, Mail, Trash2 } from "lucide-react";
 import { CustomerProfile } from "@/components/admin/customers/CustomerProfile";
-import { CustomerOrderHistory } from "@/components/admin/customers/CustomerOrderHistory";
-import { CustomerNotes } from "@/components/admin/customers/CustomerNotes";
 import { toast } from "sonner";
 
 interface Address {
@@ -22,9 +20,23 @@ interface Address {
   isDefaultBilling: boolean;
 }
 
+const statusColours: Record<string, string> = {
+  pending: 'bg-amber-100 text-amber-800',
+  processing: 'bg-blue-100 text-blue-800',
+  shipped: 'bg-emerald-100 text-emerald-800',
+  delivered: 'bg-gray-100 text-gray-700',
+  cancelled: 'bg-red-100 text-red-800',
+};
+
+const STUB_COMMS = [
+  { id: 1, type: 'email', subject: 'Welcome to PUXX', date: 'Account registration', note: 'Automated welcome email sent on account creation' },
+  { id: 2, type: 'email', subject: 'Order Confirmation', date: 'Most recent order', note: 'Automated order confirmation email sent' },
+];
+
 export default function CustomerDetailPage({ params }: { params: { id: string } }) {
   const [customer, setCustomer] = useState<any>(null);
   const [addresses, setAddresses] = useState<Address[]>([]);
+  const [customerOrders, setCustomerOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -40,6 +52,7 @@ export default function CustomerDetailPage({ params }: { params: { id: string } 
       if (data.success) {
         setCustomer(data.customer);
         setAddresses(data.customer.addresses || []);
+        setCustomerOrders(data.customer.orders || []);
       } else {
         toast.error('Customer not found');
         router.push('/admin/customers');
@@ -183,11 +196,57 @@ export default function CustomerDetailPage({ params }: { params: { id: string } 
         </div>
       )}
 
-      {/* Order History */}
-      <CustomerOrderHistory customerId={params.id} />
+      {/* Order Timeline */}
+      <div className="bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:border-gray-800">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Order Timeline</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{customerOrders.length} orders</p>
+        </div>
+        <div className="divide-y divide-gray-200 dark:divide-gray-800">
+          {customerOrders.length === 0 ? (
+            <p className="px-6 py-4 text-sm text-gray-500">No orders found</p>
+          ) : (
+            customerOrders.map((order: any) => (
+              <div key={order.id} className="px-6 py-4 flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-gray-900 dark:text-white">{order.orderNumber}</p>
+                  <p className="text-sm text-gray-500">{order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-medium">£{parseFloat(order.total ?? '0').toFixed(2)}</span>
+                  <span className={`px-2 py-0.5 rounded text-xs font-medium capitalize ${statusColours[order.status] ?? 'bg-gray-100 text-gray-700'}`}>
+                    {order.status}
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
 
-      {/* Admin Notes */}
-      <CustomerNotes customerId={params.id} />
+      {/* Communication History */}
+      <div className="bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:border-gray-800">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Communication History</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Demo preview — full history in v1</p>
+        </div>
+        <div className="divide-y divide-gray-200 dark:divide-gray-800">
+          {STUB_COMMS.map((comm) => (
+            <div key={comm.id} className="px-6 py-4">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="font-medium text-gray-900 dark:text-white">{comm.subject}</p>
+                  <p className="text-sm text-gray-500 mt-0.5">{comm.note}</p>
+                </div>
+                <span className="px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 capitalize">
+                  {comm.type}
+                </span>
+              </div>
+              <p className="text-xs text-gray-400 mt-1">{comm.date}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
