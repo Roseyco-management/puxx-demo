@@ -48,7 +48,7 @@ Plans:
   2. Individual product detail page shows images, a flavour/strength selector, and an add-to-cart button
   3. Age verification gate appears before checkout and blocks progress until the user confirms they are 18+
   4. A customer can complete an end-to-end checkout for the UK region using the WorldPay integration ported from puxxireland
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 02-01-PLAN.md — Add basePrice to region config and seed 72 product variants (PROD-01)
@@ -104,7 +104,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-04-09 |
-| 2. Storefront | 0/3 | Not started | - |
+| 2. Storefront | 2/3 | In Progress|  |
 | 3. Customer Account | 0/TBD | Not started | - |
 | 4. Admin Dashboard | 0/TBD | Not started | - |
 | 5. Portals | 0/TBD | Not started | - |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-01-PLAN.md (basePrice + 72 product variants)
-last_updated: "2026-04-09T05:58:38.454Z"
+stopped_at: Completed 02-02-PLAN.md (region-aware storefront routes)
+last_updated: "2026-04-09T06:06:11.252Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P01 | 5 | 2 tasks | 14 files |
 | Phase 01-foundation P02 | 2 | 2 tasks | 2 files |
 | Phase 02-storefront P01 | 1 | 2 tasks | 2 files |
+| Phase 02-storefront P02 | 286s | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: All Header nav links (including Login/Shop Now CTAs) region-prefixed to maintain consistent region-aware navigation
 - [Phase 02-storefront]: basePrice stored as number in RegionConfig for arithmetic in cart/pricing calculations; products table price column remains GBP string as canonical
 - [Phase 02-storefront]: Stripe removed entirely from seed.ts — permanently banned for nicotine products; seed is idempotent via delete-before-insert
+- [Phase 02-storefront]: ProductCard uses config.basePrice (not product.price) for display — all regions show flat regional price per config
+- [Phase 02-storefront]: Checkout address fields neutralised: Eircode->Postcode, County->County/State, phone placeholder generalised
 
 ### Pending Todos
 
@@ -85,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T05:58:38.453Z
-Stopped at: Completed 02-01-PLAN.md (basePrice + 72 product variants)
+Last session: 2026-04-09T06:06:11.250Z
+Stopped at: Completed 02-02-PLAN.md (region-aware storefront routes)
 Resume file: None
