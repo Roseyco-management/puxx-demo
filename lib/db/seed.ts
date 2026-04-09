@@ -1,42 +1,67 @@
-import { stripe } from '../payments/stripe';
 import { getDb } from './drizzle';
-import { users, teams, teamMembers } from './schema';
+import { users, teams, teamMembers, products } from './schema';
 import { hashPassword } from '@/lib/auth/session';
 
-async function createStripeProducts() {
-  console.log('Creating Stripe products and prices...');
+const FLAVOURS = [
+  'Mango Ice',
+  'Fresh Mint',
+  'Citrus Burst',
+  'Berry Blast',
+  'Watermelon Chill',
+  'Tropical Storm',
+  'Spearmint',
+  'Cool Menthol',
+  'Blueberry Rush',
+  'Apple Crisp',
+  'Passion Fruit',
+  'Blackcurrant Freeze',
+];
 
-  const baseProduct = await stripe.products.create({
-    name: 'Base',
-    description: 'Base subscription plan',
-  });
+const STRENGTHS = ['4mg', '6mg', '8mg', '12mg', '16mg', '20mg'];
 
-  await stripe.prices.create({
-    product: baseProduct.id,
-    unit_amount: 800, // $8 in cents
-    currency: 'usd',
-    recurring: {
-      interval: 'month',
-      trial_period_days: 7,
-    },
-  });
+// Flavours that have their 4mg variant featured
+const FEATURED_FLAVOURS = new Set(['Mango Ice', 'Fresh Mint', 'Berry Blast']);
 
-  const plusProduct = await stripe.products.create({
-    name: 'Plus',
-    description: 'Plus subscription plan',
-  });
+function toSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
 
-  await stripe.prices.create({
-    product: plusProduct.id,
-    unit_amount: 1200, // $12 in cents
-    currency: 'usd',
-    recurring: {
-      interval: 'month',
-      trial_period_days: 7,
-    },
-  });
+async function seedProducts() {
+  const db = getDb();
 
-  console.log('Stripe products and prices created successfully.');
+  // Idempotent: clear existing products before re-seeding
+  await db.delete(products);
+
+  const variants = [];
+
+  for (const flavour of FLAVOURS) {
+    for (const strength of STRENGTHS) {
+      const name = `${flavour} ${strength}`;
+      const slug = toSlug(name);
+      const isFeatured = FEATURED_FLAVOURS.has(flavour) && strength === '4mg';
+
+      variants.push({
+        name,
+        slug,
+        description: `PUXX ${flavour} nicotine pouches — ${strength} strength. Tobacco-free. 20 pouches per can.`,
+        price: '6.00',
+        nicotineStrength: strength,
+        flavor: flavour,
+        pouchesPerCan: 20,
+        stockQuantity: 100,
+        isActive: true,
+        isFeatured,
+        imageUrl: '/images/graphics/image.svg',
+      });
+    }
+  }
+
+  console.log('Seeding 72 product variants...');
+  await db.insert(products).values(variants);
+  console.log('Products seeded successfully.');
 }
 
 async function seed() {
@@ -51,7 +76,7 @@ async function seed() {
       {
         email: email,
         passwordHash: passwordHash,
-        role: "owner",
+        role: 'owner',
       },
     ])
     .returning();
@@ -71,7 +96,7 @@ async function seed() {
     role: 'owner',
   });
 
-  await createStripeProducts();
+  await seedProducts();
 }
 
 seed()
