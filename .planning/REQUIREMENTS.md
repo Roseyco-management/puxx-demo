@@ -44,7 +44,7 @@
 ### Retailer Portal
 
 - [x] **RETAIL-01**: Retailer portal has branded PUX login, separate from main storefront
-- [ ] **RETAIL-02**: Retailer can browse catalogue with wholesale pricing tiers
+- [x] **RETAIL-02**: Retailer can browse catalogue with wholesale pricing tiers
 - [x] **RETAIL-03**: Retailer can view order history and invoice list
 
 ### Fulfilment View
@@ -216,7 +216,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | ADMIN-03 | Phase 4 | Complete |
 | AFF-01 | Phase 5 | Complete |
 | RETAIL-01 | Phase 5 | Complete |
-| RETAIL-02 | Phase 5 | Pending |
+| RETAIL-02 | Phase 5 | Complete |
 | RETAIL-03 | Phase 5 | Complete |
 | FULFL-01 | Phase 5 | Complete |
 | FULFL-02 | Phase 5 | Pending |
