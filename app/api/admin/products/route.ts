@@ -1,147 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getDb } from '@/lib/db/drizzle';
 import { getSupabaseClient } from '@/lib/db/supabase';
+import { products } from '@/lib/db/schema';
 import { productSchema } from '@/lib/validations/product';
+import { desc } from 'drizzle-orm';
 
-/**
- * GET /api/admin/products
- * Fetches all products (including inactive) with optional filtering for admin
- *
- * Query parameters:
- * - search: string - Search by name or SKU
- * - category: string - Filter by category
- * - status: string - Filter by active status (active, inactive, all)
- * - featured: boolean - Filter by featured status
- * - sort: string - Sort by field (name, price, stock, created)
- * - order: string - Sort order (asc, desc)
- * - page: number - Page number
- * - limit: number - Items per page
- */
-export async function GET(request: NextRequest) {
-  const supabase = getSupabaseClient();
+export async function GET() {
   try {
-    const searchParams = request.nextUrl.searchParams;
+    const db = getDb();
 
-    // Extract query parameters
-    const search = searchParams.get('search');
-    const categorySlug = searchParams.get('category');
-    const status = searchParams.get('status') || 'all';
-    const featured = searchParams.get('featured') === 'true';
-    const sortBy = searchParams.get('sort') || 'created';
-    const sortOrder = (searchParams.get('order') || 'desc') as 'asc' | 'desc';
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '50');
-
-    // Calculate offset
-    const offset = (page - 1) * limit;
-
-    // Start building query
-    let query = supabase.from('products').select('*', { count: 'exact' });
-
-    // Status filter
-    if (status === 'active') {
-      query = query.eq('is_active', true);
-    } else if (status === 'inactive') {
-      query = query.eq('is_active', false);
-    }
-
-    // Featured filter
-    if (featured) {
-      query = query.eq('is_featured', true);
-    }
-
-    // Search filter
-    if (search) {
-      query = query.or(`name.ilike.%${search}%,sku.ilike.%${search}%`);
-    }
-
-    // Category filter
-    if (categorySlug) {
-      // For category filtering, we need to join through product_categories
-      const { data: categoryData } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', categorySlug)
-        .single();
-
-      if (categoryData) {
-        const { data: productIds } = await supabase
-          .from('product_categories')
-          .select('product_id')
-          .eq('category_id', categoryData.id);
-
-        if (productIds && productIds.length > 0) {
-          const ids = productIds.map((p: any) => p.product_id);
-          query = query.in('id', ids);
-        } else {
-          // No products in this category
-          return NextResponse.json({
-            success: true,
-            count: 0,
-            total: 0,
-            page,
-            limit,
-            totalPages: 0,
-            products: [],
-          });
-        }
-      }
-    }
-
-    // Determine sorting column
-    let sortColumn: string;
-    switch (sortBy) {
-      case 'price':
-        sortColumn = 'price';
-        break;
-      case 'stock':
-        sortColumn = 'stock_quantity';
-        break;
-      case 'name':
-        sortColumn = 'name';
-        break;
-      case 'created':
-      default:
-        sortColumn = 'created_at';
-        break;
-    }
-
-    // Apply sorting and pagination
-    query = query
-      .order(sortColumn, { ascending: sortOrder === 'asc' })
-      .range(offset, offset + limit - 1);
-
-    // Execute query
-    const { data: allProducts, error, count } = await query;
-
-    if (error) {
-      console.error('Error fetching products:', error);
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Failed to fetch products',
-        },
-        { status: 500 }
-      );
-    }
-
-    const totalCount = count || 0;
+    const allProducts = await db
+      .select()
+      .from(products)
+      .orderBy(desc(products.createdAt));
 
     return NextResponse.json({
       success: true,
-      count: allProducts?.length || 0,
-      total: totalCount,
-      page,
-      limit,
-      totalPages: Math.ceil(totalCount / limit),
-      products: allProducts || [],
+      count: allProducts.length,
+      total: allProducts.length,
+      products: allProducts,
     });
   } catch (error) {
     console.error('Error fetching products:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to fetch products',
-      },
+      { success: false, error: 'Failed to fetch products' },
       { status: 500 }
     );
   }
