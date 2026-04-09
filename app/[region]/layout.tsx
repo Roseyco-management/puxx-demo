@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { VALID_REGIONS, getRegionConfig, type RegionCode } from '@/lib/config/regions';
-import { RegionContext } from '@/lib/config/region-context';
+import { RegionProvider } from '@/lib/config/region-context';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 
 interface RegionLayoutProps {
@@ -18,8 +18,8 @@ export default async function RegionLayout({ children, params }: RegionLayoutPro
   const config = getRegionConfig(region);
 
   return (
-    <RegionContext.Provider value={{ region: region as RegionCode, config }}>
+    <RegionProvider value={{ region: region as RegionCode, config }}>
       <PublicLayout>{children}</PublicLayout>
-    </RegionContext.Provider>
+    </RegionProvider>
   );
 }

@@ -1,8 +1,6 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Montserrat, Inter } from 'next/font/google';
-import { getUser, getTeamForUser } from '@/lib/db/queries';
-import { SWRConfig } from 'swr';
 import { ToastProvider } from '@/lib/utils/toast';
 import { baseMetadata } from '@/lib/seo/metadata';
 import { AgeGate } from '@/components/age-verification/AgeGate';
@@ -39,18 +37,7 @@ export default function RootLayout({
       <body className="min-h-[100dvh] bg-background font-sans antialiased">
         <AgeGate>
           <ToastProvider>
-            <SWRConfig
-              value={{
-                fallback: {
-                  // We do NOT await here
-                  // Only components that read this data will suspend
-                  '/api/user': getUser(),
-                  '/api/team': getTeamForUser()
-                }
-              }}
-            >
-              {children}
-            </SWRConfig>
+            {children}
           </ToastProvider>
         </AgeGate>
       </body>
