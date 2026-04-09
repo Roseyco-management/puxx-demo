@@ -1,20 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createClient } from '@supabase/supabase-js';
+import { getDb } from '@/lib/db/drizzle';
+import { users } from '@/lib/db/schema';
+import { eq } from 'drizzle-orm';
 import { comparePasswords, setSession } from '@/lib/auth/session';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  password: z.string().min(1, 'Password is required'),
 });
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-
     const body = await request.json();
 
     // Validate input
@@ -28,25 +25,23 @@ export async function POST(request: NextRequest) {
 
     const { email, password } = result.data;
 
-    // Find user
-    const { data: userResult, error: userError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .limit(1)
-      .single();
+    // Find user via Drizzle
+    const db = getDb();
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
-    if (userError || !userResult) {
+    if (!user) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
       );
     }
 
-    const user = userResult;
-
     // Check if user is deleted
-    if (user.deleted_at) {
+    if (user.deletedAt) {
       return NextResponse.json(
         { error: 'Account has been deactivated' },
         { status: 403 }
@@ -54,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify password
-    const isPasswordValid = await comparePasswords(password, user.password_hash);
+    const isPasswordValid = await comparePasswords(password, user.passwordHash);
     if (!isPasswordValid) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
