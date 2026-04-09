@@ -9,12 +9,14 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 
 ## Current Position
 
-Phase: 1 of 6 (E-Commerce Core + Payments)
-Plan: 0 of 4 in current phase
-Status: Ready to plan
-Last activity: 2026-04-09 — Roadmap expanded to 6 phases (all 9 modules), 18 plans, 70 requirements mapped. Client deliverable being regenerated.
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements for v0.1 Demo
+Last activity: 2026-04-09 — Milestone v0.1 Demo started (pre-sales, before Phase 1)
 
 Progress: [░░░░░░░░░░] 0%
+
+**Note:** v0.1 Demo is a pre-sales milestone. The 6-phase roadmap (v1.0) begins when client pays.
 
 ## Performance Metrics
 

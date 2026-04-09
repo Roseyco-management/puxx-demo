@@ -4,6 +4,17 @@
 
 A multi-region e-commerce platform for Puxx, a nicotine pouch brand operating in Canada, UK, and US. Three identical WooCommerce sites (puxxpouches.ca, puxxpouches.uk, puxxpouches.com) with custom features — built by previous developers, partially functional, inherited by RoseyCo. The project covers fixing and launching the sites, building a CRM, and automating fulfilment workflows.
 
+## Current Milestone: v0.1 Demo
+
+**Goal:** Build a pre-sales demo to close the client deal — a working multi-region storefront with admin and affiliate previews, before Phase 1 development begins.
+
+**Target features:**
+- Multi-region routing (puxxpouches.ca / .co.uk / .com) from a single Next.js app
+- Product catalogue (12 flavours × 6 strengths, $6 base, from WooCommerce data)
+- Age verification gate + checkout flow (ported from puxxireland)
+- Admin dashboard — orders, customers, products (TailAdmin Pro)
+- Affiliate/referral dashboard preview (Blue Pillar)
+
 ## Core Value
 
 The three e-commerce sites must process orders end-to-end — from checkout through payment, fulfilment assignment, shipping, and customer notification — without manual intervention on the happy path.
@@ -126,4 +137,4 @@ The three e-commerce sites must process orders end-to-end — from checkout thro
 - Both can be adapted for Puxx CA/UK/US.
 
 ---
-*Last updated: 2026-04-09 after roadmap creation and strategic analysis*
+*Last updated: 2026-04-09 after Milestone v0.1 Demo started*
