@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-05-PLAN.md (checkout confirmation wire-up)
-last_updated: "2026-04-09T06:20:07.570Z"
+stopped_at: Completed 02-06-PLAN.md (Step6Confirmation gap closure — CHKOUT-02 closed)
+last_updated: "2026-04-09T06:30:44.618Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 8
+  completed_plans: 8
   percent: 0
 ---
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-storefront P03 | 3 | 2 tasks | 1 files |
 | Phase 02-storefront P04 | 8 | 2 tasks | 3 files |
 | Phase 02-storefront P05 | 88s | 2 tasks | 2 files |
+| Phase 02-storefront P06 | 8 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Recent decisions affecting current work:
 - [Phase 02-storefront]: VariantSelector receives region as prop not via useRegion to avoid context boundary issues with server component PDP
 - [Phase 02-storefront]: Checkout confirmation uses early return pattern (if confirmed) rather than step state machine — simpler for demo scope
 - [Phase 02-storefront]: Step5Payment left orphaned from new checkout flow — currency fix future-proofs the component without adding complexity
+- [Phase 02-storefront]: Step6Confirmation receives order data via props from checkout/page.tsx — no shared checkout store, no schema mismatch risk
+- [Phase 02-storefront]: useCheckoutStore and lib/stores/cart-store removed entirely — lib/store/cart-store is sole pricing source
 
 ### Pending Todos
 
@@ -95,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T06:20:07.568Z
-Stopped at: Completed 02-05-PLAN.md (checkout confirmation wire-up)
+Last session: 2026-04-09T06:30:44.616Z
+Stopped at: Completed 02-06-PLAN.md (Step6Confirmation gap closure — CHKOUT-02 closed)
 Resume file: None
