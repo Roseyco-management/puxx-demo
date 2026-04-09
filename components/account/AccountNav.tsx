@@ -11,7 +11,8 @@ import {
   MapPin,
   LogOut,
   Menu,
-  X
+  X,
+  Users
 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -41,6 +42,11 @@ const navItems = [
     name: 'Saved Addresses',
     href: '/account/addresses',
     icon: MapPin,
+  },
+  {
+    name: 'Affiliate',
+    href: '/account/affiliate',
+    icon: Users,
   },
 ];
 
@@ -109,7 +115,7 @@ export function AccountNav({ user, profile }: AccountNavProps) {
           <nav className="p-4 space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href || pathname.endsWith(item.href);
 
               return (
                 <Link
