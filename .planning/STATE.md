@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-02-PLAN.md (region-aware storefront routes)
-last_updated: "2026-04-09T06:06:11.252Z"
+stopped_at: Completed 02-03-PLAN.md (storefront verification)
+last_updated: "2026-04-09T06:08:17.262Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 5
-  completed_plans: 4
+  completed_plans: 5
   percent: 0
 ---
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P02 | 2 | 2 tasks | 2 files |
 | Phase 02-storefront P01 | 1 | 2 tasks | 2 files |
 | Phase 02-storefront P02 | 286s | 2 tasks | 7 files |
+| Phase 02-storefront P03 | 3 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,7 @@ Recent decisions affecting current work:
 - [Phase 02-storefront]: Stripe removed entirely from seed.ts — permanently banned for nicotine products; seed is idempotent via delete-before-insert
 - [Phase 02-storefront]: ProductCard uses config.basePrice (not product.price) for display — all regions show flat regional price per config
 - [Phase 02-storefront]: Checkout address fields neutralised: Eircode->Postcode, County->County/State, phone placeholder generalised
+- [Phase 02-03]: Checkpoint auto-approved in --auto mode — human browser verification deferred to demo review session
 
 ### Pending Todos
 
@@ -88,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T06:06:11.250Z
-Stopped at: Completed 02-02-PLAN.md (region-aware storefront routes)
+Last session: 2026-04-09T06:08:17.260Z
+Stopped at: Completed 02-03-PLAN.md (storefront verification)
 Resume file: None
