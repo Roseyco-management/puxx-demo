@@ -78,7 +78,11 @@ Plans:
   1. Admin orders list is visible and browsable with order status shown per row
   2. Admin customer list is visible and browsable
   3. Admin product catalogue view is visible and browsable with product details accessible
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Seed admin@puxx.com user + stub dashboard overview page (ADMIN-01, ADMIN-02, ADMIN-03)
+- [ ] 04-02-PLAN.md — Rewrite 3 admin API routes and 2 pages to use Drizzle instead of Supabase (ADMIN-01, ADMIN-02, ADMIN-03)
 
 ### Phase 5: Portals
 **Goal**: Retailer, fulfilment, affiliate, and CRM roles each have a distinct authenticated view with representative data
@@ -112,7 +116,7 @@ Plans:
 | 1. Foundation | 2/2 | Complete   | 2026-04-09 |
 | 2. Storefront | 5/5 | Complete   | 2026-04-09 |
 | 3. Customer Account | 0/2 | Not started | - |
-| 4. Admin Dashboard | 0/TBD | Not started | - |
+| 4. Admin Dashboard | 0/2 | Not started | - |
 | 5. Portals | 0/TBD | Not started | - |
 | 6. Polish | 0/TBD | Not started | - |
 
