@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Storefront** - Product catalogue, product detail, age gate, and checkout flow (completed 2026-04-09)
 - [ ] **Phase 3: Customer Account** - Order history, order status, and referral code display
 - [ ] **Phase 4: Admin Dashboard** - Orders, customers, and product management views
-- [ ] **Phase 5: Portals** - Retailer portal, fulfilment view, affiliate preview, and CRM stub
+- [x] **Phase 5: Portals** - Retailer portal, fulfilment view, affiliate preview, and CRM stub (completed 2026-04-09)
 - [ ] **Phase 6: Polish** - Mobile responsiveness across all key views
 
 ## Phase Details
@@ -94,7 +94,7 @@ Plans:
   3. Fulfilment team has a separate login and sees a queue of pending orders; they can mark an order as shipped from their dashboard
   4. Affiliate dashboard preview (read-only, Blue Pillar components) shows referral codes, referred customers, and commission summary
   5. CRM customer profile page shows contact info, an order timeline, and stubbed communication history in a read-only view
-**Plans:** 3/5 plans executed
+**Plans:** 5/5 plans complete
 
 Plans:
 - [ ] 05-01-PLAN.md — Seed 3 portal users + signIn role redirects (RETAIL-01, RETAIL-03, FULFL-01, AFF-01)
@@ -124,7 +124,7 @@ Plans:
 | 2. Storefront | 5/5 | Complete   | 2026-04-09 |
 | 3. Customer Account | 0/2 | Not started | - |
 | 4. Admin Dashboard | 1/2 | In Progress|  |
-| 5. Portals | 3/5 | In Progress|  |
+| 5. Portals | 5/5 | Complete   | 2026-04-09 |
 | 6. Polish | 0/TBD | Not started | - |
 
 ---

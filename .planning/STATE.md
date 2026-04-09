@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 05-portals-02-PLAN.md
-last_updated: "2026-04-09T07:35:19.812Z"
+stopped_at: Completed 05-portals-03-PLAN.md
+last_updated: "2026-04-09T07:36:44.786Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 17
-  completed_plans: 16
+  completed_plans: 17
   percent: 0
 ---
 
@@ -66,6 +66,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-portals P04 | 100s | 2 tasks | 3 files |
 | Phase 05-portals P05 | 97s | 2 tasks | 2 files |
 | Phase 05-portals P02 | 198s | 2 tasks | 4 files |
+| Phase 05-portals P03 | 129s | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -111,6 +112,8 @@ Recent decisions affecting current work:
 - [Phase 05-portals]: orders array added to API response; CRM page populates timeline from fetch without extra round-trip
 - [Phase 05-portals]: Portal layout uses client-side useEffect auth gate with role='retailer' check — mirrors admin layout pattern
 - [Phase 05-portals]: Trade price computed inline as price * 0.8 — no dedicated wholesalePrice column needed for demo
+- [Phase 05-portals]: portal/orders is server component querying Drizzle via getSession().user.id — InvoiceButton is standalone client component
+- [Phase 05-portals]: FulfilmentQueue is client component receiving initialOrders from server FulfilmentPage — hybrid server/client pattern
 
 ### Pending Todos
 
@@ -124,6 +127,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T07:35:19.810Z
-Stopped at: Completed 05-portals-02-PLAN.md
+Last session: 2026-04-09T07:36:44.785Z
+Stopped at: Completed 05-portals-03-PLAN.md
 Resume file: None
