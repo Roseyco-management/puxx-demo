@@ -29,6 +29,8 @@ interface Order {
 
 interface OrdersDataTableProps {
   orders: Order[];
+  currencySymbol?: string;
+  ordersBasePath?: string;
 }
 
 const getStatusBadgeVariant = (status: string): 'default' | 'success' | 'destructive' | 'outline' => {
@@ -43,7 +45,7 @@ const getStatusBadgeVariant = (status: string): 'default' | 'success' | 'destruc
   }
 };
 
-export default function OrdersDataTable({ orders }: OrdersDataTableProps) {
+export default function OrdersDataTable({ orders, currencySymbol = '£', ordersBasePath = '/account/orders' }: OrdersDataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'createdAt', desc: true },
   ]);
@@ -103,7 +105,7 @@ export default function OrdersDataTable({ orders }: OrdersDataTableProps) {
         ),
         cell: ({ row }) => (
           <span className="font-semibold text-gray-900">
-            €{parseFloat(row.original.total).toFixed(2)}
+            {currencySymbol}{parseFloat(row.original.total).toFixed(2)}
           </span>
         ),
         sortingFn: (rowA, rowB) => {
@@ -134,7 +136,7 @@ export default function OrdersDataTable({ orders }: OrdersDataTableProps) {
         id: 'actions',
         header: 'Actions',
         cell: ({ row }) => (
-          <Link href={`/account/orders/${row.original.id}`}>
+          <Link href={`${ordersBasePath}/${row.original.id}`}>
             <Button
               variant="outline"
               size="sm"
@@ -147,7 +149,7 @@ export default function OrdersDataTable({ orders }: OrdersDataTableProps) {
         ),
       },
     ],
-    []
+    [currencySymbol, ordersBasePath]
   );
 
   const table = useReactTable({
