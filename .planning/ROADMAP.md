@@ -21,7 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 3: Customer Account** - Order history, order status, and referral code display
 - [ ] **Phase 4: Admin Dashboard** - Orders, customers, and product management views
 - [x] **Phase 5: Portals** - Retailer portal, fulfilment view, affiliate preview, and CRM stub (completed 2026-04-09)
-- [ ] **Phase 6: Polish** - Mobile responsiveness across all key views
+- [x] **Phase 6: Polish** - Mobile responsiveness across all key views (completed 2026-04-09)
 
 ## Phase Details
 
@@ -111,7 +111,7 @@ Plans:
   1. Storefront, checkout, and customer account render correctly on a 375px mobile viewport with no overflow or broken layout
   2. Admin dashboard, retailer portal, and fulfilment view render correctly on a 375px mobile viewport
   3. No horizontal overflow, overlapping elements, or broken layouts on any key view at mobile size
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 06-01-PLAN.md — Fix public views: storefront product page, checkout progress steps, customer account orders table (MOB-01)
@@ -129,7 +129,7 @@ Plans:
 | 3. Customer Account | 0/2 | Not started | - |
 | 4. Admin Dashboard | 1/2 | In Progress|  |
 | 5. Portals | 5/5 | Complete   | 2026-04-09 |
-| 6. Polish | 1/2 | In Progress|  |
+| 6. Polish | 2/2 | Complete   | 2026-04-09 |
 
 ---
 *Roadmap created: 2026-04-09*
