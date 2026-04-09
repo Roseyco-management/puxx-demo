@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getDb } from '@/lib/db/drizzle';
+import { users, profiles, orders } from '@/lib/db/schema';
+import { eq, desc } from 'drizzle-orm';
 import { getSupabaseClient } from '@/lib/db/supabase';
 
 /**
  * GET /api/admin/customers/[id]
- * Fetches a single customer with detailed information
+ * Fetches a single customer with detailed information (Drizzle)
  */
 export async function GET(
   request: NextRequest,
@@ -12,116 +15,55 @@ export async function GET(
   try {
     const { id } = await params;
     const customerId = parseInt(id);
-    const supabase = getSupabaseClient();
+    const db = getDb();
 
-    // Fetch customer with profile
-    const { data: customer, error: customerError } = await supabase
-      .from('users')
-      .select(`
-        id,
-        name,
-        email,
-        role,
-        created_at,
-        profiles (
-          phone,
-          date_of_birth,
-          age_verified,
-          marketing_consent
-        )
-      `)
-      .eq('id', customerId)
-      .single();
-
-    if (customerError || !customer) {
-      return NextResponse.json(
-        { success: false, error: 'Customer not found' },
-        { status: 404 }
-      );
+    const [user] = await db.select().from(users).where(eq(users.id, customerId));
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Customer not found' }, { status: 404 });
     }
 
-    // Fetch orders for statistics
-    const { data: orders } = await supabase
-      .from('orders')
-      .select('id, total, created_at')
-      .eq('user_id', customerId);
+    const [profile] = await db.select().from(profiles).where(eq(profiles.userId, customerId));
 
-    const ordersCount = orders?.length || 0;
-    const totalSpent = orders?.reduce((sum, order) => {
-      return sum + parseFloat(order.total || '0');
-    }, 0) || 0;
+    const userOrders = await db.select().from(orders)
+      .where(eq(orders.userId, customerId))
+      .orderBy(desc(orders.createdAt));
 
-    const lastOrderDate = orders && orders.length > 0
-      ? orders.sort((a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        )[0].created_at
-      : null;
-
-    const avgOrderValue = ordersCount > 0 ? totalSpent / ordersCount : 0;
-
-    // Fetch customer addresses
-    const { data: addresses } = await supabase
-      .from('addresses')
-      .select('*')
-      .eq('user_id', customerId)
-      .order('is_default_shipping', { ascending: false });
-
-    // Fetch customer notes
-    const { data: notes } = await supabase
-      .from('customer_notes')
-      .select(`
-        id,
-        note,
-        created_at,
-        created_by,
-        users (
-          name,
-          email
-        )
-      `)
-      .eq('user_id', customerId)
-      .order('created_at', { ascending: false });
-
-    const profile = Array.isArray(customer.profiles) ? customer.profiles[0] : customer.profiles;
+    const ordersCount = userOrders.length;
+    const totalSpent = userOrders.reduce((sum, o) => sum + parseFloat(o.total ?? '0'), 0);
+    const averageOrderValue = ordersCount > 0 ? totalSpent / ordersCount : 0;
+    const lastOrderDate = userOrders[0]?.createdAt?.toISOString() ?? null;
 
     return NextResponse.json({
       success: true,
       customer: {
-        id: customer.id.toString(),
-        name: customer.name || 'Guest',
-        email: customer.email,
-        phone: profile?.phone || null,
-        dateOfBirth: profile?.date_of_birth || null,
-        ageVerified: profile?.age_verified || false,
-        marketingConsent: profile?.marketing_consent || false,
-        joinedDate: customer.created_at,
-        isGuest: !customer.name || customer.role === 'guest',
+        id: user.id.toString(),
+        name: user.name ?? 'Guest',
+        email: user.email,
+        phone: profile?.phone ?? null,
+        dateOfBirth: profile?.dateOfBirth?.toISOString() ?? null,
+        ageVerified: profile?.ageVerified ?? false,
+        marketingConsent: profile?.marketingConsent ?? false,
+        joinedDate: user.createdAt.toISOString(),
+        isGuest: !user.name || user.role === 'guest',
         ordersCount,
         totalSpent,
-        averageOrderValue: avgOrderValue,
+        averageOrderValue,
         lastOrderDate,
-        addresses: addresses || [],
-        notes: (notes || []).map((note: any) => ({
-          id: note.id,
-          note: note.note,
-          createdAt: note.created_at,
-          createdBy: {
-            id: note.created_by,
-            name: note.users?.name || null,
-            email: note.users?.email || null,
-          },
+        addresses: [],
+        notes: [],
+        orders: userOrders.map(o => ({
+          id: o.id,
+          orderNumber: o.orderNumber,
+          status: o.status,
+          total: o.total,
+          currency: o.currency,
+          createdAt: o.createdAt?.toISOString() ?? null,
         })),
       },
     });
   } catch (error) {
     console.error('Error fetching customer:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to fetch customer',
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Failed to fetch customer' }, { status: 500 });
   }
 }
 
