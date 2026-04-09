@@ -1,0 +1,14 @@
+node_modules
+.next
+.vercel
+.supabase
+dist
+build
+coverage
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+.env
+.env.local
+.env.production
+*.md

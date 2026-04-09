@@ -1,0 +1,391 @@
+@import "tailwindcss";
+/*
+  ---break---
+*/
+@custom-variant dark (&:is(.dark *));
+
+@import "tw-animate-css";
+
+@variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {
+  /* PUXX Ireland Typography */
+  body {
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Montserrat Bold for headings */
+  h1, h2, h3, h4, h5, h6,
+  .font-heading {
+    font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+  }
+
+  /* Custom color utilities */
+  .bg-gold {
+    background-color: hsl(var(--gold));
+  }
+
+  .text-gold {
+    color: hsl(var(--gold));
+  }
+
+  .bg-cream {
+    background-color: hsl(var(--cream));
+  }
+
+  .text-cream {
+    color: hsl(var(--cream));
+  }
+
+  .border-gold {
+    border-color: hsl(var(--gold));
+  }
+
+  /* Irish Green Gradients */
+  .gradient-emerald {
+    background: linear-gradient(135deg, #009A49 0%, #00A86B 100%);
+  }
+
+  .gradient-forest {
+    background: linear-gradient(135deg, #00563F 0%, #009A49 100%);
+  }
+
+  .gradient-irish {
+    background: linear-gradient(135deg, #00563F 0%, #009A49 50%, #00A86B 100%);
+  }
+
+  .gradient-gold-green {
+    background: linear-gradient(135deg, #D4AF37 0%, #009A49 100%);
+  }
+
+  /* Text gradients */
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, #009A49 0%, #00A86B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Hover effects */
+  .hover-lift {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(0, 154, 73, 0.3);
+  }
+}
+
+@layer base {
+  :root {
+    /* PUXX Ireland - Irish Green Theme */
+    --background: 0 0% 100%;
+    --foreground: 160 100% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 100% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 100% 10%;
+
+    /* Primary: Emerald Green #009A49 */
+    --primary: 152 100% 30%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Deep Forest Green #00563F */
+    --secondary: 160 100% 17%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Accent: Shamrock Green #00A86B */
+    --accent: 154 100% 33%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Gold accent #D4AF37 */
+    --gold: 43 64% 53%;
+    --gold-foreground: 0 0% 0%;
+
+    /* Cream background #F5E6D3 */
+    --cream: 36 56% 90%;
+    --cream-foreground: 160 100% 10%;
+
+    --muted: 36 56% 90%;
+    --muted-foreground: 160 30% 40%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 152 30% 85%;
+    --input: 152 30% 85%;
+    --ring: 152 100% 30%;
+
+    /* Chart colors - Irish green variations */
+    --chart-1: 152 100% 30%; /* Emerald */
+    --chart-2: 154 100% 33%; /* Shamrock */
+    --chart-3: 160 100% 17%; /* Forest */
+    --chart-4: 43 64% 53%;   /* Gold */
+    --chart-5: 152 80% 45%;  /* Light green */
+
+    --radius: 0.5rem;
+
+    /* Sidebar: Deep Forest Green */
+    --sidebar-background: 160 100% 17%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 152 100% 30%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 154 100% 33%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 160 80% 25%;
+    --sidebar-ring: 152 100% 30%;
+  }
+
+  .dark {
+    /* Dark mode: Deep greens with cream accents */
+    --background: 160 100% 5%;
+    --foreground: 36 56% 90%;
+    --card: 160 100% 8%;
+    --card-foreground: 36 56% 90%;
+    --popover: 160 100% 8%;
+    --popover-foreground: 36 56% 90%;
+
+    /* Primary: Brighter emerald for dark mode */
+    --primary: 152 100% 40%;
+    --primary-foreground: 0 0% 0%;
+
+    /* Secondary: Forest green */
+    --secondary: 160 100% 17%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Accent: Bright shamrock */
+    --accent: 154 100% 45%;
+    --accent-foreground: 0 0% 0%;
+
+    --gold: 43 80% 60%;
+    --gold-foreground: 0 0% 0%;
+
+    --cream: 36 56% 90%;
+    --cream-foreground: 160 100% 10%;
+
+    --muted: 160 50% 15%;
+    --muted-foreground: 36 40% 70%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 160 50% 20%;
+    --input: 160 50% 20%;
+    --ring: 152 100% 40%;
+
+    /* Dark mode charts */
+    --chart-1: 152 100% 40%;
+    --chart-2: 154 100% 45%;
+    --chart-3: 160 100% 25%;
+    --chart-4: 43 80% 60%;
+    --chart-5: 152 80% 50%;
+
+    --sidebar-background: 160 100% 8%;
+    --sidebar-foreground: 36 56% 90%;
+    --sidebar-primary: 152 100% 40%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 154 100% 45%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 160 50% 15%;
+    --sidebar-ring: 152 100% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/*
+  ---break---
+*/
+
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(240 10% 3.9%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(240 10% 3.9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(240 10% 3.9%);
+  --primary: hsl(240 5.9% 10%);
+  --primary-foreground: hsl(0 0% 98%);
+  --secondary: hsl(240 4.8% 95.9%);
+  --secondary-foreground: hsl(240 5.9% 10%);
+  --muted: hsl(240 4.8% 95.9%);
+  --muted-foreground: hsl(240 3.8% 46.1%);
+  --accent: hsl(240 4.8% 95.9%);
+  --accent-foreground: hsl(240 5.9% 10%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(240 5.9% 90%);
+  --input: hsl(240 5.9% 90%);
+  --ring: hsl(240 10% 3.9%);
+  --chart-1: hsl(12 76% 61%);
+  --chart-2: hsl(173 58% 39%);
+  --chart-3: hsl(197 37% 24%);
+  --chart-4: hsl(43 74% 66%);
+  --chart-5: hsl(27 87% 67%);
+  --radius: 0.6rem;
+}
+
+/*
+  ---break---
+*/
+
+.dark {
+  --background: hsl(240 10% 3.9%);
+  --foreground: hsl(0 0% 98%);
+  --card: hsl(240 10% 3.9%);
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(240 10% 3.9%);
+  --popover-foreground: hsl(0 0% 98%);
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(240 5.9% 10%);
+  --secondary: hsl(240 3.7% 15.9%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(240 3.7% 15.9%);
+  --muted-foreground: hsl(240 5% 64.9%);
+  --accent: hsl(240 3.7% 15.9%);
+  --accent-foreground: hsl(0 0% 98%);
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(240 3.7% 15.9%);
+  --input: hsl(240 3.7% 15.9%);
+  --ring: hsl(240 4.9% 83.9%);
+  --chart-1: hsl(220 70% 50%);
+  --chart-2: hsl(160 60% 45%);
+  --chart-3: hsl(30 80% 55%);
+  --chart-4: hsl(280 65% 60%);
+  --chart-5: hsl(340 75% 55%);
+}
+
+/*
+  ---break---
+*/
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/*
+  ---break---
+*/
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+  /* Shimmer animation for video hover effect */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s infinite;
+  }

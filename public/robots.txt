@@ -1,0 +1,17 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /checkout/success
+Disallow: /checkout/cancel
+Disallow: /dashboard
+Disallow: /sign-in
+Disallow: /sign-up
+
+# Host
+Host: https://puxxnicotine.ie
+
+# Sitemaps
+Sitemap: https://puxxnicotine.ie/sitemap.xml
+Sitemap: https://puxxnicotine.ie/products-sitemap.xml
