@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-stopped_at: Completed 07-demo-bugfix-03-PLAN.md
-last_updated: "2026-04-09T22:47:40.114Z"
+stopped_at: Completed 07-demo-bugfix-04-PLAN.md
+last_updated: "2026-04-09T23:04:40.910Z"
 last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
 progress:
   total_phases: 7
   completed_phases: 7
-  total_plans: 22
-  completed_plans: 22
+  total_plans: 23
+  completed_plans: 23
   percent: 0
 ---
 
@@ -72,6 +72,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 07-demo-bugfix P01 | 212s | 2 tasks | 17 files |
 | Phase 07-demo-bugfix P02 | 12min | 2 tasks | 4 files |
 | Phase 07-demo-bugfix P03 | 4min | 2 tasks | 1 files |
+| Phase 07-demo-bugfix P04 | 63s | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -130,6 +131,9 @@ Recent decisions affecting current work:
 - [Phase 07-demo-bugfix]: Account page uses getSupabaseClient() REST for profile/orders — snake_case field names match Supabase DB schema
 - [Phase 07-demo-bugfix]: Logo verified correct in Logo.tsx (variant=black -> PUXX-LOGO-LONG-BLACK.png, file present in public/)
 - [Phase 07-demo-bugfix]: Preload warnings are Next.js font optimization internals — no manual preload links in app layouts, non-actionable
+- [Phase 07-demo-bugfix]: Portal products page migrated from Drizzle to Supabase REST with snake_case field refs — consistent with 07-02/07-03 pattern
+- [Phase 07-demo-bugfix]: Portal root redirects to /portal/orders (most useful retailer landing) not /portal/products
+- [Phase 07-demo-bugfix]: Manifest metadata updated to /site.webmanifest — matches actual public/ file, eliminates 404 console error
 
 ### Pending Todos
 
@@ -143,6 +147,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T22:47:40.112Z
-Stopped at: Completed 07-demo-bugfix-03-PLAN.md
+Last session: 2026-04-09T23:04:40.908Z
+Stopped at: Completed 07-demo-bugfix-04-PLAN.md
 Resume file: None
