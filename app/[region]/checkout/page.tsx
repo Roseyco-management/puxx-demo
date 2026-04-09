@@ -11,6 +11,16 @@ import { useCartStore, useCartReady } from '@/lib/store/cart-store';
 import { useRegion } from '@/lib/config/region-context';
 import { Step6Confirmation } from '@/components/checkout/Step6Confirmation';
 
+interface ConfirmationData {
+  email: string;
+  fullName: string;
+  address: string;
+  city: string;
+  county: string;
+  postcode: string;
+  shippingMethod: 'standard' | 'express';
+}
+
 export default function CheckoutPage() {
   const { region, config } = useRegion();
   const isHydrated = useCartReady();
@@ -20,6 +30,7 @@ export default function CheckoutPage() {
   const total = useCartStore((state) => state.getTotal());
   const [currentStep, setCurrentStep] = useState(1);
   const [confirmed, setConfirmed] = useState(false);
+  const [confirmationData, setConfirmationData] = useState<ConfirmationData | null>(null);
 
   // Loading state (waiting for hydration)
   if (!isHydrated) {
@@ -52,14 +63,28 @@ export default function CheckoutPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    const data: ConfirmationData = {
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      fullName: [
+        (form.elements.namedItem('firstName') as HTMLInputElement).value,
+        (form.elements.namedItem('lastName') as HTMLInputElement).value,
+      ].filter(Boolean).join(' '),
+      address: (form.elements.namedItem('address') as HTMLInputElement).value,
+      city: (form.elements.namedItem('city') as HTMLInputElement).value,
+      county: (form.elements.namedItem('county') as HTMLInputElement).value,
+      postcode: (form.elements.namedItem('postcode') as HTMLInputElement).value,
+      shippingMethod: (form.elements.namedItem('shipping') as HTMLInputElement).value as 'standard' | 'express',
+    };
+    setConfirmationData(data);
     setConfirmed(true);
   };
 
-  if (confirmed) {
+  if (confirmed && confirmationData) {
     return (
       <main className="min-h-screen bg-background">
         <div className="max-w-2xl mx-auto px-4 py-16">
-          <Step6Confirmation />
+          <Step6Confirmation {...confirmationData} />
         </div>
       </main>
     );
