@@ -111,7 +111,11 @@ Plans:
   1. Storefront, checkout, and customer account render correctly on a 375px mobile viewport with no overflow or broken layout
   2. Admin dashboard, retailer portal, and fulfilment view render correctly on a 375px mobile viewport
   3. No horizontal overflow, overlapping elements, or broken layouts on any key view at mobile size
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Fix public views: storefront product page, checkout progress steps, customer account orders table (MOB-01)
+- [ ] 06-02-PLAN.md — Fix internal views: portal header nav, portal tables, fulfilment layout/queue, admin orders table (MOB-01)
 
 ## Progress
 
@@ -125,7 +129,7 @@ Plans:
 | 3. Customer Account | 0/2 | Not started | - |
 | 4. Admin Dashboard | 1/2 | In Progress|  |
 | 5. Portals | 5/5 | Complete   | 2026-04-09 |
-| 6. Polish | 0/TBD | Not started | - |
+| 6. Polish | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-09*
