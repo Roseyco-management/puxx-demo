@@ -48,12 +48,12 @@ Plans:
   2. Individual product detail page shows images, a flavour/strength selector, and an add-to-cart button
   3. Age verification gate appears before checkout and blocks progress until the user confirms they are 18+
   4. A customer can complete an end-to-end checkout for the UK region using the WorldPay integration ported from puxxireland
-**Plans:** 4/5 plans executed
+**Plans:** 5/5 plans complete
 
 Plans:
 - [ ] 02-01-PLAN.md — Add basePrice to region config and seed 72 product variants (PROD-01)
 - [ ] 02-02-PLAN.md — Move products, cart, checkout under [region]/ with region-aware currency and payment label (PROD-01, PROD-02, CHKOUT-01, CHKOUT-02)
-- [ ] 02-03-PLAN.md — Human verification of all 4 Phase 2 success criteria (PROD-01, PROD-02, CHKOUT-01, CHKOUT-02)
+- [x] 02-03-PLAN.md — Human verification of all 4 Phase 2 success criteria (PROD-01, PROD-02, CHKOUT-01, CHKOUT-02) (completed 2026-04-09)
 - [ ] 02-04-PLAN.md — Gap closure: VariantSelector on PDP + ProductCard Add to Cart wired (PROD-02)
 - [ ] 02-05-PLAN.md — Gap closure: Checkout onSubmit confirmation state + Step5Payment currency fix (CHKOUT-02)
 
@@ -106,7 +106,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-04-09 |
-| 2. Storefront | 4/5 | In Progress|  |
+| 2. Storefront | 5/5 | Complete   | 2026-04-09 |
 | 3. Customer Account | 0/TBD | Not started | - |
 | 4. Admin Dashboard | 0/TBD | Not started | - |
 | 5. Portals | 0/TBD | Not started | - |
