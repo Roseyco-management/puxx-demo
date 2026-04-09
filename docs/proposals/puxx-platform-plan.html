@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puxx Platform Plan - Elevateo Co</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #C9A227;
+            --gold-light: #E8D5A3;
+            --gold-dark: #9A7B1C;
+            --dark: #1A1A1A;
+            --darker: #0D0D0D;
+            --dark-lighter: #252525;
+            --text: #FFFFFF;
+            --text-secondary: #B3B3B3;
+            --text-muted: #9CA3AF;
+            --green: #2ECC71;
+            --red: #E74C3C;
+            --orange: #F39C12;
+        }
+        @page { size: A4; margin: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            line-height: 1.5;
+            font-size: 10pt;
+        }
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 15mm;
+            padding-bottom: 20mm;
+            background: var(--dark);
+            position: relative;
+            page-break-after: always;
+            page-break-inside: avoid;
+            overflow: hidden;
+        }
+        .page:last-child { page-break-after: auto; }
+
+        /* ── Cover ── */
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(160deg, var(--darker) 0%, #111 45%, var(--dark) 100%);
+        }
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: -40%; right: -30%;
+            width: 160%; height: 160%;
+            background: radial-gradient(circle at 70% 30%, rgba(201, 162, 39, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .cover-logo { height: 70px; margin-bottom: 45px; position: relative; z-index: 1; }
+        .cover-eyebrow {
+            font-size: 10px; font-weight: 600; letter-spacing: 5px;
+            text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
+            position: relative; z-index: 1;
+        }
+        .cover-title {
+            font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 700;
+            color: var(--text); margin-bottom: 10px; letter-spacing: -1px; line-height: 1.1;
+            position: relative; z-index: 1;
+        }
+        .cover-title span { color: var(--gold); }
+        .cover-subtitle {
+            font-size: 14px; font-weight: 300; color: var(--text-secondary);
+            margin-bottom: 40px; max-width: 420px; line-height: 1.7;
+            position: relative; z-index: 1;
+        }
+        .cover-divider {
+            width: 80px; height: 2px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+            margin: 0 auto 40px auto; position: relative; z-index: 1;
+        }
+        .cover-meta {
+            position: relative; z-index: 1; color: var(--text-muted);
+            font-size: 10px; letter-spacing: 1px;
+        }
+        .cover-meta strong { color: var(--text-secondary); }
+        .cover-footer {
+            position: absolute; bottom: 15mm; left: 15mm; right: 15mm;
+            text-align: center; font-size: 9px; color: rgba(179,179,179,0.4); line-height: 1.6;
+        }
+
+        /* ── Content Pages ── */
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 12px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .header-logo { height: 28px; }
+        .header-title {
+            font-size: 9px; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 2px; font-weight: 500;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+            color: var(--gold); margin-bottom: 16px; letter-spacing: -0.5px;
+        }
+        h3 {
+            font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600;
+            color: var(--text); margin-bottom: 10px; margin-top: 16px;
+        }
+        h4 {
+            font-size: 11px; font-weight: 600; color: var(--gold);
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; margin-top: 14px;
+        }
+
+        p { color: var(--text-secondary); margin-bottom: 10px; line-height: 1.65; font-size: 10pt; }
+        p strong { color: var(--text); }
+
+        .gold-divider {
+            width: 60px; height: 2px; margin: 18px 0;
+            background: linear-gradient(90deg, var(--gold), transparent);
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%; border-collapse: collapse; margin: 12px 0;
+            font-size: 9pt;
+        }
+        th {
+            background: rgba(201, 162, 39, 0.12); color: var(--gold);
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 8pt; padding: 8px 10px; text-align: left;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.25);
+        }
+        td {
+            padding: 7px 10px; color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            vertical-align: top;
+        }
+        tr:hover td { background: rgba(201, 162, 39, 0.03); }
+
+        .status-broken { color: var(--red); font-weight: 600; }
+        .status-missing { color: var(--orange); font-weight: 600; }
+        .status-ok { color: var(--green); font-weight: 600; }
+
+        /* ── Lists ── */
+        ol, ul { margin: 8px 0 12px 18px; color: var(--text-secondary); }
+        li { margin-bottom: 5px; line-height: 1.6; }
+        li strong { color: var(--text); }
+
+        /* ── Highlight Boxes ── */
+        .quote-box {
+            background: rgba(201, 162, 39, 0.08);
+            border-left: 3px solid var(--gold);
+            padding: 12px 16px; margin: 14px 0;
+            font-style: italic; color: var(--text-secondary);
+        }
+        .quote-box strong { color: var(--gold); font-style: normal; }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(201, 162, 39, 0.03) 100%);
+            border: 1px solid rgba(201, 162, 39, 0.25);
+            border-radius: 6px; padding: 18px; margin: 16px 0;
+        }
+        .recommendation-box h3 { color: var(--gold); margin-top: 0; }
+
+        .advantage-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0;
+        }
+        .advantage-item {
+            display: flex; align-items: flex-start; gap: 8px;
+            padding: 6px 0;
+        }
+        .advantage-check {
+            color: var(--gold); font-weight: 700; font-size: 13px;
+            flex-shrink: 0; margin-top: 1px;
+        }
+        .advantage-text { font-size: 9pt; color: var(--text-secondary); }
+        .advantage-text strong { color: var(--text); }
+
+        .path-label {
+            display: inline-block; padding: 3px 12px; border-radius: 3px;
+            font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .path-a { background: rgba(255,255,255,0.08); color: var(--text-secondary); }
+        .path-b { background: rgba(201, 162, 39, 0.15); color: var(--gold); }
+
+        .page-number {
+            position: absolute; bottom: 8mm; right: 15mm;
+            font-size: 8px; color: rgba(179,179,179,0.35); letter-spacing: 1px;
+        }
+        .footer-line {
+            position: absolute; bottom: 14mm; left: 15mm; right: 15mm;
+            height: 1px; background: rgba(201, 162, 39, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════ PAGE 1: COVER ═══════ -->
+<div class="page cover-page">
+    <img src="/Users/arnispiekus/Work/Github/ElevateoCo-Website/public/images/logos/elevateo-logo.png" alt="Elevateo" class="cover-logo">
+    <div class="cover-eyebrow">Platform Audit &amp; Roadmap</div>
+    <div class="cover-title">Puxx <span>Platform</span></div>
+    <div class="cover-subtitle">Detailed plan and timeline for fixing, launching, and scaling the Puxx e-commerce platform across Canada, UK, and US.</div>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+        <strong>Prepared for:</strong> Fez (Puxx) &nbsp;&nbsp;|&nbsp;&nbsp;
+        <strong>Date:</strong> 9 April 2026 &nbsp;&nbsp;|&nbsp;&nbsp;
+        <strong>Version:</strong> 1.0
+    </div>
+    <div class="cover-footer">
+        Elevateo Co. &mdash; Software, Automation &amp; Growth Solutions<br>
+        Confidential &mdash; Prepared exclusively for Puxx
+    </div>
+</div>
+
+<!-- ═══════ PAGE 2: WHAT WE FOUND ═══════ -->
+<div class="page">
+    <div class="header">
+        <img src="/Users/arnispiekus/Work/Github/ElevateoCo-Website/public/images/logos/elevateo-logo.png" alt="Elevateo" class="header-logo">
+        <span class="header-title">Puxx Platform Plan</span>
+    </div>
+
+    <h2>What We Found</h2>
+    <p>We audited your WordPress site (puxxpouches.com), reviewed every system, and went through your discovery call in detail. Here is what we are working with.</p>
+
+    <h3>Current State</h3>
+    <p><strong>Your platform has 12 products set up correctly</strong> (all 12 flavours with 6 strength variations each), custom user roles (retailer, wholesale), and a custom admin panel that handles wholesale approvals, referrals, and consignment loans. The bones are there.</p>
+    <p><strong>But nothing works end-to-end.</strong> Here is what we found:</p>
+
+    <table>
+        <thead>
+            <tr><th>Area</th><th>Status</th><th>Impact</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Credit card payments</td><td class="status-broken">Not working</td><td>No sales possible via card</td></tr>
+            <tr><td>WorldPay (UK)</td><td class="status-broken">Timing out at 60s</td><td>UK launch completely blocked</td></tr>
+            <tr><td>Gift card payment plugin</td><td class="status-missing">Not installed</td><td>CA/US card payments blocked</td></tr>
+            <tr><td>Order flow</td><td class="status-broken">Incomplete</td><td>Orders don't auto-progress</td></tr>
+            <tr><td>Fulfilment dashboard</td><td class="status-broken">Partially built</td><td>Manual process for every order</td></tr>
+            <tr><td>Referral codes</td><td class="status-broken">Single code only</td><td>Can't split retail/wholesale</td></tr>
+            <tr><td>Custom pricing</td><td class="status-missing">Not active</td><td>Everyone sees same price ($6)</td></tr>
+            <tr><td>Stock management</td><td class="status-missing">OFF on all products</td><td>No inventory tracking</td></tr>
+            <tr><td>Shipping integrations</td><td class="status-missing">None installed</td><td>Everything is manual</td></tr>
+            <tr><td>Age verification</td><td class="status-missing">None</td><td>Legal requirement for nicotine</td></tr>
+            <tr><td>Uptime monitoring</td><td class="status-missing">None</td><td>2-day outage went unnoticed</td></tr>
+        </tbody>
+    </table>
+
+    <p>24 active plugins, a custom plugin handling core business logic, built by at least two different dev teams with inconsistent code. The infrastructure (WordPress 6.9.4, WooCommerce 10.6.2, PHP 8.3) is fine. The application layer is what is broken.</p>
+
+    <div class="footer-line"></div>
+    <div class="page-number">02</div>
+</div>
+
+<!-- ═══════ PAGE 3: YOUR PRIORITIES ═══════ -->
+<div class="page">
+    <div class="header">
+        <img src="/Users/arnispiekus/Work/Github/ElevateoCo-Website/public/images/logos/elevateo-logo.png" alt="Elevateo" class="header-logo">
+        <span class="header-title">Puxx Platform Plan</span>
+    </div>
+
+    <h2>Your Priority List</h2>
+    <p>We heard you. This is what you said matters, in your order:</p>
+
+    <ol>
+        <li><strong>Fix the three e-commerce sites</strong> &mdash; make them work</li>
+        <li><strong>Credit card payments working</strong> &mdash; gift card for Canada, WorldPay for UK</li>
+        <li><strong>Hosting, maintenance, uptime monitoring</strong> &mdash; no more 2-day outages</li>
+        <li><strong>Affiliate/referral system</strong> &mdash; two codes, two tiers, adjustable rates</li>
+        <li><strong>Custom pricing</strong> per wholesale account</li>
+        <li><strong>Shipping automation</strong> &mdash; eliminate the manual copy-paste-email process</li>
+        <li><strong>Basic CRM</strong> &mdash; customer data, communication history, mobile-friendly</li>
+        <li><strong>Inventory management</strong> with low-stock alerts</li>
+    </ol>
+
+    <div class="quote-box">
+        <strong>"The CRM is not the main goal &mdash; it's a byproduct. Get the sites working first."</strong><br>
+        We agree completely. The plan below leads with your e-commerce sites.
+    </div>
+
+    <div class="gold-divider"></div>
+
+    <h2>Two Paths Forward</h2>
+    <p>We have identified two approaches. Both deliver the same end result. The difference is how we get there and what you are left with.</p>
+
+    <div style="display: flex; gap: 16px; margin-top: 16px;">
+        <div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 16px;">
+            <div class="path-label path-a">Path A</div>
+            <h3 style="margin-top: 6px;">Fix WordPress Sites</h3>
+            <p style="font-size: 9pt;">Take the three existing WooCommerce sites, fix what is broken, connect integrations, build missing features.</p>
+            <p style="font-size: 9pt;"><strong>Result:</strong> Three separate WordPress backends.</p>
+        </div>
+        <div style="flex: 1; background: rgba(201, 162, 39, 0.05); border: 1px solid rgba(201, 162, 39, 0.2); border-radius: 6px; padding: 16px;">
+            <div class="path-label path-b">Path B &mdash; Recommended</div>
+            <h3 style="margin-top: 6px;">One Modern Platform</h3>
+            <p style="font-size: 9pt;">Build one platform for all three regions. Same domains, automatic region detection, single admin dashboard.</p>
+            <p style="font-size: 9pt;"><strong>Result:</strong> One system, all regions, built for mobile.</p>
+        </div>
+    </div>
+
+    <div class="footer-line"></div>
+    <div class="page-number">03</div>
+</div>
+
+<!-- ═══════ PAGE 4: PATH A ═══════ -->
+<div class="page">
+    <div class="header">
+        <img src="/Users/arnispiekus/Work/Github/ElevateoCo-Website/public/images/logos/elevateo-logo.png" alt="Elevateo" class="header-logo">
+        <span class="header-title">Puxx Platform Plan &mdash; Path A</span>
+    </div>
+
+    <div class="path-label path-a">Path A</div>
+    <h2>Fix Your WordPress Sites</h2>
+    <p>Take the three existing WooCommerce sites, fix everything that is broken, connect the payment integrations, and build out the missing features.</p>
+
+    <table>
+        <thead>
+            <tr><th style="width: 70px;">Month</th><th>What Gets Done</th><th>What You See</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1</strong></td>
+                <td>Audit all three sites. Revoke previous developer access. Set up staging. Fix WorldPay (UK). Integrate gift card payment (CA/US). Fix order flow end-to-end. Uptime monitoring.</td>
+                <td>Sites accepting payments. Orders flowing. UK ready to launch.</td>
+            </tr>
+            <tr>
+                <td><strong>2</strong></td>
+                <td>User roles (retail, wholesale, fulfilment). Custom pricing per account. Two-tier affiliate/referral system. Wholesale document verification.</td>
+                <td>Custom pricing live. Affiliate codes working. Business doc verification.</td>
+            </tr>
+            <tr>
+                <td><strong>3</strong></td>
+                <td>ShipStation (UK). Freightcom intermediary (CA/US). Inventory tracking. Low-stock alerts.</td>
+                <td>Shipping automated. Stock levels tracking. Reorder list working.</td>
+            </tr>
+            <tr>
+                <td><strong>4</strong></td>
+                <td>Basic CRM &mdash; customer data, communication history. GoHighLevel migration. Mobile-friendly.</td>
+                <td>Search any customer, see full history on your phone.</td>
+            </tr>
+            <tr>
+                <td><strong>5</strong></td>
+                <td>Staff CRM access. Contact form routing. Admin dashboard polish. Sales analytics.</td>
+                <td>Staff using CRM without WordPress access. Clean dashboard.</td>
+            </tr>
+            <tr>
+                <td><strong>6</strong></td>
+                <td>Testing, optimization, performance, edge cases, documentation, handover.</td>
+                <td>Everything polished and stable.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Investment</h4>
+    <p><strong>GBP 2,000/month &times; 6 months = GBP 12,000</strong></p>
+
+    <h4>What You Keep</h4>
+    <p>Three separate WordPress/WooCommerce sites, each with its own backend, managed through WordPress admin.</p>
+
+    <h4>Honest Assessment</h4>
+    <p>This works. It gets you live. But you are maintaining three separate systems, dealing with WordPress plugin updates, and every new feature means finding a plugin or writing custom PHP. The admin experience is WordPress &mdash; which you have told us you find confusing.</p>
+
+    <div class="footer-line"></div>
+    <div class="page-number">04</div>
+</div>
+
+<!-- ═══════ PAGE 5: PATH B ═══════ -->
+<div class="page">
+    <div class="header">
+        <img src="/Users/arnispiekus/Work/Github/ElevateoCo-Website/public/images/logos/elevateo-logo.png" alt="Elevateo" class="header-logo">
+        <span class="header-title">Puxx Platform Plan &mdash; Path B</span>
+    </div>
+
+    <div class="path-label path-b">Path B &mdash; Recommended</div>
+    <h2>One Modern Platform for All Regions</h2>
+    <p>Instead of fixing three broken WordPress sites, we build one modern platform that handles Canada, UK, and US from a single system. Same domains (puxxpouches.ca, .co.uk, .com) &mdash; they all point to one platform that automatically shows the right currency, payment methods, and shipping options based on region.</p>
+    <p><strong>Built on the same technology as Puxx Ireland</strong> &mdash; which already has a working checkout, age verification, admin dashboard, and WorldPay integration.</p>
+
+    <table>
+        <thead>
+            <tr><th style="width: 70px;">Month</th><th>What Gets Done</th><th>What You See</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1</strong></td>
+                <td>Adapt existing Puxx Ireland platform for multi-region (CA/UK/US). Products, checkout, age verification, WorldPay (UK). Domain routing.</td>
+                <td>A working site you can click through. Checkout works. Age verified.</td>
+            </tr>
+            <tr>
+                <td><strong>2</strong></td>
+                <td>AllayPay for CA/US (proper nicotine payment processor, no gift card workaround). Bank transfer. Order flow. Fulfilment dashboard.</td>
+                <td>Payments processing. Orders flowing. Fulfilment team has their own view.</td>
+            </tr>
+            <tr>
+                <td><strong>3</strong></td>
+                <td>Two-tier affiliate/referral system. Custom pricing per account. Wholesale signup with document verification. User roles.</td>
+                <td>Affiliate codes live. Custom pricing working. Wholesale verification.</td>
+            </tr>
+            <tr>
+                <td><strong>4</strong></td>
+                <td>ShipStation UK direct. Freightcom intermediary CA/US. Inventory management. Low-stock alerts.</td>
+                <td>Shipping automated. Stock tracking. Reorder list.</td>
+            </tr>
+            <tr>
+                <td><strong>5</strong></td>
+                <td>CRM built into the platform. Customer timeline, communication history, staff access. Mobile-first. GoHighLevel migration.</td>
+                <td>Full CRM on your phone. Staff access without admin backend.</td>
+            </tr>
+            <tr>
+                <td><strong>6</strong></td>
+                <td>Analytics dashboard. Performance optimization. Documentation. Handover.</td>
+                <td>Clean dashboard with sales data. Everything polished.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Investment</h4>
+    <p><strong>GBP 2,000/month &times; 6 months = GBP 12,000</strong> (same as Path A)</p>
+
+    <h4>Key Advantages Over Path A</h4>
+    <div class="advantage-grid">
+        <div class="advantage-item"><span class="advantage-check">+</span><span class="advantage-text"><strong>One backend</strong> instead of three</span></div>
+        <div class="advantage-item"><span class="advantage-check">+</span><span class="advantage-text"><strong>No WordPress admin</strong> &mdash; clean interface</span></div>
+        <div class="advantage-item"><span class="advantage-check">+</span><span class="advantage-text"><strong>AllayPay</strong> &mdash; no gift card workaround</span></div>
+        <div class="advantage-item"><span class="advantage-check">+</span><span class="advantage-text"><strong>Age verification</strong> built in from day one</span></div>
+        <div class="advantage-item"><span class="advantage-check">+</span><span class="advantage-text"><strong>Mobile-first</strong> &mdash; not just responsive</span></div>
+        <div class="advantage-item"><span class="advantage-check">+</span><span class="advantage-text"><strong>Future features</strong> plug straight in</span></div>
+    </div>
+
+    <div class="footer-line"></div>
+    <div class="page-number">05</div>
+</div>
+
+<!-- ═══════ PAGE 6: RECOMMENDATION + NEXT STEPS ═══════ -->
+<div class="page">
+    <div class="header">
+        <img src="/Users/arnispiekus/Work/Github/ElevateoCo-Website/public/images/logos/elevateo-logo.png" alt="Elevateo" class="header-logo">
+        <span class="header-title">Puxx Platform Plan</span>
+    </div>
+
+    <h2>Our Recommendation</h2>
+
+    <div class="recommendation-box">
+        <h3>Path B. Same price. Same timeline. Better result.</h3>
+        <p style="margin-bottom: 0;">You have spent 7 months and thousands of dollars trying to get WordPress to work with two different dev teams. We can fix it &mdash; or we can build you something that works properly, from a codebase we already have running for Puxx Ireland.</p>
+    </div>
+
+    <p>The WordPress sites do not go anywhere &mdash; they stay as a backup. If at any point you are not happy with what we are building, the WordPress option is still there.</p>
+
+    <div class="gold-divider"></div>
+
+    <h2>What We Need From You to Start</h2>
+
+    <ol>
+        <li><strong>SiteGround hosting credentials</strong> &mdash; for domain DNS management and existing site access</li>
+        <li><strong>All WordPress admin logins</strong> &mdash; CA and UK (we have US)</li>
+        <li><strong>GoHighLevel/OpenDoors data export</strong> &mdash; for CRM migration later</li>
+        <li><strong>Gift card payment plugin contact</strong> &mdash; third-party dev team (Path A or fallback)</li>
+        <li><strong>WorldPay tech team intro</strong> &mdash; for payment integration</li>
+        <li><strong>Brand assets</strong> &mdash; logo files, hex colours (or we pull from existing sites)</li>
+    </ol>
+
+    <div class="gold-divider"></div>
+
+    <h2>Next Steps</h2>
+
+    <ol>
+        <li>You review this plan and <strong>confirm which path</strong></li>
+        <li>We begin Month 1 <strong>immediately</strong></li>
+        <li>You will see <strong>working progress within the first 2 weeks</strong></li>
+        <li><strong>Monthly check-ins</strong> to review what was delivered and plan the next month</li>
+    </ol>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <div class="cover-divider" style="margin: 30px auto;"></div>
+        <p style="font-size: 10px; color: var(--text-muted); letter-spacing: 1px;">
+            Prepared by <strong style="color: var(--gold);">Elevateo Co.</strong> &mdash; Software, Automation &amp; Growth Solutions
+        </p>
+        <p style="font-size: 9px; color: rgba(179,179,179,0.4); margin-top: 5px;">
+            April 2026 &nbsp;|&nbsp; Confidential
+        </p>
+    </div>
+
+    <div class="footer-line"></div>
+    <div class="page-number">06</div>
+</div>
+
+</body>
+</html>
