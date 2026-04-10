@@ -2,9 +2,44 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/db/supabase';
 import { productSchema } from '@/lib/validations/product';
 
-export async function GET() {
+function mapProduct(product: any, category: string | null) {
+  return {
+    id: product.id,
+    name: product.name,
+    sku: product.sku || '',
+    slug: product.slug,
+    description: product.description,
+    category: category || '',
+    price: product.price,
+    compareAtPrice: product.compare_at_price,
+    stock_quantity: product.stock_quantity ?? 0,
+    reorderPoint: product.reorder_point,
+    active: product.is_active ?? false,
+    isActive: product.is_active ?? false,
+    isFeatured: product.is_featured ?? false,
+    image_url: product.image_url,
+    imageUrl: product.image_url,
+    imageGallery: product.image_gallery,
+    strength: product.nicotine_strength,
+    nicotineStrength: product.nicotine_strength,
+    flavor: product.flavor,
+    flavorProfile: product.flavor_profile,
+    pouchesPerCan: product.pouches_per_can,
+    ingredients: product.ingredients,
+    usageInstructions: product.usage_instructions,
+    metaTitle: product.meta_title,
+    metaDescription: product.meta_description,
+    createdAt: product.created_at,
+    updatedAt: product.updated_at,
+  };
+}
+
+export async function GET(request: NextRequest) {
   try {
     const supabase = getSupabaseClient();
+    const { searchParams } = new URL(request.url);
+    const categoryFilter = searchParams.get('category');
+    const statusFilter = searchParams.get('status');
 
     const { data: allProducts, error } = await supabase
       .from('products')
@@ -19,11 +54,41 @@ export async function GET() {
       );
     }
 
+    const productIds = (allProducts || []).map((p: any) => p.id);
+    const categoryMap = new Map<number, string>();
+
+    if (productIds.length > 0) {
+      const { data: productCategories } = await supabase
+        .from('product_categories')
+        .select('product_id, categories(slug)')
+        .in('product_id', productIds);
+
+      (productCategories || []).forEach((row: any) => {
+        const cat = Array.isArray(row.categories) ? row.categories[0] : row.categories;
+        if (cat?.slug) {
+          categoryMap.set(row.product_id, cat.slug);
+        }
+      });
+    }
+
+    let mapped = (allProducts || []).map((p: any) =>
+      mapProduct(p, categoryMap.get(p.id) ?? null)
+    );
+
+    if (categoryFilter && categoryFilter !== 'all') {
+      mapped = mapped.filter((p) => p.category === categoryFilter);
+    }
+
+    if (statusFilter && statusFilter !== 'all') {
+      const wantActive = statusFilter === 'active';
+      mapped = mapped.filter((p) => p.active === wantActive);
+    }
+
     return NextResponse.json({
       success: true,
-      count: allProducts.length,
-      total: allProducts.length,
-      products: allProducts,
+      count: mapped.length,
+      total: mapped.length,
+      products: mapped,
     });
   } catch (error) {
     console.error('Error fetching products:', error);
