@@ -1,14 +1,14 @@
 import { getUser } from '@/lib/db/queries';
 import { redirect } from 'next/navigation';
-import { db } from '@/lib/db/drizzle';
-import { orders, orderItems } from '@/lib/db/schema';
-import { eq, desc } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 import { getRegionConfig } from '@/lib/config/regions';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Package } from 'lucide-react';
 import OrdersDataTable from '@/components/account/tables/OrdersDataTable';
+
+export const dynamic = 'force-dynamic';
 
 interface OrdersPageProps {
   params: Promise<{ region: string }>;
@@ -22,33 +22,62 @@ export default async function OrdersPage({ params }: OrdersPageProps) {
     redirect(`/${region}/sign-in`);
   }
 
-  if (!db) {
-    throw new Error('Database not configured');
+  const config = getRegionConfig(region);
+  const supabase = getSupabaseClient();
+
+  const { data: userOrders, error: ordersError } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+
+  const safeOrders = ordersError ? [] : (userOrders || []);
+
+  const orderIds = safeOrders.map((o: any) => o.id);
+  const itemCountByOrder = new Map<number, number>();
+  if (orderIds.length > 0) {
+    const { data: itemsData } = await supabase
+      .from('order_items')
+      .select('order_id')
+      .in('order_id', orderIds);
+
+    (itemsData || []).forEach((row: any) => {
+      itemCountByOrder.set(row.order_id, (itemCountByOrder.get(row.order_id) || 0) + 1);
+    });
   }
 
-  const config = getRegionConfig(region);
-
-  // Get all user orders
-  const userOrders = await db
-    .select()
-    .from(orders)
-    .where(eq(orders.userId, user.id))
-    .orderBy(desc(orders.createdAt));
-
-  const database = db;
-  const ordersWithItems = await Promise.all(
-    userOrders.map(async (order) => {
-      const items = await database
-        .select()
-        .from(orderItems)
-        .where(eq(orderItems.orderId, order.id));
-      return { ...order, itemCount: items.length };
-    })
-  );
+  // OrdersDataTable expects the Drizzle-era camelCase shape. Map snake_case
+  // Supabase columns across to keep the existing component untouched.
+  const ordersWithItems = safeOrders.map((order: any) => ({
+    id: order.id,
+    userId: order.user_id,
+    orderNumber: order.order_number,
+    status: order.status,
+    subtotal: order.subtotal,
+    shippingCost: order.shipping_cost,
+    tax: order.tax,
+    discount: order.discount,
+    total: order.total,
+    currency: order.currency,
+    paymentMethod: order.payment_method,
+    paymentStatus: order.payment_status,
+    stripePaymentIntentId: order.stripe_payment_intent_id,
+    shippingName: order.shipping_name,
+    shippingEmail: order.shipping_email,
+    shippingPhone: order.shipping_phone,
+    shippingAddress: order.shipping_address,
+    shippingCity: order.shipping_city,
+    shippingPostcode: order.shipping_postcode,
+    shippingCountry: order.shipping_country,
+    notes: order.notes,
+    createdAt: order.created_at,
+    updatedAt: order.updated_at,
+    completedAt: order.completed_at,
+    itemCount: itemCountByOrder.get(order.id) || 0,
+  }));
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Order History</h1>
         <p className="mt-2 text-gray-600">
@@ -56,7 +85,6 @@ export default async function OrdersPage({ params }: OrdersPageProps) {
         </p>
       </div>
 
-      {/* Orders List */}
       {ordersWithItems.length === 0 ? (
         <Card>
           <CardContent className="py-16">

@@ -1,8 +1,6 @@
 import { getUser } from '@/lib/db/queries';
 import { redirect, notFound } from 'next/navigation';
-import { db } from '@/lib/db/drizzle';
-import { orders, orderItems, products } from '@/lib/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 import { getRegionConfig } from '@/lib/config/regions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,6 +10,8 @@ import { ArrowLeft, Package, MapPin, CreditCard } from 'lucide-react';
 import { format } from 'date-fns';
 import OrderTimeline from '@/components/account/timeline/OrderTimeline';
 import ReorderButton from '@/components/account/ReorderButton';
+
+export const dynamic = 'force-dynamic';
 
 interface OrderDetailsPageProps {
   params: Promise<{
@@ -28,35 +28,85 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
     redirect(`/${region}/sign-in`);
   }
 
-  if (!db) {
-    throw new Error('Database not configured');
-  }
-
   const config = getRegionConfig(region);
   const currencySymbol = config.currencySymbol;
 
-  // Get order
-  const orderResult = await db
-    .select()
-    .from(orders)
-    .where(and(eq(orders.id, parseInt(id)), eq(orders.userId, user.id)))
-    .limit(1);
+  const supabase = getSupabaseClient();
 
-  if (orderResult.length === 0) {
+  const orderId = parseInt(id);
+  if (Number.isNaN(orderId)) {
     notFound();
   }
 
-  const order = orderResult[0];
+  const { data: orderRow, error: orderError } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('id', orderId)
+    .eq('user_id', user.id)
+    .limit(1)
+    .single();
 
-  // Get order items
-  const items = await db
-    .select({
-      orderItem: orderItems,
-      product: products,
-    })
-    .from(orderItems)
-    .leftJoin(products, eq(orderItems.productId, products.id))
-    .where(eq(orderItems.orderId, order.id));
+  if (orderError || !orderRow) {
+    notFound();
+  }
+
+  const { data: itemRows, error: itemsError } = await supabase
+    .from('order_items')
+    .select('*, products(id, name, flavor, nicotine_strength, image_url, price)')
+    .eq('order_id', orderRow.id);
+
+  const safeItemRows = itemsError ? [] : (itemRows || []);
+
+  // Existing components were built against a Drizzle shape. Reshape the
+  // Supabase response to match so we don't have to touch components.
+  const order = {
+    id: orderRow.id,
+    orderNumber: orderRow.order_number,
+    status: orderRow.status,
+    subtotal: orderRow.subtotal,
+    shippingCost: orderRow.shipping_cost,
+    tax: orderRow.tax,
+    discount: orderRow.discount,
+    total: orderRow.total,
+    currency: orderRow.currency,
+    paymentMethod: orderRow.payment_method,
+    paymentStatus: orderRow.payment_status,
+    shippingName: orderRow.shipping_name,
+    shippingAddress: orderRow.shipping_address,
+    shippingCity: orderRow.shipping_city,
+    shippingPostcode: orderRow.shipping_postcode,
+    shippingCountry: orderRow.shipping_country,
+    shippingPhone: orderRow.shipping_phone,
+    shippingEmail: orderRow.shipping_email,
+    notes: orderRow.notes,
+    createdAt: orderRow.created_at,
+    completedAt: orderRow.completed_at,
+  };
+
+  const items = safeItemRows.map((raw: any) => {
+    const productRaw = Array.isArray(raw.products) ? raw.products[0] : raw.products;
+    return {
+      orderItem: {
+        id: raw.id,
+        productId: raw.product_id,
+        productName: raw.product_name,
+        productSku: raw.product_sku,
+        quantity: raw.quantity,
+        price: raw.price,
+        total: raw.total,
+      },
+      product: productRaw
+        ? {
+            id: productRaw.id,
+            name: productRaw.name,
+            imageUrl: productRaw.image_url,
+            flavor: productRaw.flavor,
+            nicotineStrength: productRaw.nicotine_strength,
+            price: productRaw.price,
+          }
+        : null,
+    };
+  });
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -85,7 +135,6 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center gap-4">
         <Link href={`/${region}/account/orders`}>
           <Button variant="ghost" size="sm" className="hover:bg-gray-100">
@@ -110,7 +159,6 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Order Items */}
         <div className="space-y-6 lg:col-span-2">
           <Card>
             <CardHeader>
@@ -163,14 +211,12 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
                 ))}
               </div>
 
-              {/* Reorder Button */}
               <div className="mt-6 border-t border-gray-200 pt-6">
                 <ReorderButton orderId={order.id} items={items} />
               </div>
             </CardContent>
           </Card>
 
-          {/* Order Tracking */}
           {order.status !== 'cancelled' && order.status !== 'refunded' && (
             <Card>
               <CardHeader>
@@ -189,7 +235,6 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
             </Card>
           )}
 
-          {/* Cancelled/Refunded Notice */}
           {(order.status === 'cancelled' || order.status === 'refunded') && (
             <Card>
               <CardHeader>
@@ -208,9 +253,7 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
           )}
         </div>
 
-        {/* Order Summary & Details */}
         <div className="space-y-6">
-          {/* Order Summary */}
           <Card>
             <CardHeader>
               <CardTitle>Order Summary</CardTitle>
@@ -253,7 +296,6 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
             </CardContent>
           </Card>
 
-          {/* Shipping Address */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -279,7 +321,6 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
             </CardContent>
           </Card>
 
-          {/* Payment Information */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -313,7 +354,6 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
             </CardContent>
           </Card>
 
-          {/* Order Notes */}
           {order.notes && (
             <Card>
               <CardHeader>

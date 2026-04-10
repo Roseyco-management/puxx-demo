@@ -148,13 +148,13 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/2 | Complete   | 2026-04-09 |
-| 2. Storefront | 5/5 | Complete   | 2026-04-09 |
-| 3. Customer Account | 0/2 | Not started | - |
-| 4. Admin Dashboard | 1/2 | In Progress|  |
-| 5. Portals | 5/5 | Complete   | 2026-04-09 |
-| 6. Polish | 2/2 | Complete   | 2026-04-09 |
-| 7. Demo Bug Fix | 4/5 | In Progress|  |
+| 1. Foundation | 2/2 | Complete | 2026-04-09 |
+| 2. Storefront | 5/5 | Complete | 2026-04-09 |
+| 3. Customer Account | 2/2 | Complete | 2026-04-10 (retroactive — account routes migrated to Supabase REST via phase 7) |
+| 4. Admin Dashboard | 2/2 | Complete | 2026-04-10 (retroactive — both gaps resolved by phase 7) |
+| 5. Portals | 5/5 | Complete | 2026-04-09 |
+| 6. Polish | 2/2 | Complete | 2026-04-09 |
+| 7. Demo Bug Fix | 5/5 | Complete | 2026-04-10 |
 
 ---
 *Roadmap created: 2026-04-09*

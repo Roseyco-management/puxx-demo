@@ -29,9 +29,9 @@ human_verification:
 # Phase 4: Admin Dashboard Verification Report
 
 **Phase Goal:** An admin can view and manage orders, customers, and products from the TailAdmin Pro layout
-**Verified:** 2026-04-09
-**Status:** gaps_found (1 definite gap + 1 advisory gap; core list views are wired correctly)
-**Re-verification:** No — initial verification
+**Verified:** 2026-04-09 (initial, gaps_found), re-verified 2026-04-10 (resolved via phase 7 bundle)
+**Status:** resolved — both original gaps closed by phase 7. See retroactive_close block in frontmatter above.
+**Re-verification:** Yes — phase 7 reversed the backend direction (Drizzle → Supabase REST across the admin surface) because Drizzle was broken on Vercel, and stubbed the export route to fail gracefully. ADMIN-01/02/03 all satisfied via Supabase now.
 
 ---
 

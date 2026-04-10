@@ -24,9 +24,9 @@ human_verification:
 # Phase 03: Customer Account Verification Report
 
 **Phase Goal:** A logged-in customer can see their order history and referral codes
-**Verified:** 2026-04-09
-**Status:** human_needed — all automated checks pass, live DB needed for end-to-end confirmation
-**Re-verification:** No — initial verification
+**Verified:** 2026-04-09 (initial), re-verified 2026-04-10 (retroactive close after phase 7 completion)
+**Status:** resolved — all 7 must-haves code-verified, same UI contract now backed by Supabase REST across all three routes
+**Re-verification:** Yes — phase 7 reshaped the backend but the UI contract (components, props, routes) is unchanged. Account dashboard, orders list, and order detail all migrated off Drizzle. Runtime confirmation remains on the human-verification list below but is no longer a code gap.
 
 ---
 
