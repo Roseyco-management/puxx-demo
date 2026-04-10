@@ -79,7 +79,7 @@ export default async function PortalOrdersPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <InvoiceButton />
+                    <InvoiceButton orderId={order.id} orderNumber={order.order_number} />
                   </td>
                 </tr>
               ))}

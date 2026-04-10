@@ -34,10 +34,10 @@ export async function GET(
         )
       `)
       .eq('id', id)
+      .eq('user_id', session.user.id)
       .single();
 
     if (error || !order) {
-      console.error('Error fetching order:', error);
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
@@ -54,7 +54,7 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error('Error generating invoice:', error);
+    console.error('Error generating portal invoice:', error);
     return NextResponse.json({ error: 'Failed to generate invoice' }, { status: 500 });
   }
 }
