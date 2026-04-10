@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getAdminUser } from '@/lib/auth/admin';
 import type { TrafficMetrics } from '@/lib/analytics/types';
 
 // This is a placeholder for GA4 integration
@@ -9,6 +10,11 @@ import type { TrafficMetrics } from '@/lib/analytics/types';
 
 export async function GET(request: NextRequest) {
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Mock data - replace with real GA4 API calls
     const mockTrafficData: TrafficMetrics = {
       pageViews: 12543,

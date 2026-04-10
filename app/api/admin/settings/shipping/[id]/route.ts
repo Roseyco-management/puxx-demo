@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { getSession } from '@/lib/auth/session';
+import { getAdminUser } from '@/lib/auth/admin';
 
 export async function PUT() {
   try {
-    const session = await getSession();
-    if (!session?.user?.id) {
+    const admin = await getAdminUser();
+    if (!admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -17,8 +17,8 @@ export async function PUT() {
 
 export async function DELETE() {
   try {
-    const session = await getSession();
-    if (!session?.user?.id) {
+    const admin = await getAdminUser();
+    if (!admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

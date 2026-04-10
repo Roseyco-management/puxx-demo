@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/db/supabase';
 import { getDateRangeFromPeriod } from '@/lib/analytics/utils';
+import { getAdminUser } from '@/lib/auth/admin';
 import type { TimePeriod, ProductPerformance } from '@/lib/analytics/types';
 
 export async function GET(request: NextRequest) {
   const supabase = getSupabaseClient();
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const period = (searchParams.get('period') || 'month') as TimePeriod;
     const startDate = searchParams.get('startDate');

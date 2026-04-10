@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/db/supabase';
+import { getAdminUser } from '@/lib/auth/admin';
 
 /**
  * GET /api/admin/marketing/subscribers
@@ -7,6 +8,11 @@ import { getSupabaseClient } from '@/lib/db/supabase';
  */
 export async function GET(request: NextRequest) {
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const supabase = getSupabaseClient();
 
     const { data: subscribers, error } = await supabase
@@ -53,6 +59,11 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const supabase = getSupabaseClient();
     const body = await request.json();
     const { email, name, source, subscribers } = body;
@@ -163,6 +174,11 @@ export async function POST(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const supabase = getSupabaseClient();
     const body = await request.json();
     const { ids, action } = body; // action: 'unsubscribe' or 'delete'

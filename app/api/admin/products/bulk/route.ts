@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/db/supabase';
+import { getAdminUser } from '@/lib/auth/admin';
 import { z } from 'zod';
 
 const bulkActionSchema = z.object({
@@ -18,6 +19,11 @@ const bulkActionSchema = z.object({
 export async function POST(request: NextRequest) {
   const supabase = getSupabaseClient();
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
 
     // Validate input
@@ -118,6 +124,11 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const supabase = getSupabaseClient();
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const idsParam = searchParams.get('ids');
 

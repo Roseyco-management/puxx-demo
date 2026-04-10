@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { getSession } from '@/lib/auth/session';
+import { getAdminUser } from '@/lib/auth/admin';
 
 export async function GET() {
   try {
-    const session = await getSession();
-    if (!session?.user?.id) {
+    const admin = await getAdminUser();
+    if (!admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -17,8 +17,8 @@ export async function GET() {
 
 export async function POST() {
   try {
-    const session = await getSession();
-    if (!session?.user?.id) {
+    const admin = await getAdminUser();
+    if (!admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
