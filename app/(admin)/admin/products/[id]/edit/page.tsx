@@ -41,29 +41,30 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     notFound();
   }
 
-  // Transform database product to form data format
+  // API returns snake_case Supabase columns plus a derived `category` field.
+  // Transform to the camelCase shape ProductForm expects.
   const initialData = {
     name: product.name,
     sku: product.sku || '',
     description: product.description,
     category: product.category,
     price: parseFloat(product.price),
-    compareAtPrice: product.compareAtPrice ? parseFloat(product.compareAtPrice) : null,
-    stockQuantity: product.stockQuantity,
-    reorderPoint: product.reorderPoint,
-    nicotineStrength: product.nicotineStrength,
+    compareAtPrice: product.compare_at_price ? parseFloat(product.compare_at_price) : null,
+    stockQuantity: product.stock_quantity,
+    reorderPoint: product.reorder_point,
+    nicotineStrength: product.nicotine_strength,
     flavor: product.flavor,
-    flavorProfile: product.flavorProfile,
-    pouchesPerCan: product.pouchesPerCan,
+    flavorProfile: product.flavor_profile,
+    pouchesPerCan: product.pouches_per_can,
     ingredients: product.ingredients,
-    usageInstructions: product.usageInstructions,
-    imageUrl: product.imageUrl,
-    imageGallery: product.imageGallery || [],
+    usageInstructions: product.usage_instructions,
+    imageUrl: product.image_url,
+    imageGallery: product.image_gallery || [],
     slug: product.slug,
-    metaTitle: product.metaTitle,
-    metaDescription: product.metaDescription,
-    isFeatured: product.isFeatured,
-    isActive: product.isActive,
+    metaTitle: product.meta_title,
+    metaDescription: product.meta_description,
+    isFeatured: product.is_featured,
+    isActive: product.is_active,
   };
 
   return (
