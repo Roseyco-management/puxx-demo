@@ -24,8 +24,9 @@ export async function getAdminUser(): Promise<AdminUser | null> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('users')
-    .select('id, role')
+    .select('id, role, deleted_at')
     .eq('id', session.user.id)
+    .is('deleted_at', null)
     .single();
 
   if (error || !data) return null;
@@ -45,8 +46,9 @@ export async function getRetailerUser(): Promise<{ id: number } | null> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('users')
-    .select('id, role')
+    .select('id, role, deleted_at')
     .eq('id', session.user.id)
+    .is('deleted_at', null)
     .single();
 
   if (error || !data) return null;

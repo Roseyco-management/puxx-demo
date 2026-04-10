@@ -110,8 +110,13 @@ export async function GET(request: NextRequest) {
  * Creates a new product
  */
 export async function POST(request: NextRequest) {
-  const supabase = getSupabaseClient();
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const supabase = getSupabaseClient();
     const body = await request.json();
 
     // Validate input

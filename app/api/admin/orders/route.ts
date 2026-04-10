@@ -37,7 +37,14 @@ export async function GET(request: NextRequest) {
     }
 
     if (endDate) {
-      query = query.lte('created_at', endDate);
+      // Custom date pickers emit midnight UTC for the selected day.
+      // Using .lte would exclude the rest of that day, so roll forward
+      // 24 hours and use strict less-than to make endDate inclusive.
+      const endInstant = new Date(endDate);
+      if (!Number.isNaN(endInstant.getTime())) {
+        const nextDay = new Date(endInstant.getTime() + 24 * 60 * 60 * 1000);
+        query = query.lt('created_at', nextDay.toISOString());
+      }
     }
 
     const { data: orders, error } = await query;

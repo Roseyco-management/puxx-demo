@@ -62,46 +62,15 @@ export default function ProductsPage() {
   const setActiveForIds = async (ids: string[], isActive: boolean) => {
     try {
       await Promise.all(
-        ids.map(async (id) => {
-          const current = products.find((p) => String(p.id) === String(id));
-          if (!current) return;
-
-          const payload = {
-            name: current.name,
-            slug: current.slug,
-            description: current.description,
-            price: parseFloat(current.price),
-            compareAtPrice: current.compareAtPrice
-              ? parseFloat(current.compareAtPrice)
-              : null,
-            sku: current.sku,
-            nicotineStrength: current.nicotineStrength,
-            flavor: current.flavor,
-            flavorProfile: current.flavorProfile,
-            pouchesPerCan: current.pouchesPerCan,
-            reorderPoint: current.reorderPoint,
-            ingredients: current.ingredients,
-            usageInstructions: current.usageInstructions,
-            imageUrl: current.imageUrl,
-            imageGallery: current.imageGallery || [],
-            stockQuantity: current.stock_quantity,
-            isActive,
-            isFeatured: current.isFeatured ?? false,
-            metaTitle: current.metaTitle,
-            metaDescription: current.metaDescription,
-            category: current.category,
-          };
-
-          const response = await fetch(`/api/admin/products/${id}`, {
-            method: 'PUT',
+        ids.map((id) =>
+          fetch(`/api/admin/products/${id}`, {
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-
-          if (!response.ok) {
-            throw new Error(`Failed to update product ${id}`);
-          }
-        })
+            body: JSON.stringify({ isActive }),
+          }).then((r) => {
+            if (!r.ok) throw new Error(`Failed to update product ${id}`);
+          })
+        )
       );
       toast.success(`${ids.length} product(s) ${isActive ? 'activated' : 'deactivated'}`);
       fetchProducts();

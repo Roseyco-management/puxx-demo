@@ -240,6 +240,70 @@ export async function PUT(
 }
 
 /**
+ * PATCH /api/admin/products/[id]
+ * Partial product update — accepts isActive / isFeatured without running
+ * the full product schema. Used by bulk activate/deactivate where a full
+ * PUT would re-validate fields (e.g. nicotine strength) that the seed
+ * data predates the current validation schema.
+ */
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { id } = await params;
+    const productId = parseInt(id);
+    if (isNaN(productId)) {
+      return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 });
+    }
+
+    const body = await request.json();
+    const update: Record<string, any> = {
+      updated_at: new Date().toISOString(),
+    };
+
+    if (typeof body.isActive === 'boolean') update.is_active = body.isActive;
+    if (typeof body.isFeatured === 'boolean') update.is_featured = body.isFeatured;
+
+    if (Object.keys(update).length === 1) {
+      return NextResponse.json(
+        { error: 'No updatable fields supplied' },
+        { status: 400 }
+      );
+    }
+
+    const supabase = getSupabaseClient();
+    const { data: updated, error } = await supabase
+      .from('products')
+      .update(update)
+      .eq('id', productId)
+      .select()
+      .single();
+
+    if (error || !updated) {
+      console.error('Error patching product:', error);
+      return NextResponse.json(
+        { error: 'Failed to update product' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ success: true, product: updated });
+  } catch (error) {
+    console.error('Error patching product:', error);
+    return NextResponse.json(
+      { error: 'Failed to update product' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
  * DELETE /api/admin/products/[id]
  * Soft deletes a product (sets is_active to false)
  */
