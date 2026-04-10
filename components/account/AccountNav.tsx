@@ -1,14 +1,11 @@
 'use client';
 
-import { User, Profile } from '@/lib/db/schema';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
   Package,
-  UserCircle,
-  MapPin,
   LogOut,
   Menu,
   X,
@@ -17,42 +14,41 @@ import {
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-interface AccountNavProps {
-  user: User;
-  profile: Profile | null;
+interface NavUser {
+  name?: string | null;
+  email: string;
 }
 
-const navItems = [
-  {
-    name: 'Dashboard',
-    href: '/account/dashboard',
-    icon: LayoutDashboard,
-  },
-  {
-    name: 'Order History',
-    href: '/account/orders',
-    icon: Package,
-  },
-  {
-    name: 'Account Details',
-    href: '/account/details',
-    icon: UserCircle,
-  },
-  {
-    name: 'Saved Addresses',
-    href: '/account/addresses',
-    icon: MapPin,
-  },
-  {
-    name: 'Affiliate',
-    href: '/account/affiliate',
-    icon: Users,
-  },
-];
+interface AccountNavProps {
+  user: NavUser;
+  profile: unknown;
+  region: string;
+}
 
-export function AccountNav({ user, profile }: AccountNavProps) {
+function buildNavItems(region: string) {
+  return [
+    {
+      name: 'Dashboard',
+      href: `/${region}/account`,
+      icon: LayoutDashboard,
+    },
+    {
+      name: 'Order History',
+      href: `/${region}/account/orders`,
+      icon: Package,
+    },
+    {
+      name: 'Affiliate',
+      href: `/${region}/account/affiliate`,
+      icon: Users,
+    },
+  ];
+}
+
+export function AccountNav({ user, region }: AccountNavProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navItems = buildNavItems(region);
 
   const handleLogout = async () => {
     try {
@@ -115,7 +111,10 @@ export function AccountNav({ user, profile }: AccountNavProps) {
           <nav className="p-4 space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href || pathname.endsWith(item.href);
+              const isDashboard = item.href === `/${region}/account`;
+              const isActive = isDashboard
+                ? pathname === item.href
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
               return (
                 <Link

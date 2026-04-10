@@ -2,9 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { getUser } from '@/lib/db/queries';
 import { redirect } from 'next/navigation';
-import { db } from '@/lib/db/drizzle';
-import { profiles } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 import { getRegionConfig } from '@/lib/config/regions';
 import { ReferralCard } from '@/components/account/ReferralCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,17 +34,16 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
     redirect(`/${region}/sign-in`);
   }
 
-  if (!db) {
-    throw new Error('Database not configured');
-  }
-
   const config = getRegionConfig(region);
   const currencySymbol = config?.currencySymbol ?? '£';
 
-  const [profile] = await db
-    .select()
-    .from(profiles)
-    .where(eq(profiles.userId, user.id));
+  const supabase = getSupabaseClient();
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .limit(1)
+    .single();
 
   return (
     <div className="space-y-6">
@@ -58,9 +55,9 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
       </div>
 
       <ReferralCard
-        retailCode={profile?.retailReferralCode ?? null}
-        wholesaleCode={profile?.wholesaleReferralCode ?? null}
-        commissionEarned={profile?.commissionEarned ?? '0.00'}
+        retailCode={profile?.retail_referral_code ?? null}
+        wholesaleCode={profile?.wholesale_referral_code ?? null}
+        commissionEarned={profile?.commission_earned ?? '0.00'}
         currencySymbol={currencySymbol}
       />
 
@@ -71,7 +68,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
         <CardContent>
           <div className="flex items-center gap-4">
             <div className="text-3xl font-bold text-emerald-600">
-              {currencySymbol}{parseFloat(profile?.commissionEarned ?? '0').toFixed(2)}
+              {currencySymbol}{parseFloat(profile?.commission_earned ?? '0').toFixed(2)}
             </div>
             <div className="text-sm text-gray-500">Total commission earned to date</div>
           </div>

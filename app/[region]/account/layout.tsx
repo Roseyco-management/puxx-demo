@@ -2,11 +2,8 @@ import { getUser } from '@/lib/db/queries';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { AccountNav } from '@/components/account/AccountNav';
-import { db } from '@/lib/db/drizzle';
-import { profiles } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { getSupabaseClient } from '@/lib/db/supabase';
 
-// Force dynamic rendering for all account pages
 export const dynamic = 'force-dynamic';
 
 export default async function AccountLayout({
@@ -23,19 +20,17 @@ export default async function AccountLayout({
     redirect(`/${region}/sign-in`);
   }
 
-  let profile = null;
-  if (db) {
-    const profileResult = await db
-      .select()
-      .from(profiles)
-      .where(eq(profiles.userId, user.id))
-      .limit(1);
-    profile = profileResult[0] || null;
-  }
+  const supabase = getSupabaseClient();
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .limit(1)
+    .single();
+  const profile = profileData || null;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -53,10 +48,8 @@ export default async function AccountLayout({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Navigation */}
-          <AccountNav user={user} profile={profile} />
+          <AccountNav user={user} profile={profile} region={region} />
 
-          {/* Main Content */}
           <main className="flex-1 min-w-0">
             {children}
           </main>

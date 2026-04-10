@@ -5,7 +5,7 @@ retroactive_close: 2026-04-10
 status: resolved
 score: 7/7 must-haves verified
 re_verification: true
-close_note: "Phase 3 code was verified clean on 2026-04-09 (status: human_needed, all runtime checks pending). Phase 7's 07-03 plan migrated the same account surface from Drizzle to Supabase REST in commit cd3ab5b. The UI contract (components, props, routes) is unchanged — only the backend switched. Runtime verification of CUST-01 is also part of phase 7's 7/7 VERIFICATION. Closed retroactively on phase 7 completion."
+close_note: "Phase 3 code was verified clean on 2026-04-09 (status: human_needed, all runtime checks pending). Phase 7's 07-03 plan (commit cd3ab5b) migrated the account DASHBOARD page off Drizzle, but Codex review caught that the nested orders list, order detail, shared layout, and affiliate page were still on Drizzle. Those were migrated in the 07-05 gap-closure bundle across commits c18c5d7 (orders list and detail) and a subsequent commit (layout and affiliate). The legacy non-region-scoped app/(account) route group was deleted as dead code. Every route under app/[region]/account now runs on Supabase REST. The UI contract (components, props) is unchanged, so the 2026-04-09 component-level verification still holds. Runtime verification of CUST-01 remains on the human check list but is no longer a code gap."
 human_verification:
   - test: "Log in as demo@puxx.com (password: demo123) and navigate to /uk/account/"
     expected: "Dashboard loads with greeting, recent orders mini-list showing 3 of 4 stub orders, and ReferralCard displaying PUXX-R-DEMO1 / PUXX-W-DEMO1 / £24.50"
