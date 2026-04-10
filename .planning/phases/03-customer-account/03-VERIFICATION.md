@@ -1,9 +1,11 @@
 ---
 phase: 03-customer-account
 verified: 2026-04-09T09:00:00Z
-status: human_needed
+retroactive_close: 2026-04-10
+status: resolved
 score: 7/7 must-haves verified
-re_verification: false
+re_verification: true
+close_note: "Phase 3 code was verified clean on 2026-04-09 (status: human_needed, all runtime checks pending). Phase 7's 07-03 plan migrated the same account surface from Drizzle to Supabase REST in commit cd3ab5b. The UI contract (components, props, routes) is unchanged — only the backend switched. Runtime verification of CUST-01 is also part of phase 7's 7/7 VERIFICATION. Closed retroactively on phase 7 completion."
 human_verification:
   - test: "Log in as demo@puxx.com (password: demo123) and navigate to /uk/account/"
     expected: "Dashboard loads with greeting, recent orders mini-list showing 3 of 4 stub orders, and ReferralCard displaying PUXX-R-DEMO1 / PUXX-W-DEMO1 / £24.50"

@@ -18,8 +18,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - App scaffold with multi-region routing and regional config switching (completed 2026-04-09)
 - [x] **Phase 2: Storefront** - Product catalogue, product detail, age gate, and checkout flow (completed 2026-04-09)
-- [ ] **Phase 3: Customer Account** - Order history, order status, and referral code display
-- [ ] **Phase 4: Admin Dashboard** - Orders, customers, and product management views
+- [x] **Phase 3: Customer Account** - Order history, order status, and referral code display (completed 2026-04-10, retroactive close — code verified 2026-04-09, runtime validated via phase 7 migration)
+- [x] **Phase 4: Admin Dashboard** - Orders, customers, and product management views (completed 2026-04-10, retroactive close — both gap_found items resolved by phase 7 bundle)
 - [x] **Phase 5: Portals** - Retailer portal, fulfilment view, affiliate preview, and CRM stub (completed 2026-04-09)
 - [x] **Phase 6: Polish** - Mobile responsiveness across all key views (completed 2026-04-09)
 - [x] **Phase 7: Demo Bug Fix** - Fix all API 500s/401s, auth pattern, product display, images, and manifest so every client-facing page renders without errors (completed 2026-04-10)

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
-status: planning
-stopped_at: Completed 07-demo-bugfix-04-PLAN.md
+status: complete
+stopped_at: Phase 7 complete — milestone v0.1 ready for human runtime verification
 last_updated: "2026-04-10T21:26:25.188Z"
-last_activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
+last_activity: 2026-04-10 — Phase 7 demo bugfix bundle closed; phases 3 and 4 retroactively marked complete
 progress:
   total_phases: 7
   completed_phases: 7
   total_plans: 23
   completed_plans: 23
-  percent: 0
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** The three e-commerce sites must process orders end-to-end — from checkout through payment, fulfilment assignment, shipping, and customer notification — without manual intervention on the happy path.
-**Current focus:** Phase 1: Foundation (v0.1 Demo)
+**Current focus:** Milestone v0.1 Demo complete — awaiting human runtime verification in browser.
 
 ## Current Position
 
-Phase: 1 of 6 (Foundation)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-04-09 — v0.1 Demo roadmap created (6 phases, 18 requirements)
+Phase: 7 of 7 (Demo Bug Fix) — complete
+Plan: 5 of 5 complete
+Status: Milestone complete (code-level). Runtime/visual verification pending human.
+Last activity: 2026-04-10 — Phase 7 closed with 7/7 must-haves verified after 5 rounds of Codex adversarial review. Phases 3 and 4 retroactively marked complete.
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
