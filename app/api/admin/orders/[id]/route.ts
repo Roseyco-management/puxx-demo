@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/auth/session';
+import { getAdminUser } from '@/lib/auth/admin';
 import { getSupabaseClient } from '@/lib/db/supabase';
+import { mapOrder } from '@/lib/utils/order-mapping';
 
 export async function GET(
   request: NextRequest,
@@ -9,20 +10,20 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const session = await getSession();
-    if (!session?.user?.id) {
+    const admin = await getAdminUser();
+    if (!admin) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const supabase = getSupabaseClient();
 
-    // Fetch order with items and product details
     const { data: order, error } = await supabase
       .from('orders')
       .select(`
         *,
         order_items (
           id,
+          order_id,
           product_id,
           product_name,
           product_sku,
@@ -42,19 +43,7 @@ export async function GET(
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
-    // Transform order items to include image URLs
-    const transformedOrder = {
-      ...order,
-      items: (order.order_items || []).map((item: any) => ({
-        ...item,
-        imageUrl: item.products?.image_url,
-      })),
-      itemCount: order.order_items?.reduce((sum: number, item: any) => sum + item.quantity, 0) || 0,
-      customerName: order.shipping_name,
-      customerEmail: order.shipping_email,
-    };
-
-    return NextResponse.json({ order: transformedOrder });
+    return NextResponse.json({ order: mapOrder(order) });
   } catch (error) {
     console.error('Error in order detail API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -68,8 +57,8 @@ export async function PATCH(
   try {
     const { id } = await params;
 
-    const session = await getSession();
-    if (!session?.user?.id) {
+    const admin = await getAdminUser();
+    if (!admin) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

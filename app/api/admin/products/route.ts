@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/db/supabase';
+import { getAdminUser } from '@/lib/auth/admin';
 import { productSchema } from '@/lib/validations/product';
 
 function mapProduct(product: any, category: string | null) {
@@ -36,6 +37,11 @@ function mapProduct(product: any, category: string | null) {
 
 export async function GET(request: NextRequest) {
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const supabase = getSupabaseClient();
     const { searchParams } = new URL(request.url);
     const categoryFilter = searchParams.get('category');

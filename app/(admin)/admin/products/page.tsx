@@ -43,16 +43,76 @@ export default function ProductsPage() {
   );
 
   const handleDelete = async (ids: string[]) => {
-    toast.info('Product management available in v1');
+    try {
+      await Promise.all(
+        ids.map((id) =>
+          fetch(`/api/admin/products/${id}`, { method: 'DELETE' }).then((r) => {
+            if (!r.ok) throw new Error(`Failed to delete product ${id}`);
+          })
+        )
+      );
+      toast.success(`${ids.length} product(s) deactivated`);
+      fetchProducts();
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to delete product(s)');
+    }
   };
 
-  const handleBulkActivate = async (ids: string[]) => {
-    toast.info('Product management available in v1');
+  const setActiveForIds = async (ids: string[], isActive: boolean) => {
+    try {
+      await Promise.all(
+        ids.map(async (id) => {
+          const current = products.find((p) => String(p.id) === String(id));
+          if (!current) return;
+
+          const payload = {
+            name: current.name,
+            slug: current.slug,
+            description: current.description,
+            price: parseFloat(current.price),
+            compareAtPrice: current.compareAtPrice
+              ? parseFloat(current.compareAtPrice)
+              : null,
+            sku: current.sku,
+            nicotineStrength: current.nicotineStrength,
+            flavor: current.flavor,
+            flavorProfile: current.flavorProfile,
+            pouchesPerCan: current.pouchesPerCan,
+            reorderPoint: current.reorderPoint,
+            ingredients: current.ingredients,
+            usageInstructions: current.usageInstructions,
+            imageUrl: current.imageUrl,
+            imageGallery: current.imageGallery || [],
+            stockQuantity: current.stock_quantity,
+            isActive,
+            isFeatured: current.isFeatured ?? false,
+            metaTitle: current.metaTitle,
+            metaDescription: current.metaDescription,
+            category: current.category,
+          };
+
+          const response = await fetch(`/api/admin/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            throw new Error(`Failed to update product ${id}`);
+          }
+        })
+      );
+      toast.success(`${ids.length} product(s) ${isActive ? 'activated' : 'deactivated'}`);
+      fetchProducts();
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to update products');
+    }
   };
 
-  const handleBulkDeactivate = async (ids: string[]) => {
-    toast.info('Product management available in v1');
-  };
+  const handleBulkActivate = (ids: string[]) => setActiveForIds(ids, true);
+  const handleBulkDeactivate = (ids: string[]) => setActiveForIds(ids, false);
 
   const exportToCSV = () => {
     const headers = ['SKU', 'Name', 'Category', 'Price', 'Stock', 'Status'];

@@ -1,22 +1,64 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/db/supabase';
+import { getAdminUser } from '@/lib/auth/admin';
 import { mapOrder } from '@/lib/utils/order-mapping';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const statusFilter = searchParams.get('status');
+    const paymentStatusFilter = searchParams.get('paymentStatus');
+    const search = searchParams.get('search');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+
     const supabase = getSupabaseClient();
 
-    const { data: orders, error } = await supabase
+    let query = supabase
       .from('orders')
       .select('*, order_items(*)')
       .order('created_at', { ascending: false });
+
+    if (statusFilter && statusFilter !== 'all') {
+      query = query.eq('status', statusFilter);
+    }
+
+    if (paymentStatusFilter && paymentStatusFilter !== 'all') {
+      query = query.eq('payment_status', paymentStatusFilter);
+    }
+
+    if (startDate) {
+      query = query.gte('created_at', startDate);
+    }
+
+    if (endDate) {
+      query = query.lte('created_at', endDate);
+    }
+
+    const { data: orders, error } = await query;
 
     if (error) {
       console.error('Error fetching orders:', error);
       return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
     }
 
-    const result = (orders || []).map(mapOrder);
+    let result = (orders || []).map(mapOrder);
+
+    if (search) {
+      const needle = search.toLowerCase();
+      result = result.filter((order) => {
+        return (
+          order.orderNumber.toLowerCase().includes(needle) ||
+          order.customerName.toLowerCase().includes(needle) ||
+          order.customerEmail.toLowerCase().includes(needle)
+        );
+      });
+    }
 
     return NextResponse.json({ orders: result, total: result.length });
   } catch (error) {

@@ -120,7 +120,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     {
       accessorKey: "strength",
       header: "Strength",
-      cell: ({ row }) => row.original.strength ? `${row.original.strength}mg` : '-',
+      cell: ({ row }) => row.original.strength || '-',
     },
     {
       accessorKey: "price",

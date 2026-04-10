@@ -172,7 +172,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
               <div className="flex justify-between">
                 <dt className="text-gray-500 dark:text-gray-400">Strength</dt>
                 <dd className="text-gray-900 dark:text-white">
-                  {product.nicotine_strength ? `${product.nicotine_strength}mg` : '—'}
+                  {product.nicotine_strength || '—'}
                 </dd>
               </div>
               <div className="flex justify-between">

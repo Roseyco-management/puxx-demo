@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/auth/session';
+import { getRetailerUser } from '@/lib/auth/admin';
 import { getSupabaseClient } from '@/lib/db/supabase';
 import { getInvoiceBlob } from '@/lib/utils/invoice-generator';
 import { mapOrder } from '@/lib/utils/order-mapping';
@@ -11,8 +11,8 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const session = await getSession();
-    if (!session?.user?.id) {
+    const retailer = await getRetailerUser();
+    if (!retailer) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -34,7 +34,7 @@ export async function GET(
         )
       `)
       .eq('id', id)
-      .eq('user_id', session.user.id)
+      .eq('user_id', retailer.id)
       .single();
 
     if (error || !order) {
