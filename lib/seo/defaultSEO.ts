@@ -90,7 +90,7 @@ export const defaultSEO: DefaultSEOConfig = {
     },
     {
       rel: 'manifest',
-      href: '/manifest.json'
+      href: '/site.webmanifest'
     },
   ],
 }
