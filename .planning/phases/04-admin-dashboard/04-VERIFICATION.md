@@ -35,7 +35,25 @@ human_verification:
 
 ---
 
-## Goal Achievement
+## 2026-04-10 Retroactive Resolution
+
+**The tables below this section describe the 2026-04-09 Drizzle-era state and are kept for audit history. The current state is:**
+
+- `app/api/admin/orders/route.ts` — Supabase REST via `mapOrder` helper (commit 84459d6, then refactored to shared `lib/utils/order-mapping.ts` in 63e6f7f). Admin auth guard via `getAdminUser()` in commit 39c2fa2.
+- `app/api/admin/customers/route.ts` — Supabase REST with admin auth guard (commit 0c000b0).
+- `app/api/admin/products/route.ts` — Supabase REST via `mapProduct` helper with category join (commit e4b009c). Admin auth on GET and POST (commits 39c2fa2, abb848b).
+- `app/api/admin/products/[id]/route.ts` — Supabase REST on GET/PUT/DELETE, new PATCH handler for partial updates (commit abb848b). Admin auth on all handlers.
+- `app/api/admin/orders/export/route.ts` — Stubbed to return 501 "CSV export available in v1" with admin auth guard (commit 0c000b0). No more crash path.
+- `app/(admin)/admin/orders/[id]/page.tsx` — Uses shared `mapOrder` helper (commit 63e6f7f).
+- `app/(admin)/admin/products/[id]/page.tsx` — New read-only detail page added (commit 3bc8167).
+- `app/(admin)/admin/products/page.tsx` — Bulk delete/activate/deactivate now call real PATCH and DELETE endpoints (commits 39c2fa2, abb848b).
+- 20 additional admin API routes hardened with `getAdminUser()` in the commit 0c000b0 auth sweep.
+
+ADMIN-01, ADMIN-02, ADMIN-03 all marked `[x]` Complete in REQUIREMENTS.md. Phase 7's Codex adversarial review (8 rounds, archived under `.planning/phases/07-demo-bugfix/CODEX-EXEC-REVIEW*.md`) signed off clean on the code in round 5 and reconfirmed in round 8.
+
+---
+
+## Goal Achievement (historical — 2026-04-09 Drizzle-era state)
 
 ### Observable Truths
 

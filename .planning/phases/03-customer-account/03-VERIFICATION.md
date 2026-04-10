@@ -62,7 +62,7 @@ human_verification:
 
 | Artifact | Provides | Status | Details |
 |----------|----------|--------|---------|
-| `app/[region]/account/layout.tsx` | Auth-gated account shell | VERIFIED | getUser() called; redirect to /{region}/sign-in if null; profile queried via Drizzle; AccountNav rendered |
+| `app/[region]/account/layout.tsx` | Auth-gated account shell | VERIFIED | getUser() called; redirect to /{region}/sign-in if null; profile queried via Supabase REST (migrated off Drizzle in phase 7 bundle commit 2ceadd8); AccountNav rendered with region prop |
 | `app/[region]/account/page.tsx` | Account dashboard with ReferralCard | VERIFIED | Queries profile, recent orders; renders ReferralCard with all 4 required props |
 | `app/[region]/account/orders/page.tsx` | Order history wired to OrdersDataTable | VERIFIED | Queries orders + itemCount; passes currencySymbol and ordersBasePath props |
 | `app/[region]/account/orders/[id]/page.tsx` | Order detail with region currency | VERIFIED | Awaits both region + id params; uses getRegionConfig for currencySymbol throughout |
