@@ -32,14 +32,34 @@ Scraped 2026-04-12 from the live WordPress site. This is the visual target for v
 - Red warning banner at very top: "WARNING: This product contains nicotine..."
 - Footer: 4-column layout — Brand description | Pages | Sales (Affiliate Login/Register) | Connect
 
+## WordPress Source Data (puxxpouches.com WXR export)
+
+**Export file:** `/Users/arnispiekus/Downloads/puxxpouches.WordPress.2026-04-09.xml`
+**Backup file:** `/Users/arnispiekus/Downloads/puxxpouches-com-20260409-005028-iu1yeyq8wgsq.wpress`
+**Site:** puxxpouches.com (WordPress 6.9.4, WooCommerce)
+
 ## Product Structure (CRITICAL for v0.2)
 
-**14 flavour products on the shop page** (paginated 12 per page):
-- PUXX Apple Mint, Blueberry, Cherry, Citrus, Cola, Cool Mint, Grape, Peach, Peppermint, Raspberry, Spearmint, Strawberry, Wintergreen, + 1 more
+**12 flavour products** (from WooCommerce export, puxxpouches.com):
+1. PUXX Apple Mint
+2. PUXX Cherry
+3. PUXX Citrus
+4. PUXX Cola
+5. PUXX Cool Mint
+6. PUXX Grape
+7. PUXX Peach
+8. PUXX Peppermint
+9. PUXX Spearmint
+10. PUXX Strawberry
+11. PUXX Watermelon
+12. PUXX Wintergreen
+
+(puxxcanada.ca shows 14 — likely Blueberry and Raspberry added later)
 
 **Each product = 1 flavour** with a strength variant selector:
-- Strengths available: 6mg, 9mg, 12mg, 16mg (as dropdown selector)
-- Price: CAD$15.00 per product (flat, all strengths same price)
+- Strengths available: 3mg, 6mg, 9mg, 12mg, 16mg, 22mg (6 options per flavour, 72 variations total)
+- puxxcanada.ca shows 4 options (6, 9, 12, 16mg) — some strengths may be hidden per region
+- Price: $6 per variation (from WP export), CAD$15 on puxxcanada.ca — regional pricing differs
 - Category: "Nicotine Pouches"
 - Brand: "PUXX"
 
@@ -64,10 +84,21 @@ Each flavour has a distinct can design:
 - Large product images showing the can from front and angled views
 - The product images on puxxcanada.ca are high-quality renders/photos
 
-**We need to source these product images.** Options:
-1. Download from puxxcanada.ca directly (they're served via WooCommerce CDN)
-2. Ask the user for the original image assets
-3. Use the same images by referencing the puxxcanada.ca URLs (temporary)
+**Product image URLs from WooCommerce export** (download these for v0.2):
+- Apple Mint: https://puxxpouches.com/wp-content/uploads/2025/03/Medium-Puxx-Applemint-6mg.jpg + https://puxxpouches.com/wp-content/uploads/2025/03/UK-Apple-Mint-16mg.jpg
+- Cherry: https://puxxpouches.com/wp-content/uploads/2025/03/UK-Chery-16mg.jpg
+- Citrus: https://puxxpouches.com/wp-content/uploads/2025/08/UK-Citrus-16mg.jpg
+- Cola: https://puxxpouches.com/wp-content/uploads/2025/03/UK-Cola-16mg.jpg
+- Cool Mint: https://puxxpouches.com/wp-content/uploads/2025/03/UK-Cool-Mint-16mg.jpg
+- Grape: https://puxxpouches.com/wp-content/uploads/2025/08/UK-Grape-16mg.jpg
+- Peppermint: https://puxxpouches.com/wp-content/uploads/2025/03/UK-Peppermint-16mg.jpg
+- Spearmint: https://puxxpouches.com/wp-content/uploads/2025/03/UK-Apple-Mint-16mg-1.jpg
+- Strawberry: https://puxxpouches.com/wp-content/uploads/2025/08/UK-Strawberry-16mg.jpg
+- Watermelon: https://puxxpouches.com/wp-content/uploads/2025/03/UK-PUXX-Watermelon-16mg.jpg
+- Wintergreen: https://puxxpouches.com/wp-content/uploads/2025/08/UK-Wintergreen-16mg.jpg
+- Peach: (no direct attachment found in export — source from puxxcanada.ca)
+
+**Note:** Spearmint image URL is "UK-Apple-Mint-16mg-1.jpg" — likely a duplicate/mislabel in WP. May need the correct Spearmint image.
 
 ## Page Structure
 
@@ -99,7 +130,7 @@ Each flavour has a distinct can design:
 | Product images | High-quality can renders per flavour | Missing/broken | Source or download product images |
 | Header | Clean, minimal, dark background | Region-specific with selector | Keep region selector but adopt dark styling |
 | Price | CAD$15.00 flat per product | Variable | Align with regional pricing config |
-| Strength options | 4 options (6, 9, 12, 16mg) | 6 options (4, 6, 8, 12, 16, 20mg) | Align with WooCommerce source of truth |
+| Strength options | 6 options (3, 6, 9, 12, 16, 22mg) per WP export; CA site shows 4 | 6 options (4, 6, 8, 12, 16, 20mg) seeded | Align with WooCommerce source — 3/6/9/12/16/22mg |
 | Shop layout | Clean grid, product name + price only | Cluttered with 72 cards | Match the clean grid with fewer cards |
 | Footer | Dark, 4-column, brand + links | Simple | Match the dark footer layout |
 | Warning banner | Red top bar | Missing | Add nicotine warning banner |
