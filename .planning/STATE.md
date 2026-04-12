@@ -1,36 +1,35 @@
 ---
 gsd_state_version: 1.0
-milestone: v0.1
-milestone_name: milestone
-status: complete
-stopped_at: Phase 7 complete — milestone v0.1 ready for human runtime verification
-last_updated: "2026-04-10T21:26:25.188Z"
-last_activity: 2026-04-10 — Phase 7 demo bugfix bundle closed; phases 3 and 4 retroactively marked complete
+milestone: null
+milestone_name: null
+status: between_milestones
+stopped_at: v0.1 Demo shipped 2026-04-11. UAT found 16 gaps for v0.2.
+last_updated: "2026-04-12T02:58:11.034Z"
+last_activity: 2026-04-11 — v0.1 milestone archived. UAT feedback captured. Ready for v0.2.
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 23
-  completed_plans: 23
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-09)
+See: .planning/PROJECT.md (updated 2026-04-11)
 
 **Core value:** The three e-commerce sites must process orders end-to-end — from checkout through payment, fulfilment assignment, shipping, and customer notification — without manual intervention on the happy path.
-**Current focus:** Milestone v0.1 Demo complete — awaiting human runtime verification in browser.
+**Current focus:** Planning v0.2 Demo Polish milestone. v0.1 shipped, UAT found 16 gaps.
 
 ## Current Position
 
-Phase: 7 of 7 (Demo Bug Fix) — complete
-Plan: 5 of 5 complete
-Status: Milestone complete (code-level). Runtime/visual verification pending human.
-Last activity: 2026-04-10 — Phase 7 closed with 7/7 must-haves verified after 5 rounds of Codex adversarial review. Phases 3 and 4 retroactively marked complete.
+Milestone: v0.1 shipped → v0.2 not yet started
+Status: Between milestones. UAT feedback documented.
+Last activity: 2026-04-11 — v0.1 archived, 16 UAT gaps captured for v0.2
 
-Progress: [██████████] 100%
+Progress: v0.1 ✅ | v0.2 not started
 
 ## Performance Metrics
 

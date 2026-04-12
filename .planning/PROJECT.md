@@ -4,16 +4,15 @@
 
 A multi-region e-commerce platform for Puxx, a nicotine pouch brand operating in Canada, UK, and US. Three identical WooCommerce sites (puxxpouches.ca, puxxpouches.uk, puxxpouches.com) with custom features — built by previous developers, partially functional, inherited by RoseyCo. The project covers fixing and launching the sites, building a CRM, and automating fulfilment workflows.
 
-## Current Milestone: v0.1 Demo
+## Current State
 
-**Goal:** Build a pre-sales demo to close the client deal — a working multi-region storefront with admin and affiliate previews, before Phase 1 development begins.
+**v0.1 Demo shipped 2026-04-11.** Deployed at puxx-demo.vercel.app.
 
-**Target features:**
-- Multi-region routing (puxxpouches.ca / .co.uk / .com) from a single Next.js app
-- Product catalogue (12 flavours × 6 strengths, $6 base, from WooCommerce data)
-- Age verification gate + checkout flow (ported from puxxireland)
-- Admin dashboard — orders, customers, products (TailAdmin Pro)
-- Affiliate/referral dashboard preview (Blue Pillar)
+Built: multi-region storefront (CA/UK/US), admin dashboard, retailer portal, fulfilment queue, affiliate preview, customer account, CRM stub. 7 phases, 24 plans, 141 commits, 297 TypeScript files, ~73k lines. 8 rounds of Codex adversarial review.
+
+**UAT findings (2026-04-11):** 16 gaps documented in `.planning/phases/07-demo-bugfix/07-UAT.md`. Critical: storefront design below puxxcanada.ca quality, product data model wrong (should be flavours as products with strength variants), product images missing, Server Components crash on product pages. Admin portal structurally good but needs mock data and UX simplification.
+
+**Next milestone: v0.2 Demo Polish** — not yet defined. Needs storefront redesign using puxxcanada.ca as reference, product model restructure, admin mock data, route cleanup.
 
 ## Core Value
 
@@ -23,7 +22,16 @@ The three e-commerce sites must process orders end-to-end — from checkout thro
 
 ### Validated
 
-(None yet — ship to validate)
+- ✅ Multi-region routing (CA/UK/US) from single Next.js app — v0.1
+- ✅ Admin dashboard with orders, customers, products management — v0.1
+- ✅ Retailer portal with order history and invoice downloads — v0.1
+- ✅ Fulfilment queue with mark-as-shipped workflow — v0.1
+- ✅ Customer account with order history and referral codes — v0.1
+- ✅ Affiliate preview dashboard — v0.1
+- ✅ CRM customer profile stub — v0.1
+- ✅ Age verification gate on checkout — v0.1
+- ✅ Mobile responsiveness across key views — v0.1
+- ⚠️ Product catalogue (12 flavours displayed, but data model needs restructure for v0.2) — v0.1 partial
 
 ### Active
 
@@ -102,7 +110,7 @@ The three e-commerce sites must process orders end-to-end — from checkout thro
 | AffiliateWP NOT installed — system is fully custom | API audit confirmed no AffiliateWP. "Pouches Worldwide" plugin (Amaan Azkar) handles affiliate, wholesale approvals, consignment loans | — Confirmed |
 | Gift card payment workaround for CA/US | Only viable option after Stripe ban, friend's team has built the plugin. Also researching AllayPay as proper nicotine payment processor | — Pending |
 | CRM: build custom vs migrate to existing platform | Client wants basics first (data, comms, history), then add features — approach TBD after audit | — Pending |
-| Plan A vs Plan B | Plan A = fix WooCommerce (what client asked for). Plan B = custom build using puxxireland stack (Next.js/Supabase). Presenting both to client. | — Pending |
+| Plan A vs Plan B | Plan A = fix WooCommerce (what client asked for). Plan B = custom build using puxxireland stack (Next.js/Supabase). Presenting both to client. | ✅ Plan B chosen — demo built on Next.js/Supabase |
 | AllayPay over Tower Payments | Tower has only 13 Trustpilot reviews, poor web presence. AllayPay has better website, explicit nicotine pouch support, API integrations | — Pending |
 
 ## Pricing & Commercial
@@ -137,4 +145,4 @@ The three e-commerce sites must process orders end-to-end — from checkout thro
 - Both can be adapted for Puxx CA/UK/US.
 
 ---
-*Last updated: 2026-04-09 after Milestone v0.1 Demo started*
+*Last updated: 2026-04-11 after v0.1 Demo milestone shipped*
