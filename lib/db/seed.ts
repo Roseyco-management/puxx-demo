@@ -75,7 +75,7 @@ async function seedDemoAccount() {
   const [demoUser] = await db.insert(users).values({
     name: 'Demo Customer',
     email: 'demo@puxx.com',
-    passwordHash: await hashPassword('demo123'),
+    passwordHash: await hashPassword('demo1234'),
     role: 'member',
   }).returning();
 
