@@ -87,6 +87,41 @@ gaps:
     severity: medium
     title: "Portal URLs not documented — client couldn't find them to verify"
     status: unverified
+  - id: UAT-17
+    area: portals
+    severity: high
+    title: "Retailer portal needs sidebar nav like admin, not header nav — looks unpolished vs admin"
+    status: failed
+  - id: UAT-18
+    area: portals
+    severity: high
+    title: "Retailer portal not using TailAdmin components — should match admin panel polish"
+    status: failed
+  - id: UAT-19
+    area: portals
+    severity: critical
+    title: "Fulfilment login broken — 'Invalid email or password' with fulfilment@puxx.com / fulfil123"
+    status: failed
+  - id: UAT-20
+    area: portals
+    severity: high
+    title: "Fulfilment login redirects to /login (storefront login) not a fulfilment-specific login"
+    status: failed
+  - id: UAT-21
+    area: portals
+    severity: high
+    title: "Customer account /uk/account intermittent — loads briefly then redirects to sign-in URL with 404"
+    status: failed
+  - id: UAT-22
+    area: design
+    severity: high
+    title: "Color scheme too much green — use original WordPress site color scheme from puxxcanada.ca"
+    status: failed
+  - id: UAT-23
+    area: design
+    severity: high
+    title: "Overall design quality below WordPress original — use puxxcanada.ca as template, may need WP source code"
+    status: failed
 ---
 
 # Phase 07 — User Acceptance Testing
@@ -173,11 +208,36 @@ Known portal paths:
 - Admin: /admin
 - Customer account: /uk/account (region-scoped)
 
+## Portal Sweep Findings (2026-04-12)
+
+Second pass reviewing the portals with correct credentials.
+
+### UAT-17 & UAT-18: Retailer Portal — layout and polish gap
+
+The retailer portal uses a simple header nav (Products | Orders | Username | Logout) instead of a sidebar layout like the admin panel. The admin has a proper TailAdmin-powered sidebar with icons, collapsible menu, and polished styling. The retailer portal looks bare and unfinished by comparison. **Should use sidebar layout matching admin panel and reuse TailAdmin components.**
+
+### UAT-19 & UAT-20: Fulfilment login completely broken
+
+fulfilment@puxx.com / fulfil123 returns "Invalid email or password." The fulfilment route at /fulfilment redirects to /login (the storefront customer login page) instead of having its own login flow or sharing the portal login. Either the seeded fulfilment user email doesn't match, the password is wrong, or the auth flow doesn't recognize the fulfilment role. Needs investigation.
+
+### UAT-21: Customer account intermittent auth failure
+
+/uk/account loaded briefly showing the dashboard, then on subsequent visits redirects to /uk/sign-in which 404s. The sign-in route may not exist under the region-scoped tree, or the session cookie is expiring/failing immediately.
+
+### UAT-22 & UAT-23: Color scheme and overall design quality
+
+Too much green throughout the site. The original WordPress site at puxxcanada.ca has a more refined, darker color scheme with better visual hierarchy. The demo should adopt the original site's color palette and typography. User may provide the WordPress source code again if needed for reference — we also have the option to scrape puxxcanada.ca for the current design.
+
+**Key instruction from user:** "Go back to basics and use the original website on WordPress which looks better than what we have."
+
 ## Recommendation
 
 This is beyond a gap-closure phase. The storefront needs a design overhaul using puxxcanada.ca as reference, the product data model needs restructuring, and the admin needs mock data and UX cleanup. Recommend a new milestone (v0.2 Demo Polish) with:
 
-1. **Phase 1: Storefront redesign** — Use puxxcanada.ca as visual template, keep videos, fix product model (flavour = product, strength = variant)
-2. **Phase 2: Admin polish** — Seed mock analytics/revenue/subscriber data, remove setup guides, add multi-region dashboard view
-3. **Phase 3: Route cleanup** — Fix 404s, create missing pages or redirects, fix preload warnings
-4. **Phase 4: Portal verification** — Document URLs, verify each portal works, polish if needed
+1. **Phase 1: Storefront redesign** — Use puxxcanada.ca as visual template and color scheme, keep videos, fix product model (flavour = product, strength = variant), fix all product images
+2. **Phase 2: Portal polish** — Retailer portal sidebar layout using TailAdmin, fix fulfilment login/auth, fix customer account auth redirect, consistent styling
+3. **Phase 3: Admin polish** — Seed mock analytics/revenue/subscriber data, remove setup guides, add multi-region dashboard view
+4. **Phase 4: Route cleanup** — Fix 404s, create missing pages or redirects, fix preload warnings, fix sign-in route
+5. **Phase 5: Color scheme unification** — Apply puxxcanada.ca color palette across all surfaces (storefront, portals, admin)
+
+**Source material needed:** WordPress source code from original puxxcanada.ca site (user to confirm if re-provision needed) OR scrape live site for design reference.
